@@ -27,5 +27,8 @@ typedef struct student {
     struct student *next;
 } student;
 
+int add_student(student **student_head);
+int add_lecture(lectures **lecture_head);
+int id_check(student *student_head, unsigned int id);
 
 #endif
