@@ -7,15 +7,15 @@ typedef struct exam_template {
     struct exam_template *next;
 } exam_template;
 
-typedef struct lectures {
+typedef struct lecture {
     char lecture_id[10];
     char lecture_name[40];
     struct exam_template *exams;
-    struct lectures *next;
-} lectures;
+    struct lecture *next;
+} lecture;
 
 typedef struct enrollment{
-    struct lectures *lecture;
+    struct lecture *lecture;
     int *scores;
     struct enrollment *next;
 } enrollment;
@@ -28,7 +28,7 @@ typedef struct student {
 } student;
 
 int add_student(student **student_head);
-int add_lecture(lectures **lecture_head);
+int add_lecture(lecture **lecture_head);
 int id_check(student *student_head, unsigned int id);
 
 #endif
