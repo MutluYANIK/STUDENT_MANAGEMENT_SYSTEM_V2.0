@@ -140,5 +140,36 @@ int add_student(student **student_head, lecture *lecture_head) {
                selected_lecture->lecture_name);
     }
 
+    /*
+     * It takes the exam scores for each enrolled lecture, calculates the course average and letter grade
+     * for each enrollment
+     */
+    enrollment *current_enrollment = new_student->records;
+
+    while (current_enrollment != NULL) {
+
+        printf("\nEntering grades for lecture '%s'\n", current_enrollment->lecture->lecture_name);
+
+        exam_template *current_exam = current_enrollment->lecture->exams;
+        int i = 0;
+
+        while (current_exam != NULL) {
+
+            char prompt_message[150];
+
+            snprintf(prompt_message, sizeof(prompt_message),
+                     "Enter grade for exam '%s' (or -1 for pending grade): ", current_exam->exam_name);
+
+            int score = get_safe_int_between(3, -1, 100, prompt_message);
+
+            current_enrollment->scores[i] = score;
+            i++;
+            current_exam = current_exam->next;
+        }
+        grade_calculator(current_enrollment);
+
+        current_enrollment = current_enrollment->next;
+    }
+
     return 1;
 }
