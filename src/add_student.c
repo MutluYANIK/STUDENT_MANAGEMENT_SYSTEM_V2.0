@@ -130,6 +130,9 @@ int add_student(student **student_head, lecture *lecture_head) {
             new_enrollment->scores = NULL; // No exams for this lecture
         }
 
+        new_enrollment->course_average = 0.0;
+        strcpy(new_enrollment->letter_grade, "--");
+
         new_enrollment->next = new_student->records;
         new_student->records = new_enrollment;
 
