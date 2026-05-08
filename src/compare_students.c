@@ -13,10 +13,10 @@ int compare_students(student *s1, student *s2) {
 
     case SORT_BY_GRADE:
 
-        if (s1->total_grade == s2->total_grade) {
+        if (s1->GPA == s2->GPA) {
             result = s1->id < s2->id;
         } else {
-            result = s1->total_grade > s2->total_grade;
+            result = s1->GPA > s2->GPA;
         }
         break;
 
