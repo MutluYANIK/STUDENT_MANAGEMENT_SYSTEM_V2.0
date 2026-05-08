@@ -45,5 +45,7 @@ int id_check(student *student_head, unsigned int id);
 int lecture_id_check(lecture *lecture_head, const char *lecture_id);
 int enrollment_check(student *current_student, lecture *target_lecture);
 int compare_students(student *s1, student *s2);
+void calculate_student_gpa(student *target_student);
+float get_letter_grade_value(const char *letter_grade);
 
 #endif
