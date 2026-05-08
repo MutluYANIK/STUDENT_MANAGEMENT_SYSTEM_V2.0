@@ -18,6 +18,8 @@ typedef struct lecture {
 typedef struct enrollment {
     struct lecture *lecture;
     int *scores;
+    float course_avarage;
+    char letter_grade[3];
     struct enrollment *next;
 } enrollment;
 
