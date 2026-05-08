@@ -1,5 +1,6 @@
-#include "student_management_system.h"
+#include "../headers/student_management_system.h"
 #include <string.h>
+#include <stdio.h>
 
 int lecture_id_check(lecture *lecture_head, const char *lecture_id) {
 
@@ -14,3 +15,4 @@ int lecture_id_check(lecture *lecture_head, const char *lecture_id) {
     }
 
     return 0;
+}
