@@ -106,6 +106,13 @@ int add_student(student **student_head, lecture *lecture_head) {
 
         if (new_enrollment == NULL) {
             printf("\n!ERROR! Memory allocation failed!\n\n");
+            
+            while(new_student->records != NULL) {
+                enrollment *temp_enrollment = new_student->records;
+                new_student->records = new_student->records->next;
+                free(temp_enrollment->scores);
+                free(temp_enrollment);
+            }
             free(new_student);
             return 0;
         }
@@ -172,6 +179,22 @@ int add_student(student **student_head, lecture *lecture_head) {
     }
 
     calculate_student_gpa(new_student);
+
+    // Inserts the new student into the linked list in sorted order based on the current sorting mode and sorting direction.
+    if(*student_head == NULL) {
+        *student_head = new_student;        
+    } else if (compare_students(new_student, *student_head) == 1) {
+        new_student->next = *student_head;
+        *student_head = new_student;
+    } else {
+        student *current = *student_head; 
+
+        while(current->next != NULL && compare_students(new_student, current->next) == 0) {
+            current = current->next;
+        }
+        new_student->next = current->next;
+        current->next = new_student;
+    }
 
     return 1;
 }
