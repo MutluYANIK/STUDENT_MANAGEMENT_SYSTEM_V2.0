@@ -1,5 +1,6 @@
 #include "../headers/safe_input.h"
 #include "../headers/student_management_system.h"
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,7 +26,7 @@ int add_lecture(lecture **lecture_head) {
      */
     lecture *new_lecture = (lecture *)malloc(sizeof(lecture));
 
-    lecture *head = *lecture_head;
+    lecture *current = *lecture_head;
 
     if (new_lecture == NULL) {
         printf("\n!ERROR! Memory allocation failed!\n\n");
@@ -101,4 +102,23 @@ int add_lecture(lecture **lecture_head) {
 
     printf("\nExam entry complete for %s. Total percentage reached: %d%%\n\n", new_lecture->lecture_name,
            total_percentage);
+
+    /*
+     * Inserts the new lecture into the linked list of lectures in sorted order based on lecture ID to maintain 
+     * an organized structure.
+     */
+    if (current == NULL || strcmp(new_lecture->lecture_id, current->lecture_id) < 0) {
+        new_lecture->next = current;
+        *lecture_head = new_lecture;
+    } else {
+        while (current->next != NULL && strcmp(new_lecture->lecture_id, current->next->lecture_id) > 0) {
+            current = current->next;
+        }
+        new_lecture->next = current->next;
+        current->next = new_lecture;
+    }
+
+    printf("\n Lecture '%s' with ID '%s' added successfully!\n\n", new_lecture->lecture_name, new_lecture->lecture_id);
+
+    return 1;
 }
