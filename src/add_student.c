@@ -171,5 +171,7 @@ int add_student(student **student_head, lecture *lecture_head) {
         current_enrollment = current_enrollment->next;
     }
 
+    calculate_student_gpa(new_student);
+
     return 1;
 }
