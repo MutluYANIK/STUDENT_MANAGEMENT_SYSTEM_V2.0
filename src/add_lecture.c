@@ -49,6 +49,8 @@ int add_lecture(lecture **lecture_head) {
 
     strcpy(new_lecture->lecture_name, temp_lecture_name);
 
+    new_lecture->lecture_credit = get_positive_int(3, "\nEnter lecture credit: ");
+
     int total_percentage = 0;
     new_lecture->exams = NULL;
     new_lecture->next = NULL;
