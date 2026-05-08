@@ -30,5 +30,6 @@ typedef struct student {
 int add_student(student **student_head);
 int add_lecture(lecture **lecture_head);
 int id_check(student *student_head, unsigned int id);
+int lecture_id_check(lecture *lecture_head, char *lecture_id);
 
 #endif
