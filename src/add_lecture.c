@@ -11,7 +11,7 @@ int add_lecture(lecture **lecture_head) {
      * lecture ids to maintain data integrity and prevent confusion in the system.
      */
     char temp_id[10];
-    get_safe_name(3, temp_id, sizeof(temp_id), "\nEnter lecture ID (or exit to return to main menu): ");
+    get_safe_string(3, temp_id, sizeof(temp_id), "\nEnter lecture ID (or type 'exit' to cancel): ");
 
     if (strcmp(temp_id, "exit") == 0) {
         printf("\nOperation cancelled. Returning to main menu...\n\n");
@@ -21,9 +21,12 @@ int add_lecture(lecture **lecture_head) {
     if (lecture_id_check(*lecture_head, temp_id) == 1) {
         return 1;
     }
-    /*
-     * Allocates memory for a new lecture and checks for successful allocation to prevent crashes.
-     */
+
+    for (int i = 0; temp_id[i] != '\0'; i++) {
+        temp_id[i] = toupper((unsigned char)temp_id[i]);
+    }
+    // Allocates memory for a new lecture and checks for successful allocation to prevent crashes.
+
     lecture *new_lecture = (lecture *)malloc(sizeof(lecture));
 
     lecture *current = *lecture_head;
@@ -38,7 +41,7 @@ int add_lecture(lecture **lecture_head) {
      * Takes input for the lecture name and converts it to uppercase for consistency.
      */
     char temp_lecture_name[40];
-    get_safe_name(3, temp_lecture_name, sizeof(temp_lecture_name), "\nEnter lecture name: ");
+    get_safe_string(3, temp_lecture_name, sizeof(temp_lecture_name), "\nEnter lecture name: ");
 
     for (int i = 0; temp_lecture_name[i] != '\0'; i++) {
         temp_lecture_name[i] = toupper((unsigned char)temp_lecture_name[i]);
@@ -67,7 +70,7 @@ int add_lecture(lecture **lecture_head) {
         char temp_exam_name[20];
 
         printf("\nRemaining percentage: %d%%\n", remaining_percentage);
-        get_safe_name(3, temp_exam_name, sizeof(temp_exam_name), "\nEnter exam name: ");
+        get_safe_string(3, temp_exam_name, sizeof(temp_exam_name), "\nEnter exam name: ");
 
         for (int i = 0; temp_exam_name[i] != '\0'; i++) {
             temp_exam_name[i] = toupper((unsigned char)temp_exam_name[i]);
@@ -104,7 +107,7 @@ int add_lecture(lecture **lecture_head) {
            total_percentage);
 
     /*
-     * Inserts the new lecture into the linked list of lectures in sorted order based on lecture ID to maintain 
+     * Inserts the new lecture into the linked list of lectures in sorted order based on lecture ID to maintain
      * an organized structure.
      */
     if (current == NULL || strcmp(new_lecture->lecture_id, current->lecture_id) < 0) {
