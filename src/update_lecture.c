@@ -29,17 +29,17 @@ int update_lecture(student *student_head, lecture **lecture_head) {
         temp_lecture_id[i] = toupper((unsigned char)temp_lecture_id[i]);
     }
 
-    lecture *current = *lecture_head;
+    lecture *target_lecture = *lecture_head;
 
     /*
      * Traverse the linked list of lectures to find the lecture with the matching ID. If not found, print an error
      * message and return to the main menu.
      */
-    while (current != NULL && strcmp(current->lecture_id, temp_lecture_id) != 0) {
-        current = current->next;
+    while (target_lecture != NULL && strcmp(target_lecture->lecture_id, temp_lecture_id) != 0) {
+        target_lecture = target_lecture->next;
     }
 
-    if (current == NULL) {
+    if (target_lecture == NULL) {
         printf("\n!ERROR! No lecture with ID '%s' found in the list!\n\n", temp_lecture_id);
         return 0;
     }
@@ -65,525 +65,530 @@ int update_lecture(student *student_head, lecture **lecture_head) {
 
         switch (choice) {
 
-        case 0:
-            printf("\nOperation cancelled. Returning to main menu...\n\n");
-            loop_flag = 0;
-            break;
-
-        /* Takes the new lecture ID input from the user, checks if it already exists in lecture lists prints an
-         * error message if not exists updates the lecture ID
-         */
-        case 1: {
-
-            char new_lecture_id[10];
-            get_safe_string(3, new_lecture_id, sizeof(new_lecture_id),
-                            "\nEnter the new lecture ID (or type 'exit' to cancel): ");
-
-            if (strcmp(new_lecture_id, "exit") == 0) {
-                printf("\nOperation cancelled. Returning to previous menu...\n\n");
+            case 0:
+                printf("\nOperation cancelled. Returning to main menu...\n\n");
+                loop_flag = 0;
                 break;
-            }
 
-            for (int i = 0; new_lecture_id[i] != '\0'; i++) {
-                new_lecture_id[i] = toupper((unsigned char)new_lecture_id[i]);
-            }
+            /* Takes the new lecture ID input from the user, checks if it already exists in lecture lists prints an
+            * error message if not exists updates the lecture ID
+            */
+            case 1: {
 
-            if (lecture_id_check(*lecture_head, new_lecture_id)) {
-                printf("\n!ERROR! Lecture ID '%s' already exists!\n\n", new_lecture_id);
-                break;
-            }
+                char new_lecture_id[10];
+                get_safe_string(3, new_lecture_id, sizeof(new_lecture_id),
+                                "\nEnter the new lecture ID (or type 'exit' to cancel): ");
 
-            if (*lecture_head == current) {
-                *lecture_head = current->next;
-            } else {
-                lecture *previous = *lecture_head;
-
-                while (previous->next != NULL && previous->next != current) {
-                    previous = previous->next;
+                if (strcmp(new_lecture_id, "exit") == 0) {
+                    printf("\nOperation cancelled. Returning to previous menu...\n\n");
+                    break;
                 }
 
-                if (previous->next == current) {
-                    previous->next = current->next;
-                }
-            }
-
-            strcpy(current->lecture_id, new_lecture_id);
-            current->next = NULL;
-
-            if (strcmp(current->lecture_id, (*lecture_head)->lecture_id) < 0) {
-                current->next = *lecture_head;
-                *lecture_head = current;
-            } else {
-                lecture *current_lecture = *lecture_head;
-
-                while (current_lecture->next != NULL &&
-                       strcmp(current->lecture_id, current_lecture->next->lecture_id) < 0) {
-                    current_lecture = current_lecture->next;
+                for (int i = 0; new_lecture_id[i] != '\0'; i++) {
+                    new_lecture_id[i] = toupper((unsigned char)new_lecture_id[i]);
                 }
 
-                current->next = current_lecture->next;
-                current_lecture->next = current;
-            }
+                if (lecture_id_check(*lecture_head, new_lecture_id)) {
+                    printf("\n!ERROR! Lecture ID '%s' already exists!\n\n", new_lecture_id);
+                    break;
+                }
 
-            printf("\nLecture ID has been successfully updated.\n\n");
-            break;
-        }
+                if (*lecture_head == target_lecture) {
+                    *lecture_head = target_lecture->next;
+                } else {
+                    lecture *previous = *lecture_head;
 
-        // Updates the lecture name with the new name provided by the user
-        case 2:
-            char temp_lecture_name[40];
-
-            get_safe_string(3, temp_lecture_name, sizeof(temp_lecture_name),
-                            "\nEnter the new lecture name (or type 'exit' to cancel): ");
-
-            if (strcmp(temp_lecture_name, "exit") == 0) {
-                printf("\nOperation cancelled. Returning to previous menu...\n\n");
-                break;
-            }
-
-            printf("\nLecture name has been successfully updated\n\n");
-            break;
-
-        /*
-         * Updates the lecture credit with the new credit provided by the user and recalculates the GPA of all
-         * students enrolled in this lecture
-         */
-        case 3: {
-            int temp_credit = get_safe_int_between(0, INT_MAX, 3, "\nEnter the new lecture credit (or 0 to cancel): ");
-
-            if (temp_credit == 0) {
-                printf("\nOperation cancelled. Returning to previous menu...\n\n");
-                break;
-            }
-
-            current->lecture_credit = temp_credit;
-
-            student *current_student = student_head;
-
-            while (current_student != NULL) {
-                enrollment *current_enrollment = current_student->records;
-
-                while (current_enrollment != NULL) {
-
-                    if (current_enrollment->lecture == current) {
-                        calculate_student_gpa(current_student);
-                        break;
+                    while (previous->next != NULL && previous->next != target_lecture) {
+                        previous = previous->next;
                     }
-                    current_enrollment = current_enrollment->next;
+
+                    if (previous->next == target_lecture) {
+                        previous->next = target_lecture->next;
+                    }
                 }
 
-                current_student = current_student->next;
-            }
+                strcpy(target_lecture->lecture_id, new_lecture_id);
+                target_lecture->next = NULL;
 
-            printf("\nLecture credit has been succesffully updated and student GPAs recalculated\n\n");
+                if (strcmp(target_lecture->lecture_id, (*lecture_head)->lecture_id) < 0) {
+                    target_lecture->next = *lecture_head;
+                    *lecture_head = target_lecture;
+                } else {
+                    lecture *current_lecture = *lecture_head;
 
-            break;
-        }
+                    while (current_lecture->next != NULL &&
+                        strcmp(target_lecture->lecture_id, current_lecture->next->lecture_id) < 0) {
+                        current_lecture = current_lecture->next;
+                    }
 
-        case 4: {
-            char new_exam_name[20];
+                    target_lecture->next = current_lecture->next;
+                    current_lecture->next = target_lecture;
+                }
 
-            get_safe_string(3, new_exam_name, sizeof(new_exam_name),
-                            "\nEnter the new exam name (or type 'exit' to cancel): ");
-
-            if (strcmp(new_exam_name, "exit") == 0) {
-                printf("\nOperation cancelled. Returning to previous menu...\n\n");
+                printf("\nLecture ID has been successfully updated.\n\n");
                 break;
             }
 
-            for (int i = 0; new_exam_name[i] != '\0'; i++) {
-                new_exam_name[i] = toupper((unsigned char)new_exam_name[i]);
-            }
+            // Updates the lecture name with the new name provided by the user
+            case 2:
+                char temp_lecture_name[40];
 
-            exam_template *temp_exam = current->exams;
+                get_safe_string(3, temp_lecture_name, sizeof(temp_lecture_name),
+                                "\nEnter the new lecture name (or type 'exit' to cancel): ");
 
-            int exam_count = 0;
-
-            while (temp_exam != NULL) {
-                if (strcmp(temp_exam->exam_name, new_exam_name) == 0) {
-                    printf("\n!ERROR! An exam with the name '%s' already exists for this lecture!\n\n", new_exam_name);
+                if (strcmp(temp_lecture_name, "exit") == 0) {
+                    printf("\nOperation cancelled. Returning to previous menu...\n\n");
                     break;
                 }
-                exam_count++;
-                temp_exam = temp_exam->next;
-            }
 
-            exam_template *new_exam = (exam_template *)malloc(sizeof(exam_template));
-
-            if (new_exam == NULL) {
-                printf("\n!ERROR! Memory allocation failed. Terminating...\n\n");
+                printf("\nLecture name has been successfully updated\n\n");
                 break;
-            }
 
-            strcpy(new_exam->exam_name, new_exam_name);
-            new_exam->exam_percentage = 0;
-            new_exam->next = NULL;
+            /*
+            * Updates the lecture credit with the new credit provided by the user and recalculates the GPA of all
+            * students enrolled in this lecture
+            */
+            case 3: {
+                int temp_credit = get_safe_int_between(0, INT_MAX, 3, "\nEnter the new lecture credit (or 0 to cancel): ");
 
-            if (current->exams == NULL) {
-                current->exams = new_exam;
-            } else {
-                temp_exam = current->exams;
-
-                while (temp_exam->next != NULL) {
-                    temp_exam = temp_exam->next;
-                }
-                temp_exam->next = new_exam;
-            }
-            exam_count++;
-
-            temp_exam = current->exams;
-
-            int remaining_percentage = 100;
-            int exams_left = exam_count;
-            int max_percentage_per_exam;
-
-            while (temp_exam != NULL) {
-
-                if (exams_left == 1) {
-                    printf(
-                        "\nThis is the last exam. It will automatically be assigned the remaining percentage of %d%%\n",
-                        remaining_percentage);
-                    temp_exam->exam_percentage = remaining_percentage;
+                if (temp_credit == 0) {
+                    printf("\nOperation cancelled. Returning to previous menu...\n\n");
                     break;
                 }
 
-                max_percentage_per_exam = remaining_percentage - (exams_left - 1);
+                target_lecture->lecture_credit = temp_credit;
 
-                char prompt_message[150];
-                snprintf(prompt_message, sizeof(prompt_message),
-                         "\nRemaining percentage: %d%%\nMax allowed percentage for '%s': %d%%\nEnter percentage: ",
-                         remaining_percentage, temp_exam->exam_name, max_percentage_per_exam);
+                student *current_student = student_head;
 
-                temp_exam->exam_percentage = get_safe_int_between(1, max_percentage_per_exam, 3, prompt_message);
+                while (current_student != NULL) {
+                    enrollment *current_enrollment = current_student->records;
 
-                remaining_percentage -= temp_exam->exam_percentage;
-                exams_left--;
-                temp_exam = temp_exam->next;
-            }
+                    while (current_enrollment != NULL) {
 
-            student *current_student = student_head;
-
-            while (current_student != NULL) {
-
-                enrollment *current_enrollment = current_student->records;
-
-                while (current_enrollment != NULL) {
-
-                    if (current_enrollment->lecture == current) {
-                        int *temp_scores = (int *)realloc(current_enrollment->scores, exam_count * sizeof(int));
-
-                        if (temp_scores == NULL) {
-                            printf("\n!ERROR! Memory allocation failed. Terminating...\n\n");
+                        if (current_enrollment->lecture == target_lecture) {
+                            calculate_student_gpa(current_student);
                             break;
                         }
+                        current_enrollment = current_enrollment->next;
+                    }
 
-                        current_enrollment->scores = temp_scores;
-                        current_enrollment->scores[exam_count - 1] =
-                            -1; // Initialize new exam score to -1 (indicating pending grade)
+                    current_student = current_student->next;
+                }
 
-                        grade_calculator(current_enrollment);
-                        calculate_student_gpa(current_student);
+                printf("\nLecture credit has been succesffully updated and student GPAs recalculated\n\n");
 
+                break;
+            }
+
+            case 4: {
+                char new_exam_name[20];
+
+                get_safe_string(3, new_exam_name, sizeof(new_exam_name),
+                                "\nEnter the new exam name (or type 'exit' to cancel): ");
+
+                if (strcmp(new_exam_name, "exit") == 0) {
+                    printf("\nOperation cancelled. Returning to previous menu...\n\n");
+                    break;
+                }
+
+                for (int i = 0; new_exam_name[i] != '\0'; i++) {
+                    new_exam_name[i] = toupper((unsigned char)new_exam_name[i]);
+                }
+
+                exam_template *temp_exam = target_lecture->exams;
+
+                int exam_count = 0;
+
+                while (temp_exam != NULL) {
+                    if (strcmp(temp_exam->exam_name, new_exam_name) == 0) {
+                        printf("\n!ERROR! An exam with the name '%s' already exists for this lecture!\n\n", new_exam_name);
+                        break;
+                    }
+                    exam_count++;
+                    temp_exam = temp_exam->next;
+                }
+
+                exam_template *new_exam = (exam_template *)malloc(sizeof(exam_template));
+
+                if (new_exam == NULL) {
+                    printf("\n!ERROR! Memory allocation failed. Terminating...\n\n");
+                    break;
+                }
+
+                strcpy(new_exam->exam_name, new_exam_name);
+                new_exam->exam_percentage = 0;
+                new_exam->next = NULL;
+
+                if (target_lecture->exams == NULL) {
+                    target_lecture->exams = new_exam;
+                } else {
+                    temp_exam = target_lecture->exams;
+
+                    while (temp_exam->next != NULL) {
+                        temp_exam = temp_exam->next;
+                    }
+                    temp_exam->next = new_exam;
+                }
+                exam_count++;
+
+                temp_exam = target_lecture->exams;
+
+                int remaining_percentage = 100;
+                int exams_left = exam_count;
+                int max_percentage_per_exam;
+
+                while (temp_exam != NULL) {
+
+                    if (exams_left == 1) {
+                        printf(
+                            "\nThis is the last exam. It will automatically be assigned the remaining percentage of %d%%\n",
+                            remaining_percentage);
+                        temp_exam->exam_percentage = remaining_percentage;
                         break;
                     }
 
-                    current_enrollment = current_enrollment->next;
+                    max_percentage_per_exam = remaining_percentage - (exams_left - 1);
+
+                    char prompt_message[150];
+                    snprintf(prompt_message, sizeof(prompt_message),
+                            "\nRemaining percentage: %d%%\nMax allowed percentage for '%s': %d%%\nEnter percentage: ",
+                            remaining_percentage, temp_exam->exam_name, max_percentage_per_exam);
+
+                    temp_exam->exam_percentage = get_safe_int_between(1, max_percentage_per_exam, 3, prompt_message);
+
+                    remaining_percentage -= temp_exam->exam_percentage;
+                    exams_left--;
+                    temp_exam = temp_exam->next;
                 }
-
-                current_student = current_student->next;
-            }
-
-            printf("\nNew exam '%s' successfully added and all student records updated!\n\n", new_exam_name);
-            break;
-        }
-
-        case 5: {
-
-            if (current->exams == NULL) {
-                printf("\n!ERROR! There are no exams to remove for this lecture!\n\n");
-                break;
-            }
-
-            char temp_exam_name[20];
-
-            get_safe_string(3, temp_exam_name, sizeof(temp_exam_name),
-                            "\nEnter the exam name you want to remove (or type 'exit' to cancel): ");
-
-            if (strcmp(temp_exam_name, "exit") == 0) {
-                printf("\nOperation cancelled. Returning to previous menu...\n\n");
-                break;
-            }
-
-            for (int i = 0; temp_exam_name[i] != '\0'; i++) {
-                temp_exam_name[i] = toupper((unsigned char)temp_exam_name[i]);
-            }
-
-            int exam_counter = 0;
-            int target_index = 0;
-            int is_found = 0;
-            exam_template *temp_exam = current->exams;
-            exam_template *previous_exam = NULL;
-
-            while (temp_exam != NULL) {
-                exam_counter++;
-
-                if (strcmp(temp_exam->exam_name, temp_exam_name) != 0 && !is_found) {
-                    is_found = 1;
-                }
-
-                if (!is_found) {
-                    target_index++;
-                    previous_exam = temp_exam;
-                }
-
-                temp_exam = temp_exam->next;
-            }
-
-            if (!is_found) {
-                printf("\n!ERROR! Exam '%s' not found in this lecture!\n\n", temp_exam_name);
-                break;
-            }
-
-            exam_template *exam_to_delete;
-
-            if (previous_exam == NULL) {
-                exam_to_delete = current->exams;
-                current->exams = exam_to_delete->next;
-            } else {
-                exam_to_delete = previous_exam->next;
-                previous_exam->next = exam_to_delete->next;
-            }
-
-            free(exam_to_delete);
-            int new_exam_count = exam_counter - 1;
-
-            printf("\nExam '%s' successfully removed from the lecture\n", temp_exam_name);
-
-            if (new_exam_count == 0) {
-                printf("\nAll exams for this lecture have been removed\n");
 
                 student *current_student = student_head;
 
                 while (current_student != NULL) {
 
-                    enrollment *current_enrollmet = current_student->records;
+                    enrollment *current_enrollment = current_student->records;
 
-                    while (current_enrollmet != NULL) {
+                    while (current_enrollment != NULL) {
 
-                        if (current_enrollmet->lecture == current) {
+                        if (current_enrollment->lecture == target_lecture) {
+                            int *temp_scores = (int *)realloc(current_enrollment->scores, exam_count * sizeof(int));
 
-                            free(current_enrollmet->scores);
-                            current_enrollmet->scores = NULL;
+                            if (temp_scores == NULL) {
+                                printf("\n!ERROR! Memory allocation failed. Terminating...\n\n");
+                                break;
+                            }
 
-                            grade_calculator(current_enrollmet);
+                            current_enrollment->scores = temp_scores;
+                            current_enrollment->scores[exam_count - 1] =
+                                -1; // Initialize new exam score to -1 (indicating pending grade)
+
+                            grade_calculator(current_enrollment);
                             calculate_student_gpa(current_student);
 
                             break;
                         }
 
-                        current_enrollmet = current_enrollmet->next;
+                        current_enrollment = current_enrollment->next;
                     }
 
                     current_student = current_student->next;
                 }
+
+                printf("\nNew exam '%s' successfully added and all student records updated!\n\n", new_exam_name);
                 break;
             }
 
-            int remaining_percentage = 100;
-            int exams_left = new_exam_count;
-            int max_percentage_per_exam;
+            case 5: {
 
-            temp_exam = current->exams;
-
-            while (temp_exam != NULL) {
-
-                if (exams_left == 1) {
-                    printf(
-                        "\nThis is the last exam. It will automatically be assigned the remaining percentage of %d%%\n",
-                        remaining_percentage);
-                    temp_exam->exam_percentage = remaining_percentage;
+                if (target_lecture->exams == NULL) {
+                    printf("\n!ERROR! There are no exams to remove for this lecture!\n\n");
                     break;
                 }
 
-                max_percentage_per_exam = remaining_percentage - (exams_left - 1);
+                char temp_exam_name[20];
 
-                char prompt_message[150];
-                snprintf(prompt_message, sizeof(prompt_message),
-                         "\nRemaining percentage: %d%%\nMax allowed percentage for '%s': %d%%\nEnter percentage: ",
-                         remaining_percentage, temp_exam->exam_name, max_percentage_per_exam);
+                get_safe_string(3, temp_exam_name, sizeof(temp_exam_name),
+                                "\nEnter the exam name you want to remove (or type 'exit' to cancel): ");
 
-                temp_exam->exam_percentage = get_safe_int_between(1, max_percentage_per_exam, 3, prompt_message);
+                if (strcmp(temp_exam_name, "exit") == 0) {
+                    printf("\nOperation cancelled. Returning to previous menu...\n\n");
+                    break;
+                }
 
-                remaining_percentage -= temp_exam->exam_percentage;
-                exams_left--;
-                temp_exam = temp_exam->next;
-            }
+                for (int i = 0; temp_exam_name[i] != '\0'; i++) {
+                    temp_exam_name[i] = toupper((unsigned char)temp_exam_name[i]);
+                }
 
-            student *current_student = student_head;
+                int exam_counter = 0;
+                int target_index = 0;
+                int is_found = 0;
+                exam_template *temp_exam = target_lecture->exams;
+                exam_template *previous_exam = NULL;
 
-            while (current_student != NULL) {
+                while (temp_exam != NULL) {
+                    exam_counter++;
 
-                enrollment *current_enrollment = current_student->records;
+                    if (strcmp(temp_exam->exam_name, temp_exam_name) != 0 && !is_found) {
+                        is_found = 1;
+                    }
 
-                while (current_enrollment != NULL) {
+                    if (!is_found) {
+                        target_index++;
+                        previous_exam = temp_exam;
+                    }
 
-                    if (current_enrollment->lecture == current) {
+                    temp_exam = temp_exam->next;
+                }
 
-                        for (int i = target_index; i < new_exam_count; i++) {
-                            current_enrollment->scores[i] = current_enrollment->scores[i + 1];
+                if (!is_found) {
+                    printf("\n!ERROR! Exam '%s' not found in this lecture!\n\n", temp_exam_name);
+                    break;
+                }
+
+                exam_template *exam_to_delete;
+
+                if (previous_exam == NULL) {
+                    exam_to_delete = target_lecture->exams;
+                    target_lecture->exams = exam_to_delete->next;
+                } else {
+                    exam_to_delete = previous_exam->next;
+                    previous_exam->next = exam_to_delete->next;
+                }
+
+                free(exam_to_delete);
+                int new_exam_count = exam_counter - 1;
+
+                printf("\nExam '%s' successfully removed from the lecture\n", temp_exam_name);
+
+                if (new_exam_count == 0) {
+                    printf("\nAll exams for this lecture have been removed\n");
+
+                    student *current_student = student_head;
+
+                    while (current_student != NULL) {
+
+                        enrollment *current_enrollmet = current_student->records;
+
+                        while (current_enrollmet != NULL) {
+
+                            if (current_enrollmet->lecture == target_lecture) {
+
+                                free(current_enrollmet->scores);
+                                current_enrollmet->scores = NULL;
+
+                                grade_calculator(current_enrollmet);
+                                calculate_student_gpa(current_student);
+
+                                break;
+                            }
+
+                            current_enrollmet = current_enrollmet->next;
                         }
 
-                        current_enrollment->scores =
-                            (int *)realloc(current_enrollment->scores, new_exam_count * sizeof(int));
-
-                        grade_calculator(current_enrollment);
-                        calculate_student_gpa(current_student);
-
-                        break;
+                        current_student = current_student->next;
                     }
-
-                    current_enrollment = current_enrollment->next;
-                }
-
-                current_student = current_student->next;
-            }
-            printf("\nExam removed, percentages redistributed, and all student records successfully updated\n\n");
-            break;
-        }
-
-        case 6: {
-
-            char temp_exam_name[20];
-
-            get_safe_string(3, temp_exam_name, sizeof(temp_exam_name),
-                            "\nEnter the name of the exam you want to rename (or type 'exit' to cancel): ");
-
-            if (strcmp(temp_exam_name, "exit") == 0) {
-                printf("\nOperation cancelled. Returning to previous menu...\n\n");
-                break;
-            }
-
-            for (int i = 0; temp_exam_name[i] != '\0'; i++) {
-                temp_exam_name[i] = toupper((unsigned char)temp_exam_name[i]);
-            }
-
-            exam_template *current_exam = current->exams;
-
-            while (current_exam != NULL && strcmp(current_exam->exam_name, temp_exam_name) != 0) {
-                current_exam = current_exam->next;
-            }
-
-            if (current_exam == NULL) {
-                printf("\n!ERROR! No exam found with name '%s' in lecture '%s'\n\n", temp_exam_name,
-                       current->lecture_name);
-                break;
-            }
-
-            get_safe_string(3, temp_exam_name, sizeof(temp_exam_name), "\nEnter the new name: ");
-
-            for (int i = 0; temp_exam_name[i] != '\0'; i++) {
-                temp_exam_name[i] = toupper((unsigned char)temp_exam_name[i]);
-            }
-
-            exam_template *temp_exam = current->exams;
-            int already_exist = 0;
-
-            while (temp_exam != NULL) {
-                if (strcmp(temp_exam->exam_name, temp_exam_name) == 0) {
-                    printf("\n!ERROR! An exam with the name '%s' already exists for this lecture!\n\n", temp_exam_name);
-                    already_exist = 1;
-                    break;
-                }
-                temp_exam = temp_exam->next;
-            }
-
-            if (already_exist) {
-                break;
-            }
-
-            strcpy(current_exam->exam_name, temp_exam_name);
-
-            printf("\nExam name changed successfully\n\n");
-            break;
-        }
-
-        case 7: {
-
-            if (current->exams == NULL) {
-                printf("\n!ERROR! There are no exams to update percentages for this lecture\n\n");
-                break;
-            }
-
-            int confirm = get_safe_int_between(
-                0, 1, 3, "\nYou are going to updates all exam percentages enter 1 to contiune (or 0 to cancel)");
-
-            if (confirm == 0) {
-                printf("\nOperation cancelled. Returning to previous menu...\n\n");
-                break;
-            }
-
-            exam_template *temp_exam = current->exams;
-
-            int exam_count = 0;
-
-            while (temp_exam != NULL) {
-                exam_count++;
-                temp_exam = temp_exam->next;
-            }
-
-            int remaining_percentage = 100;
-            int exams_left = exam_count;
-            int max_percentage_per_exam;
-
-            temp_exam = current->exams;
-
-            while (temp_exam != NULL) {
-
-                if (exams_left == 1) {
-                    printf(
-                        "\nThis is the last exam. It will automatically be assigned the remaining percentage of %d%%\n",
-                        remaining_percentage);
-                    temp_exam->exam_percentage = remaining_percentage;
                     break;
                 }
 
-                max_percentage_per_exam = remaining_percentage - (exams_left - 1);
+                int remaining_percentage = 100;
+                int exams_left = new_exam_count;
+                int max_percentage_per_exam;
 
-                char prompt_message[150];
-                snprintf(prompt_message, sizeof(prompt_message),
-                         "\nRemaining percentage: %d%%\nMax allowed percentage for '%s': %d%%\nEnter percentage: ",
-                         remaining_percentage, temp_exam->exam_name, max_percentage_per_exam);
+                temp_exam = target_lecture->exams;
 
-                temp_exam->exam_percentage = get_safe_int_between(1, max_percentage_per_exam, 3, prompt_message);
+                while (temp_exam != NULL) {
 
-                remaining_percentage -= temp_exam->exam_percentage;
-                exams_left--;
-                temp_exam = temp_exam->next;
-            }
-
-            student *current_student = student_head;
-
-            while (current_student != NULL) {
-
-                enrollment *current_enrollment = current_student->records;
-
-                while (current_enrollment != NULL) {
-
-                    if (current_enrollment->lecture == current) {
-                        grade_calculator(current_enrollment);
-                        calculate_student_gpa(current_student);
+                    if (exams_left == 1) {
+                        printf(
+                            "\nThis is the last exam. It will automatically be assigned the remaining percentage of %d%%\n",
+                            remaining_percentage);
+                        temp_exam->exam_percentage = remaining_percentage;
                         break;
                     }
 
-                    current_enrollment = current_enrollment->next;
+                    max_percentage_per_exam = remaining_percentage - (exams_left - 1);
+
+                    char prompt_message[150];
+                    snprintf(prompt_message, sizeof(prompt_message),
+                            "\nRemaining percentage: %d%%\nMax allowed percentage for '%s': %d%%\nEnter percentage: ",
+                            remaining_percentage, temp_exam->exam_name, max_percentage_per_exam);
+
+                    temp_exam->exam_percentage = get_safe_int_between(1, max_percentage_per_exam, 3, prompt_message);
+
+                    remaining_percentage -= temp_exam->exam_percentage;
+                    exams_left--;
+                    temp_exam = temp_exam->next;
                 }
 
-                current_student = current_student->next;
+                student *current_student = student_head;
+
+                while (current_student != NULL) {
+
+                    enrollment *current_enrollment = current_student->records;
+
+                    while (current_enrollment != NULL) {
+
+                        if (current_enrollment->lecture == target_lecture) {
+
+                            for (int i = target_index; i < new_exam_count; i++) {
+                                current_enrollment->scores[i] = current_enrollment->scores[i + 1];
+                            }
+
+                            current_enrollment->scores =
+                                (int *)realloc(current_enrollment->scores, new_exam_count * sizeof(int));
+
+                            grade_calculator(current_enrollment);
+                            calculate_student_gpa(current_student);
+
+                            break;
+                        }
+
+                        current_enrollment = current_enrollment->next;
+                    }
+
+                    current_student = current_student->next;
+                }
+                printf("\nExam removed, percentages redistributed, and all student records successfully updated\n\n");
+                break;
             }
 
-            printf("\nAll the exam percentages updated successfully\n\n");
-            break;
-        }        
+            case 6: {
+
+                char temp_exam_name[20];
+
+                get_safe_string(3, temp_exam_name, sizeof(temp_exam_name),
+                                "\nEnter the name of the exam you want to rename (or type 'exit' to cancel): ");
+
+                if (strcmp(temp_exam_name, "exit") == 0) {
+                    printf("\nOperation cancelled. Returning to previous menu...\n\n");
+                    break;
+                }
+
+                for (int i = 0; temp_exam_name[i] != '\0'; i++) {
+                    temp_exam_name[i] = toupper((unsigned char)temp_exam_name[i]);
+                }
+
+                exam_template *current_exam = target_lecture->exams;
+
+                while (current_exam != NULL && strcmp(current_exam->exam_name, temp_exam_name) != 0) {
+                    current_exam = current_exam->next;
+                }
+
+                if (current_exam == NULL) {
+                    printf("\n!ERROR! No exam found with name '%s' in lecture '%s'\n\n", temp_exam_name,
+                        target_lecture->lecture_name);
+                    break;
+                }
+
+                get_safe_string(3, temp_exam_name, sizeof(temp_exam_name), "\nEnter the new name: ");
+
+                for (int i = 0; temp_exam_name[i] != '\0'; i++) {
+                    temp_exam_name[i] = toupper((unsigned char)temp_exam_name[i]);
+                }
+
+                exam_template *temp_exam = target_lecture->exams;
+                int already_exist = 0;
+
+                while (temp_exam != NULL) {
+                    if (strcmp(temp_exam->exam_name, temp_exam_name) == 0) {
+                        printf("\n!ERROR! An exam with the name '%s' already exists for this lecture!\n\n", temp_exam_name);
+                        already_exist = 1;
+                        break;
+                    }
+                    temp_exam = temp_exam->next;
+                }
+
+                if (already_exist) {
+                    break;
+                }
+
+                strcpy(current_exam->exam_name, temp_exam_name);
+
+                printf("\nExam name changed successfully\n\n");
+                break;
+            }
+
+            case 7: {
+
+                if (target_lecture->exams == NULL) {
+                    printf("\n!ERROR! There are no exams to update percentages for this lecture\n\n");
+                    break;
+                }
+
+                int confirm = get_safe_int_between(
+                    0, 1, 3, "\nYou are going to updates all exam percentages enter 1 to contiune (or 0 to cancel)");
+
+                if (confirm == 0) {
+                    printf("\nOperation cancelled. Returning to previous menu...\n\n");
+                    break;
+                }
+
+                exam_template *temp_exam = target_lecture->exams;
+
+                int exam_count = 0;
+
+                while (temp_exam != NULL) {
+                    exam_count++;
+                    temp_exam = temp_exam->next;
+                }
+
+                int remaining_percentage = 100;
+                int exams_left = exam_count;
+                int max_percentage_per_exam;
+
+                temp_exam = target_lecture->exams;
+
+                while (temp_exam != NULL) {
+
+                    if (exams_left == 1) {
+                        printf(
+                            "\nThis is the last exam. It will automatically be assigned the remaining percentage of %d%%\n",
+                            remaining_percentage);
+                        temp_exam->exam_percentage = remaining_percentage;
+                        break;
+                    }
+
+                    max_percentage_per_exam = remaining_percentage - (exams_left - 1);
+
+                    char prompt_message[150];
+                    snprintf(prompt_message, sizeof(prompt_message),
+                            "\nRemaining percentage: %d%%\nMax allowed percentage for '%s': %d%%\nEnter percentage: ",
+                            remaining_percentage, temp_exam->exam_name, max_percentage_per_exam);
+
+                    temp_exam->exam_percentage = get_safe_int_between(1, max_percentage_per_exam, 3, prompt_message);
+
+                    remaining_percentage -= temp_exam->exam_percentage;
+                    exams_left--;
+                    temp_exam = temp_exam->next;
+                }
+
+                student *current_student = student_head;
+
+                while (current_student != NULL) {
+
+                    enrollment *current_enrollment = current_student->records;
+
+                    while (current_enrollment != NULL) {
+
+                        if (current_enrollment->lecture == target_lecture) {
+                            grade_calculator(current_enrollment);
+                            calculate_student_gpa(current_student);
+                            break;
+                        }
+
+                        current_enrollment = current_enrollment->next;
+                    }
+
+                    current_student = current_student->next;
+                }
+
+                printf("\nAll the exam percentages updated successfully\n\n");
+                break;
+            }        
+        }
+        
+        if(loop_flag != 0){
+            loop_flag = get_safe_int_between(0, 1, 3, "Enter 1 to change something else (or 0 to exit): ");
         }
     }
+    return 1;
 }
