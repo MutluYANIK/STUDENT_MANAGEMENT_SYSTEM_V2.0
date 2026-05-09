@@ -14,11 +14,12 @@ int add_lecture(lecture **lecture_head) {
     get_safe_string(3, temp_id, sizeof(temp_id), "\nEnter lecture ID (or type 'exit' to cancel): ");
 
     if (strcmp(temp_id, "exit") == 0) {
-        printf("\nOperation cancelled. Returning to main menu...\n\n");
+        printf("\n!ERROR! A lecture with ID %s already exists in the list!\n\n", temp_id);
         return 0;
     }
 
     if (lecture_id_check(*lecture_head, temp_id) == 1) {
+        printf("\n!ERROR! Lecture ID already exists!");
         return 1;
     }
 
