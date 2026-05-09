@@ -78,6 +78,24 @@ int add_lecture(lecture **lecture_head) {
             temp_exam_name[i] = toupper((unsigned char)temp_exam_name[i]);
         }
 
+        exam_template *current_exam = new_lecture->exams;
+        int is_duplicate = 0;
+
+        while(current_exam != NULL){
+
+            if(strcmp(current_exam->exam_name, temp_exam_name) == 0){
+                
+                printf("\n!ERROR! An exam already exist in the list with name '%s' enter a different name!\n\n", temp_exam_name);
+                is_duplicate = 1;
+                break;
+            }
+
+            current_exam = current_exam->next;
+        }
+
+        if(is_duplicate){
+            continue;
+        }
 
         int temp_exam_percentage = get_safe_int_between(1, remaining_percentage, 3, "\nEnter exam percentage: ");
 
