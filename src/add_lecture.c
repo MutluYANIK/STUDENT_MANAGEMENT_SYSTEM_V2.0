@@ -7,7 +7,7 @@
 
 int add_lecture(lecture **lecture_head) {
     /*
-     * gives you the chance to exit the function while taking lecture id input, checks for duplicate
+     * Gives you the chance to exit the function while taking lecture id input, checks for duplicate
      * lecture ids to maintain data integrity and prevent confusion in the system.
      */
     char temp_id[10];
@@ -68,7 +68,6 @@ int add_lecture(lecture **lecture_head) {
     while (total_percentage < 100) {
 
         int remaining_percentage = 100 - total_percentage;
-        char exam_name[20];
         char temp_exam_name[20];
 
         printf("\nRemaining percentage: %d%%\n", remaining_percentage);
@@ -78,9 +77,8 @@ int add_lecture(lecture **lecture_head) {
             temp_exam_name[i] = toupper((unsigned char)temp_exam_name[i]);
         }
 
-        strcpy(exam_name, temp_exam_name);
 
-        int exam_percentage = get_safe_int_between(1, remaining_percentage, 3, "\nEnter exam percentage: ");
+        int temp_exam_percentage = get_safe_int_between(1, remaining_percentage, 3, "\nEnter exam percentage: ");
 
         exam_template *new_exam = (exam_template *)malloc(sizeof(exam_template));
 
@@ -90,8 +88,8 @@ int add_lecture(lecture **lecture_head) {
             return 0;
         }
 
-        strcpy(new_exam->exam_name, exam_name);
-        new_exam->exam_percentage = exam_percentage;
+        strcpy(new_exam->exam_name, temp_exam_name);
+        new_exam->exam_percentage = temp_exam_percentage;
         new_exam->next = NULL;
 
         if (new_lecture->exams == NULL) {
@@ -102,7 +100,7 @@ int add_lecture(lecture **lecture_head) {
             exam_tail = new_exam;
         }
 
-        total_percentage += exam_percentage;
+        total_percentage += temp_exam_percentage;
     }
 
     printf("\nExam entry complete for %s. Total percentage reached: %d%%\n\n", new_lecture->lecture_name,
