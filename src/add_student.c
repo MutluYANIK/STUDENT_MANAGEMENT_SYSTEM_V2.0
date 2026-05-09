@@ -11,14 +11,14 @@ int add_student(student **student_head, lecture *lecture_head) {
      * Gives you the chance to exit the function while taking student ID input, checks for duplicate
      * student IDs to maintain data integrity and prevent confusion in the system.
      */
-    unsigned int temp = get_safe_unsigned_int(3, "Enter student ID (or 0 to return to main menu): ");
+    unsigned int temp_student_id = get_safe_unsigned_int(3, "Enter student ID (or 0 to return to main menu): ");
 
-    if (temp == 0) {
+    if (temp_student_id == 0) {
         printf("\nOperation cancelled. Returning to menu...\n\n");
         return 0;
     }
 
-    if (id_check(*student_head, temp) == 1) {
+    if (id_check(*student_head, temp_student_id) == 1) {
         return 1;
     }
 
@@ -37,20 +37,13 @@ int add_student(student **student_head, lecture *lecture_head) {
         return 0;
     }
 
-    new_student->id = temp;
+    new_student->id = temp_student_id;
     strcpy(new_student->name, temp_student_name);
 
     new_student->records = NULL;
     new_student->next = NULL;
 
     lecture *current_lecture = lecture_head;
-
-    // Checks if there are any lectures available for enrollment before proceeding with the enrollment process.
-    if (current_lecture == NULL) {
-        printf("\nNo lectures available to enroll in. Please add lectures first.\n\n");
-        free(new_student);
-        return 0;
-    }
 
     // Displays available lectures to the user for enrollment.
     printf("\nAvailable lectures:\n");
@@ -104,10 +97,15 @@ int add_student(student **student_head, lecture *lecture_head) {
 
         enrollment *new_enrollment = (enrollment *)malloc(sizeof(enrollment));
 
+        /*
+         * Checks if the memory allocation for the new enrollment was successful. If it fails, it prints an error
+         * message, frees any previously allocated memory for the new student and their enrollments to prevent memory
+         * leaks, and returns 0 to indicate that the operation was unsuccessful.
+         */
         if (new_enrollment == NULL) {
             printf("\n!ERROR! Memory allocation failed!\n\n");
-            
-            while(new_student->records != NULL) {
+
+            while (new_student->records != NULL) {
                 enrollment *temp_enrollment = new_student->records;
                 new_student->records = new_student->records->next;
                 free(temp_enrollment->scores);
@@ -180,16 +178,17 @@ int add_student(student **student_head, lecture *lecture_head) {
 
     calculate_student_gpa(new_student);
 
-    // Inserts the new student into the linked list in sorted order based on the current sorting mode and sorting direction.
-    if(*student_head == NULL) {
-        *student_head = new_student;        
+    // Inserts the new student into the linked list in sorted order based on the current sorting mode and sorting
+    // direction.
+    if (*student_head == NULL) {
+        *student_head = new_student;
     } else if (compare_students(new_student, *student_head) == 1) {
         new_student->next = *student_head;
         *student_head = new_student;
     } else {
-        student *current = *student_head; 
+        student *current = *student_head;
 
-        while(current->next != NULL && compare_students(new_student, current->next) == 0) {
+        while (current->next != NULL && compare_students(new_student, current->next) == 0) {
             current = current->next;
         }
         new_student->next = current->next;
