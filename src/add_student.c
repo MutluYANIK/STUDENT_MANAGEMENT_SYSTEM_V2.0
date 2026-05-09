@@ -19,6 +19,7 @@ int add_student(student **student_head, lecture *lecture_head) {
     }
 
     if (id_check(*student_head, temp_student_id) == 1) {
+        printf("\n!ERROR! A student with ID %u already exists in the list!\n\n", temp_student_id);
         return 1;
     }
 
