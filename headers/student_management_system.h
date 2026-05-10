@@ -55,6 +55,9 @@ void sort_student_list(student **student_head);
 void swap_student(student *student_1, student *student_2);
 void sort_student_list_by_id(student **student_head);
 void sort_student_list_by_name(student **student_head);
-void sort_student_list_by_gpa(student **student_head); 
+void sort_student_list_by_gpa(student **student_head);
+void print_all_lectures(lecture *lecture_head);
+void print_enrolled_lectures(student *current_student);
+void print_not_enrolled_lectures(student *current_student, lecture *lecture_head);
 
 #endif
