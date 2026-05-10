@@ -42,7 +42,7 @@ extern sort_direction current_direction;
 int add_student(student **student_head);
 int add_lecture(lecture **lecture_head);
 int id_check(student *student_head, unsigned int id);
-int lecture_id_check(lecture *lecture_head, const char *lecture_id);
+int is_lecture_id_exist(lecture *lecture_head, const char *lecture_id);
 int enrollment_check(student *current_student, lecture *target_lecture);
 int compare_students(student *s1, student *s2);
 void grade_calculator(enrollment *enrollment_record);
@@ -59,5 +59,6 @@ void sort_student_list_by_gpa(student **student_head);
 void print_all_lectures(lecture *lecture_head);
 void print_enrolled_lectures(student *current_student);
 void print_not_enrolled_lectures(student *current_student, lecture *lecture_head);
+lecture *find_lecture(lecture *lecture_head, const char *target_lecture_id);
 
 #endif
