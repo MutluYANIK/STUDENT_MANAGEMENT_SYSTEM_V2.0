@@ -50,5 +50,8 @@ void calculate_student_gpa(student *target_student);
 float get_letter_grade_value(const char *letter_grade);
 int update_lecture(student *student_head, lecture **lecture_head);
 void delete_lecture(student *student_head, lecture **lecture_head);
+int update_student(student **student_head, lecture *lecture_head);
+void sort_student_list(student **student_head);
+void swap_student(student *student_1, student *student_2); 
 
 #endif
