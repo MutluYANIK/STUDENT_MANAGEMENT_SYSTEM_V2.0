@@ -18,7 +18,7 @@ int add_lecture(lecture **lecture_head) {
         return 0;
     }
 
-    if (lecture_id_check(*lecture_head, temp_id) == 1) {
+    if (is_lecture_id_exist(*lecture_head, temp_id) == 1) {
         printf("\n!ERROR! Lecture ID already exists!");
         return 1;
     }
