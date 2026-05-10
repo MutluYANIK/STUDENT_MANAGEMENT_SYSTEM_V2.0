@@ -31,7 +31,7 @@ typedef struct student {
     struct student *next;
 } student;
 
-typedef enum { SORT_BY_ID, SORT_BY_GRADE, SORT_BY_NAME } sort_mode;
+typedef enum { SORT_BY_ID, SORT_BY_GPA, SORT_BY_NAME } sort_mode;
 
 extern sort_mode current_mode;
 
@@ -52,6 +52,9 @@ int update_lecture(student *student_head, lecture **lecture_head);
 void delete_lecture(student *student_head, lecture **lecture_head);
 int update_student(student **student_head, lecture *lecture_head);
 void sort_student_list(student **student_head);
-void swap_student(student *student_1, student *student_2); 
+void swap_student(student *student_1, student *student_2);
+void sort_student_list_by_id(student **student_head);
+void sort_student_list_by_name(student **student_head);
+void sort_student_list_by_gpa(student **student_head); 
 
 #endif
