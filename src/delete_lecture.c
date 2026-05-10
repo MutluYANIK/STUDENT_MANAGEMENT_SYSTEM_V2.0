@@ -7,7 +7,7 @@
 
 void delete_lecture(student *student_head, lecture **lecture_head) {
 
-    if (lecture_head == NULL) {
+    if (*lecture_head == NULL) {
         printf("!ERROR! Lecture list is already empty. Terminating...\n\n");
         return;
     }
@@ -32,11 +32,16 @@ void delete_lecture(student *student_head, lecture **lecture_head) {
         /*
          * Gives the user a chance to cancel the operation while taking the target lecture ID. Converts the input
          * target lecture ID to uppercase for consistency in comparison. Searches for the target lecture in the list. If
-         * it is not in the list, prints an error message and breaks the loop. Takes confirmation from the user
+         * it is not in the list, prints an error message and returns previous menu. Takes confirmation from the user
          * before deleting the target lecture. Deletes the target lecture from the enrollment records for all students
          * and the lecture list. Updates the GPA for all enrolled students.
          */
         case 1: {
+
+            if (*lecture_head == NULL) {
+                printf("!ERROR! Lecture list is already empty. Terminating...\n\n");
+                return;
+            }
 
             char temp_lecture_id[10];
             get_safe_string(3, temp_lecture_id, sizeof(temp_lecture_id),
@@ -107,7 +112,6 @@ void delete_lecture(student *student_head, lecture **lecture_head) {
                     if (strcmp(current_enrollment->lecture->lecture_id, temp_lecture_id) == 0) {
 
                         free(current_enrollment->scores);
-                        current_enrollment->scores = NULL;
 
                         if (previous_enrollment == NULL) {
 
@@ -147,6 +151,80 @@ void delete_lecture(student *student_head, lecture **lecture_head) {
                    temp_lecture_id);
             break;
         }
+
+        /*
+         * Checks the lecture list, if it is already empty prints an error message and returns previous menu. Takes
+         * confirmation from the user before clearing the lecture list. Clears all students' scores and records,
+         * updates their GPA and clears the lecture list.
+         */
+        case 2: {
+
+            if (*lecture_head == NULL) {
+                printf("!ERROR! Lecture list is already empty. Terminating...\n\n");
+                return;
+            }
+
+            int confirm = get_safe_int_between(0, 1, 3,
+                                               "\nYou are going to clear the lecture list\n"
+                                               "Enter 1 to continue (or 0 to cancel): ");
+
+            if (confirm == 0) {
+                printf("\nOperation cancelled. Returning to previous menu...\n\n");
+                break;
+            }
+
+            student *current_student = student_head;
+
+            while (current_student != NULL) {
+
+                enrollment *current_enrollment = current_student->records;
+                enrollment *previous_enrollment = NULL;
+
+                while (current_enrollment != NULL) {
+
+                    previous_enrollment = current_enrollment;
+                    current_enrollment = current_enrollment->next;
+
+                    free(previous_enrollment->scores);
+                    free(previous_enrollment);
+                }
+
+                current_student->records = NULL;
+                calculate_student_gpa(current_student);
+                current_student = current_student->next;
+            }
+
+            lecture *current_lecture = *lecture_head;
+            lecture *previous_lecture = NULL;
+
+            while (current_lecture != NULL) {
+
+                exam_template *current_exam = current_lecture->exams;
+                exam_template *previous_exam = NULL;
+
+                while (current_exam != NULL) {
+
+                    previous_exam = current_exam;
+                    current_exam = current_exam->next;
+                    free(previous_exam);
+                }
+
+                previous_lecture = current_lecture;
+                current_lecture = current_lecture->next;
+
+                free(previous_lecture);
+            }
+
+            *lecture_head = NULL;
+
+            printf("\nLecture list successfully cleared\n\n");
+            loop_flag = 0;
+            break;
+        }
+        }
+
+        if (loop_flag != 0) {
+            loop_flag = get_safe_int_between(0, 1, 3, "\nEnter 1 to delete another lecture (or 0 to exit): ");
         }
     }
 }
