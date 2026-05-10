@@ -49,5 +49,6 @@ void grade_calculator(enrollment *enrollment_record);
 void calculate_student_gpa(student *target_student);
 float get_letter_grade_value(const char *letter_grade);
 int update_lecture(student *student_head, lecture **lecture_head);
+void delete_lecture(student *student_head, lecture **lecture_head);
 
 #endif
