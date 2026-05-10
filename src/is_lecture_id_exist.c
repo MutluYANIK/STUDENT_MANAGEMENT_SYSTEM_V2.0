@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 
-int lecture_id_check(lecture *lecture_head, const char *lecture_id) {
+int is_lecture_id_exist(lecture *lecture_head, const char *lecture_id) {
 
     lecture *current = lecture_head;
     
