@@ -56,7 +56,7 @@ int update_lecture(student *student_head, lecture **lecture_head) {
                                           "[0] Exit\n"
                                           "[1] Update Lecture ID\n"
                                           "[2] Update Lecture Name\n"
-                                          "[3] Update Exam Credit\n"
+                                          "[3] Update Lecture Credit\n"
                                           "[4] Add a new Exam\n"
                                           "[5] Remove an Exam\n"
                                           "[6] Update an Exam Name\n"
@@ -180,6 +180,14 @@ int update_lecture(student *student_head, lecture **lecture_head) {
                 break;
             }
 
+            /*
+            * Gives the user a chance to cancel the operation while taking the new exam name. Converts the input new exam
+            * name to uppercase for consistency in comparison. Checks if the new exam name is already exist in the chosen
+            * lecture. Allocates memory for the new exam. Links the new exam to the correct position in the lecture. Takes
+            * the new exam percentages for the exams while preventing any exam from taking a 0 or negative percentage. Allocates
+            * memory for the new exam score and automatically enters -1 for the new exam, updates the lecture grade and GPA
+            * for all students who take the lecture
+            */
             case 4: {
                 char new_exam_name[20];
 
@@ -297,6 +305,15 @@ int update_lecture(student *student_head, lecture **lecture_head) {
                 break;
             }
 
+            /*
+            * Checks if the exam list is already empty prints an error message and breaks the loop. Gives the user
+            * a chance to cancel the operation while taking the target exam name. Converts the input target exam name
+            * to uppercase for consistency in comparison. Searches for the target exam index in the exam list and counts
+            * the exams. If the target exam is not in the list, prints an error message and breaks the loop. Removes the
+            * target exam from the list. If the list becomes empty, prints that message on the terminal and clears the
+            * scores list for all the students who take the lecture. If it is not empty, takes the new exam percentages for
+            * the remaning exams while preventing any exam from taking 0 or negative percentage.
+            */
             case 5: {
 
                 if (target_lecture->exams == NULL) {
@@ -451,6 +468,13 @@ int update_lecture(student *student_head, lecture **lecture_head) {
                 break;
             }
 
+            /*
+            * Gives the user a chance to cancel the operation while taking the target exam name. Converts the input target
+            * exam name to uppercase for consistency in comparison. If the target exam is not in the exam list, prints an
+            * error message and breaks the loop. Takes the target exam's new name and converts it to
+            * uppercase for consistency in the comparison. Checks if the new name is already exists in the chosen lecture's
+            * exam list, prints an error message and breaks the loop.
+            */
             case 6: {
 
                 char temp_exam_name[20];
@@ -507,6 +531,12 @@ int update_lecture(student *student_head, lecture **lecture_head) {
                 break;
             }
 
+            /*
+            * Checks if the exam list is already empty prints an error message and breaks the loop. Takes confirmation from
+            * the user before to changing all the exam percentages. Takes the new exam percentages for the exams while 
+            * preventing any exam from taking a 0 or negative percentage. Updates the lecture grade and GPA for 
+            * all students who take the lecture
+            */
             case 7: {
 
                 if (target_lecture->exams == NULL) {
@@ -583,10 +613,10 @@ int update_lecture(student *student_head, lecture **lecture_head) {
 
                 printf("\nAll the exam percentages updated successfully\n\n");
                 break;
-            }        
+            }
         }
-        
-        if(loop_flag != 0){
+
+        if (loop_flag != 0) {
             loop_flag = get_safe_int_between(0, 1, 3, "Enter 1 to change something else (or 0 to exit): ");
         }
     }
