@@ -96,13 +96,13 @@ int add_student(student **student_head, lecture *lecture_head) {
             continue;
         }
 
-        enrollment *new_enrollment = (enrollment *)malloc(sizeof(enrollment));
-
         /*
          * Checks if the memory allocation for the new enrollment was successful. If it fails, it prints an error
          * message, frees any previously allocated memory for the new student and their enrollments to prevent memory
          * leaks, and returns 0 to indicate that the operation was unsuccessful.
          */
+        enrollment *new_enrollment = (enrollment *)malloc(sizeof(enrollment));
+
         if (new_enrollment == NULL) {
             printf("\n!ERROR! Memory allocation failed!\n\n");
 
