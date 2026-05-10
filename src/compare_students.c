@@ -11,7 +11,7 @@ int compare_students(student *s1, student *s2) {
         result = s1->id < s2->id;
         break;
 
-    case SORT_BY_GRADE:
+    case SORT_BY_GPA:
 
         if (s1->GPA == s2->GPA) {
             result = s1->id < s2->id;
