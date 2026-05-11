@@ -171,7 +171,7 @@ int update_student(student **student_head, lecture *lecture_head) {
                 break;
             }
 
-            // Unliks the selected lecture from the enrolled lecture list
+            // Unlinks the selected lecture from the enrolled lecture list
             if (previous_enrollment == NULL) {
 
                 current_student->records = current_enrollment->next;
