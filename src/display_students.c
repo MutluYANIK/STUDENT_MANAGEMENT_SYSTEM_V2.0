@@ -476,6 +476,136 @@ void display_student(student *student_head, lecture *lecture_head) {
                     break;
                 }
 
+                /*
+                 * DISPLAY ALL PASSED COURSES: Iterates through the entire student list and prints detailed transcripts
+                 * exclusively for passed courses. Implements strict empty-record handling and two-pass
+                 * validation to keep the CLI clean.
+                 */
+                case 3: {
+
+                    student *current_student = student_head;
+
+                    while (current_student != NULL) {
+
+                        // Primary safety check: Skips the student entirely if they have no enrolled courses.
+                        if (current_student->records == NULL) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        int passed_course_check = 0;
+
+                        enrollment *current_enrollment = current_student->records;
+
+                        while (current_enrollment != NULL) {
+
+                            if (strcmp(current_enrollment->letter_grade, "--") != 0 &&
+                                strcmp(current_enrollment->letter_grade, "FF") != 0) {
+
+                                passed_course_check = 1;
+                            }
+
+                            current_enrollment = current_enrollment->next;
+                        }
+
+                        /*
+                         * Two-pass validation: Skips the student if they have enrolled courses but NO passed courses.
+                         * Prevents printing empty transcript headers.
+                         */
+                        if (!passed_course_check) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        printf("======================================================================================="
+                               "=================================\n");
+                        printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: %.2f\n",
+                               current_student->id, current_student->name, current_student->GPA);
+                        printf("======================================================================================="
+                               "=================================\n");
+                        printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                               "          EXAM SCORES", "AVG", "GRADE", "STATUS");
+                        printf("---------------------------------------------------------------------------------------"
+                               "---------------------------------\n");
+
+                        current_enrollment = current_student->records;
+
+                        while (current_enrollment != NULL) {
+
+                            /*
+                             * Fast-forward pointer: Skips courses that are PENDING ("--") or FAILED. Stops only at
+                             * passed courses to be printed.
+                             */
+                            while (current_enrollment != NULL &&
+                                   (strcmp(current_enrollment->letter_grade, "--") == 0 ||
+                                    strcmp(current_enrollment->letter_grade, "FF") == 0)) {
+
+                                current_enrollment = current_enrollment->next;
+                            }
+
+                            if (current_enrollment == NULL) {
+                                break;
+                            }
+
+                            char exam_buffer[75] = "";
+                            char temp_buffer[75] = "";
+
+                            printf("%-14.14s", current_enrollment->lecture->lecture_id);
+                            printf("%-25.25s", current_enrollment->lecture->lecture_name);
+                            printf("%-10d", current_enrollment->lecture->lecture_credit);
+
+                            exam_template *current_exam = current_enrollment->lecture->exams;
+                            int exam_index = 0;
+
+                            while (current_exam != NULL) {
+
+                                int score = current_enrollment->scores[exam_index];
+
+                                if (score == -1) {
+                                    snprintf(temp_buffer, sizeof(temp_buffer), "%s: N/A  ", current_exam->exam_name);
+
+                                } else {
+                                    snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name,
+                                             score);
+                                }
+
+                                if (strlen(exam_buffer) > 40) {
+                                    break;
+                                }
+
+                                strcat(exam_buffer, temp_buffer);
+
+                                current_exam = current_exam->next;
+                                exam_index++;
+                            }
+
+                            printf("%-40.40s", exam_buffer);
+
+                            if (current_enrollment->course_average == -1) {
+                                printf("%-8.8s", "N/A");
+                            } else {
+                                printf("%-8.2f", current_enrollment->course_average);
+                            }
+
+                            printf("%-8.8s", current_enrollment->letter_grade);
+
+                            if (strcmp(current_enrollment->letter_grade, "FF") == 0) {
+                                printf("%-8.8s\n", "FAILED");
+                            } else if (strcmp(current_enrollment->letter_grade, "--") == 0) {
+                                printf("%-8.8s\n", "PENDING");
+                            } else {
+                                printf("%-8.8s\n", "PASSED");
+                            }
+
+                            current_enrollment = current_enrollment->next;
+                        }
+
+                        printf("\n\n");
+                        current_student = current_student->next;
+                    }
+
+                    break;
+                }
                 }
             }
         }
