@@ -91,18 +91,15 @@ void display_student(student *student_head, lecture *lecture_head) {
                 case 1: {
 
                     printf("==========================================================================================="
-                           "===="
-                           "=========================\n");
+                           "=============================\n");
                     printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: %.2f\n",
                            selected_student->id, selected_student->name, selected_student->GPA);
                     printf("==========================================================================================="
-                           "===="
-                           "=========================\n");
+                           "=============================\n");
                     printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                            "          EXAM SCORES", "AVG", "GRADE", "STATUS");
                     printf("-------------------------------------------------------------------------------------------"
-                           "----"
-                           "-------------------------\n");
+                           "-----------------------------\n");
 
                     enrollment *current_enrollment = selected_student->records;
 
@@ -189,18 +186,15 @@ void display_student(student *student_head, lecture *lecture_head) {
                     }
 
                     printf("==========================================================================================="
-                           "===="
-                           "=========================\n");
+                           "=============================\n");
                     printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: %.2f\n",
                            selected_student->id, selected_student->name, selected_student->GPA);
                     printf("==========================================================================================="
-                           "===="
-                           "=========================\n");
+                           "=============================\n");
                     printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                            "          EXAM SCORES", "AVG", "GRADE", "STATUS");
                     printf("-------------------------------------------------------------------------------------------"
-                           "----"
-                           "-------------------------\n");
+                           "-----------------------------\n");
 
                     current_enrollment = selected_student->records;
 
@@ -275,18 +269,15 @@ void display_student(student *student_head, lecture *lecture_head) {
                     }
 
                     printf("==========================================================================================="
-                           "===="
-                           "=========================\n");
+                           "=============================\n");
                     printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: %.2f\n",
                            selected_student->id, selected_student->name, selected_student->GPA);
                     printf("==========================================================================================="
-                           "===="
-                           "=========================\n");
+                           "=============================\n");
                     printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                            "          EXAM SCORES", "AVG", "GRADE", "STATUS");
                     printf("-------------------------------------------------------------------------------------------"
-                           "----"
-                           "-------------------------\n");
+                           "-----------------------------\n");
 
                     current_enrollment = selected_student->records;
 
@@ -370,16 +361,13 @@ void display_student(student *student_head, lecture *lecture_head) {
                 case 1: {
 
                     printf("==========================================================================================="
-                           "===="
-                           "=========================\n");
+                           "=============================\n");
                     printf("ALL STUDENT SUMMARY LIST\n");
                     printf("==========================================================================================="
-                           "===="
-                           "=========================\n");
+                           "=============================\n");
                     printf("%-25s%-50s%-10s\n", "STUDENT ID", "STUDENT NAME", "GPA");
                     printf("-------------------------------------------------------------------------------------------"
-                           "----"
-                           "-------------------------\n");
+                           "-----------------------------\n");
 
                     student *current_student = student_head;
 
@@ -392,6 +380,102 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                     break;
                 }
+
+                /*
+                 * DISPLAY FULL TRANSCRIPTS: Iterates through all registered students and prints a detailed transcript
+                 * table for each. Includes a safety check to skip students with no enrolled courses, preventing the
+                 * rendering of empty, broken UI tables.
+                 */
+                case 2: {
+
+                    student *current_student = student_head;
+
+                    /*
+                     * Safety check: Skip this student and move to the next if they have no course records. This
+                     * prevents segfaults and keeps the terminal clean from empty tables.
+                     */
+                    while (current_student != NULL) {
+
+                        if (current_student->records == NULL) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        printf("======================================================================================="
+                               "=================================\n");
+                        printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: %.2f\n",
+                               current_student->id, current_student->name, current_student->GPA);
+                        printf("======================================================================================="
+                               "=================================\n");
+                        printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                               "          EXAM SCORES", "AVG", "GRADE", "STATUS");
+                        printf("---------------------------------------------------------------------------------------"
+                               "---------------------------------\n");
+
+                        enrollment *current_enrollment = current_student->records;
+
+                        while (current_enrollment != NULL) {
+
+                            char exam_buffer[75] = "";
+                            char temp_buffer[75] = "";
+
+                            printf("%-14.14s", current_enrollment->lecture->lecture_id);
+                            printf("%-25.25s", current_enrollment->lecture->lecture_name);
+                            printf("%-10d", current_enrollment->lecture->lecture_credit);
+
+                            exam_template *current_exam = current_enrollment->lecture->exams;
+                            int exam_index = 0;
+
+                            while (current_exam != NULL) {
+
+                                int score = current_enrollment->scores[exam_index];
+
+                                if (score == -1) {
+                                    snprintf(temp_buffer, sizeof(temp_buffer), "%s: N/A  ", current_exam->exam_name);
+
+                                } else {
+                                    snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name,
+                                             score);
+                                }
+
+                                if (strlen(exam_buffer) > 40) {
+                                    break;
+                                }
+
+                                strcat(exam_buffer, temp_buffer);
+
+                                current_exam = current_exam->next;
+                                exam_index++;
+                            }
+
+                            printf("%-40.40s", exam_buffer);
+
+                            if (current_enrollment->course_average == -1) {
+                                printf("%-8.8s", "N/A");
+                            } else {
+                                printf("%-8.2f", current_enrollment->course_average);
+                            }
+
+                            printf("%-8.8s", current_enrollment->letter_grade);
+
+                            if (strcmp(current_enrollment->letter_grade, "FF") == 0) {
+                                printf("%-8.8s\n", "FAILED");
+                            } else if (strcmp(current_enrollment->letter_grade, "--") == 0) {
+                                printf("%-8.8s\n", "PENDING");
+                            } else {
+                                printf("%-8.8s\n", "PASSED");
+                            }
+
+                            current_enrollment = current_enrollment->next;
+                        }
+
+                        printf("\n\n");
+                        current_student = current_student->next;
+                    }
+
+                    break;
+                }
+
                 }
             }
         }
