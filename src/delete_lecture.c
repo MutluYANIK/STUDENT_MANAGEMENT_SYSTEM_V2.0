@@ -7,6 +7,7 @@
 
 void delete_lecture(student *student_head, lecture **lecture_head) {
 
+    // Check if the lecture list is empty returning an error message and return to the main menu.
     if (*lecture_head == NULL) {
         printf("!ERROR! Lecture list is already empty. Terminating...\n\n");
         return;
@@ -45,7 +46,7 @@ void delete_lecture(student *student_head, lecture **lecture_head) {
 
             char temp_lecture_id[10];
             get_safe_string(3, temp_lecture_id, sizeof(temp_lecture_id),
-                            "\n Enter the lecture ID you want to delete (or type 'exit' to cancel)");
+                            "\nEnter the lecture ID you want to delete (or type 'exit' to cancel)");
 
             if (strcmp(temp_lecture_id, "exit") == 0) {
                 printf("\nOperation cancelled. Returning to previous menu");
@@ -77,14 +78,13 @@ void delete_lecture(student *student_head, lecture **lecture_head) {
             char prompt_message[100];
 
             snprintf(prompt_message, sizeof(prompt_message),
-                     "\nYou are going to delete the lecture with ID '%s'\n"
+                     "\nYou are about to delete the lecture with ID '%s'\n"
                      "Enter 1 to continue (or 0 to cancel): ",
                      temp_lecture_id);
 
             int confirm = get_safe_int_between(0, 1, 3, prompt_message);
 
             if (confirm == 0) {
-
                 printf("\nOperation cancelled. Returning to previous menu...\n\n");
                 break;
             }
@@ -165,7 +165,7 @@ void delete_lecture(student *student_head, lecture **lecture_head) {
             }
 
             int confirm = get_safe_int_between(0, 1, 3,
-                                               "\nYou are going to clear the lecture list\n"
+                                               "\nYou are about to clear the entire lecture list\n"
                                                "Enter 1 to continue (or 0 to cancel): ");
 
             if (confirm == 0) {
