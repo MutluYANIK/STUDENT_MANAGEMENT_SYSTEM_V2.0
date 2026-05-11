@@ -29,7 +29,14 @@ void delete_student(student **student_head, lecture *lecture_head) {
             printf("\nOperation cancelled. Returning to main menu...\n\n");
             loop_flag = 0;
             break;
-
+        /*
+         * Checks the student list. If it is empty, it prints an error message and returns to the previous menu. Gives
+         * the user a chance to cancel the operation while taking the student ID. Searches for the student ID in the
+         * student list. If it cannot find it, it prints an error message and returns to the previous menu. If found, it
+         * asks for confirmation before deleting the student. Unlinks the selected student from the student list. Frees
+         * the allocated memory for the selected student's scores, clears the student's record listt, and finally frees
+         * the student structure.
+         */
         case 1: {
 
             if (*student_head == NULL) {
@@ -71,34 +78,32 @@ void delete_student(student **student_head, lecture *lecture_head) {
 
             int confirm = get_safe_int_between(0, 1, 3, prompt_message);
 
-            if(confirm == 0){
+            if (confirm == 0) {
                 printf("\nOperation cancelled. Returning to previous menu...\n\n");
                 break;
             }
 
-            if(previous_student == NULL){
-               
+            if (previous_student == NULL) {
+
                 *student_head = current_student->next;
                 current_student->next = NULL;
-            
+
             } else {
 
                 previous_student->next = current_student->next;
                 current_student->next = NULL;
-
             }
 
             enrollment *current_enrollment = current_student->records;
             enrollment *previous_enrollment = NULL;
 
-            while(current_enrollment != NULL){
+            while (current_enrollment != NULL) {
 
                 previous_enrollment = current_enrollment;
                 current_enrollment = current_enrollment->next;
 
                 free(previous_enrollment->scores);
                 free(previous_enrollment);
-
             }
 
             free(current_student);
@@ -106,8 +111,13 @@ void delete_student(student **student_head, lecture *lecture_head) {
 
             break;
         }
-
-        case 2:{
+        /*
+         * Checks the student list. If it is empty, it prints an error message and returns to the previous menu. Asks
+         * for confirmation before clearing the entire student list. Iterates through all students, freeing the
+         * allocated memory for their scores and enrollments, and finally frees each student structure, setting the
+         * student list head to NULL.
+         */
+        case 2: {
 
             if (*student_head == NULL) {
                 printf("\n!ERROR! Student list is already empty. Terminating...\n\n");
@@ -154,7 +164,7 @@ void delete_student(student **student_head, lecture *lecture_head) {
         }
         }
 
-        if(loop_flag != 0){
+        if (loop_flag != 0) {
             loop_flag = get_safe_int_between(0, 1, 3, "\nEnter 1 to delete another student (or 0 to exit): ");
         }
     }
