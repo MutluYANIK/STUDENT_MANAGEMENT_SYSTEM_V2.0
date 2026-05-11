@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Check if the student list is empty returning an error message and return to the main menu.
 int update_student(student **student_head, lecture *lecture_head) {
 
     if (*student_head == NULL) {
@@ -12,6 +13,7 @@ int update_student(student **student_head, lecture *lecture_head) {
         return 0;
     }
 
+    // Gives the user a chance to return to the main menu while taking the student ID
     unsigned int temp_student_id = get_safe_unsigned_int(3, "\nEnter the student ID you want to update"
                                                             "(or 0 to return to main menu): ");
 
@@ -57,7 +59,11 @@ int update_student(student **student_head, lecture *lecture_head) {
             printf("\nOperation cancelled. Returning to main menu...\n\n");
             loop_flag = 0;
             break;
-
+        /*
+         * Gives the user a chance to cancel the operation while taking the new student ID. Checks all students' IDs to
+         * prevent duplicate IDs. If the user enters the same ID the student already has, it prints an error message and
+         * returns to the previous menu.
+         */
         case 1: {
 
             unsigned int new_id = get_safe_unsigned_int(3, "\nEnter the new id (or 0 to cancel): ");
@@ -83,6 +89,7 @@ int update_student(student **student_head, lecture *lecture_head) {
             break;
         }
 
+        // Gives the user a chance to cancel the operation while taking new student name.
         case 2: {
 
             char new_name[50];
@@ -96,16 +103,19 @@ int update_student(student **student_head, lecture *lecture_head) {
 
             strcpy(current_student->name, new_name);
             printf("\nStudent name successfully updated\n\n");
-            
+
             break;
         }
 
+        /*
+         * Checks the enrolled lecture list, if it is empty prints an error message and returns to the previous menu.
+         * Prints all lectures the student is enrolled in. Gives the user a chance to cancel the operation while
+         * taking the lecture ID. Converts the input lecture ID to uppercase for consistency in comparison. Checks the
+         * lecture ID in the enrolled lecture list. If it cannot find it, prints an error message and returns to the
+         * previous menu. If found, it asks for confirmation before dropping the lecture. Before finishing the case, it
+         * frees the allocated memory for the dropped lecture and updates the GPA.
+         */
         case 3: {
-
-            if (lecture_head == NULL) {
-                printf("\n!ERROR! There is no lecture in the list to drop. Returning to previous menu...\n\n");
-                break;
-            }
 
             if (current_student->records == NULL) {
                 printf("\n!ERROR! There is no enrolled lecture in the list to drop. Returning to previous menu...\n\n");
@@ -161,6 +171,7 @@ int update_student(student **student_head, lecture *lecture_head) {
                 break;
             }
 
+            // Unliks the selected lecture from the enrolled lecture list
             if (previous_enrollment == NULL) {
 
                 current_student->records = current_enrollment->next;
@@ -176,15 +187,20 @@ int update_student(student **student_head, lecture *lecture_head) {
             free(current_enrollment);
 
             calculate_student_gpa(current_student);
-            printf("\nLecture successfully dropped and GPA updated\n\n");
+            printf("\nLecture successfully dropped and the GPA updated\n\n");
 
             break;
         }
-
+        /*
+         * Checks the enrolled lecture list. If it is empty, prints an error message and returns to the previous menu.
+         * It asks for confirmation before dropping all lectures. Before finishing the case, it
+         * frees the allocated memory for the dropped lectures and their scores, clears the student's record list and
+         * updates the GPA.
+         */
         case 4: {
 
-            if (lecture_head == NULL) {
-                printf("\n!ERROR! There is no lecture in the list to drop. Returning to previous menu...\n\n");
+            if (current_student->records == NULL) {
+                printf("\n!ERROR! There is no enrolled lecture in the list to drop. Returning to previous menu...\n\n");
                 break;
             }
 
@@ -216,10 +232,20 @@ int update_student(student **student_head, lecture *lecture_head) {
             current_student->records = NULL;
 
             calculate_student_gpa(current_student);
-            printf("\nAll the lectures successfully dropped and GPA updated\n\n");
+            printf("\nAll lectures successfully dropped and the GPA updated\n\n");
             break;
         }
-
+        /*
+         * Checks the lecture list. If it is empty, it prints an error message and returns to the previous menu. Gives
+         * the user a chance to cancel the operation while taking the selected lecture ID. Converts the input lecture ID
+         * to uppercase for consistency in comparison. Uses a helper function to find the selected lecture from the
+         * lecture list. If it cannot find it, prints an error message and returns to previous menu. If found, checks
+         * enrolled lecture list. If the student is already enrolled in this lecture, prints an error message and
+         * returns previous menu. Allocates memory for the new enrollment. If memory allocation fails, prints an error
+         * message and returns to main menu. Counts the lecture's exams and automatically assigns "-1" for all
+         * exams. Automatically assigns "0.0" and "--" for course average and letter grade, links the new enrollment to
+         * the student's records updates the GPA
+         */
         case 5: {
 
             if (lecture_head == NULL) {
@@ -309,13 +335,17 @@ int update_student(student **student_head, lecture *lecture_head) {
             break;
         }
 
+        /*
+         * Checks the enrolled lecture list. If it is empty, it prints an error message and returns to the previous
+         * menu. Gives the user a chance to cancel the operation while taking the target lecture ID. Converts the input
+         * lecture ID to uppercase for consistency in comparison. Searches for the lecture ID in the enrolled lecture
+         * list. If it cannot find it, it prints an error message and returns to previous menu. If found, it prints this
+         * lecture's exams. Gives the user a chance to cancel the operation while taking the target exam name. Converts
+         * the input exam name to uppercase for consistency in comparison. Searches for the exam name in the lecture's
+         * exams while keeping a counter to find its specific index. If it cannot find it, prints an error message and
+         * returns to previous menu. If found, it takes the new exam grade. Updates the course average and the GPA.
+         */
         case 6: {
-
-            if (lecture_head == NULL) {
-                printf("\n!ERROR! There is no lecture in the list to update an exam grade. Returning to previous "
-                       "menu...\n\n");
-                break;
-            }
 
             if (current_student->records == NULL) {
                 printf("\n!ERROR! There is no enrolled lecture in the list to update an exam grade. Returning to "
@@ -401,17 +431,17 @@ int update_student(student **student_head, lecture *lecture_head) {
             grade_calculator(current_enrollment);
             calculate_student_gpa(current_student);
 
-            printf("\nThe exam grade, course average and GPA successfully updated\n\n");
+            printf("\nThe exam grade, course average and the GPA successfully updated\n\n");
             break;
         }
 
+        /*
+         * Checks the enrolled lecture list. If it is empty, it prints an error message and returns to the previous
+         * menu. Asks for confirmation before updating all exam grades. Iterates through all enrolled lectures and
+         * their exams, updating the grades while keeping a counter to access their specific indices. Updates the
+         * course averages and the GPA.
+         */
         case 7: {
-
-            if (lecture_head == NULL) {
-                printf("\n!ERROR! There is no lecture in the list to update exam grades. Returning to previous "
-                       "menu...\n\n");
-                break;
-            }
 
             if (current_student->records == NULL) {
                 printf("\n!ERROR! There is no enrolled lecture in the list to update exam grades. Returning to "
@@ -455,18 +485,18 @@ int update_student(student **student_head, lecture *lecture_head) {
             }
 
             calculate_student_gpa(current_student);
-            printf("\nAll exam grades, course averages and GPA successfully updated\n\n");
+            printf("\nAll exam grades, course averages and the GPA successfully updated\n\n");
 
             break;
         }
 
+        /*
+         * Checks the enrolled lecture list. If it is empty, it prints an error message and returns to the previous
+         * menu. Asks for confirmation before resetting all exam grades. Iterates through all enrolled lectures and
+         * their exams, resetting the grades while keeping a counter to access their specific indices. Assings "-1" to
+         * all exam grades, "0.0" to course averages and "--" to letter grades, and updates the GPA.
+         */
         case 8: {
-
-            if (lecture_head == NULL) {
-                printf("\n!ERROR! There is no lecture in the list to reset exam grades. Returning to previous "
-                       "menu...\n\n");
-                break;
-            }
 
             if (current_student->records == NULL) {
                 printf("\n!ERROR! There is no enrolled lecture in the list to reset exam grades. Returning to "
@@ -504,7 +534,7 @@ int update_student(student **student_head, lecture *lecture_head) {
             }
 
             calculate_student_gpa(current_student);
-            printf("\nAll exam grades, course averages and GPA have been successfully reset\n\n");
+            printf("\nAll exam grades, course averages and the GPA have been successfully reset\n\n");
 
             break;
         }
