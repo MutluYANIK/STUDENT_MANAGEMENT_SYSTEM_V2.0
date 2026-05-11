@@ -79,7 +79,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                 switch (mode) {
 
                 case 0:
-                    printf("\nOperation cancelled. Returning to the previous menu");
+                    printf("\nOperation cancelled. Returning to the previous menu...\n\n");
                     loop_flag_2 = 0;
                     break;
 
@@ -164,9 +164,9 @@ void display_student(student *student_head, lecture *lecture_head) {
                 }
 
                 /*
-                 * DISPLAY PASSED COURSES: Uses a two-pass method to keep the CLI clean.
-                 * Pass 1: Iterates through the records to check if the student has any passed courses.
-                 * If there are none, prints a warning and breaks before printing the table headers.
+                 * DISPLAY PASSED COURSES: Uses a two-pass method to keep the CLI clean. Pass 1: Iterates through the
+                 * records to check if the student has any passed courses. If there are none, prints a warning and
+                 * breaks before printing the table headers.
                  */
                 case 2: {
 
@@ -250,7 +250,11 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                     break;
                 }
-
+                /*
+                 * DISPLAY FAILED COURSES: Uses the two-pass method for CLI safety. Pass 1: Iterates through the records
+                 * to check if the student has any failed courses ("FF"). If there are none, prints a warning and breaks
+                 * without drawing the table.
+                 */
                 case 3: {
 
                     enrollment *current_enrollment = selected_student->records;
@@ -337,21 +341,59 @@ void display_student(student *student_head, lecture *lecture_head) {
 
             break;
         }
-         
-        case 2:{
+
+        case 2: {
 
             int loop_flag_2 = 1;
 
-            while(loop_flag_2){
+            while (loop_flag_2) {
 
-                int mode = get_safe_int_between(0, 4, 3, 
+                int mode = get_safe_int_between(0, 4, 3,
                                                 "\n[0] EXIT"
                                                 "\n[1] SHOW SUMMARY TABLE"
                                                 "\n[2] SHOW FULL TRANSCRIPTS"
                                                 "\n[3] SHOW ONLY PASSED COURSES"
                                                 "\n[4] SHOW ONLY FAILED COURSES\n"
                                                 "\nEnter the operation you want to perform: ");
-            }           
+
+                switch (mode) {
+
+                case 0:
+                    printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                    loop_flag_2 = 0;
+                    break;
+
+                /*
+                 * SUMMARY LIST: Iterates through the entire student linked list and prints a brief, single-line
+                 * summary (ID, Name, GPA) for each student. Designed for quick lookups and to prevent terminal spam.
+                 */
+                case 1: {
+
+                    printf("==========================================================================================="
+                           "===="
+                           "=========================\n");
+                    printf("ALL STUDENT SUMMARY LIST\n");
+                    printf("==========================================================================================="
+                           "===="
+                           "=========================\n");
+                    printf("%-25s%-50s%-10s\n", "STUDENT ID", "STUDENT NAME", "GPA");
+                    printf("-------------------------------------------------------------------------------------------"
+                           "----"
+                           "-------------------------\n");
+
+                    student *current_student = student_head;
+
+                    while (current_student != NULL) {
+
+                        printf("%-25u%-50.50s%-10.2f\n", current_student->id, current_student->name,
+                               current_student->GPA);
+                        current_student = current_student->next;
+                    }
+
+                    break;
+                }
+                }
+            }
         }
         }
     }
