@@ -61,5 +61,6 @@ void print_enrolled_lectures(student *current_student);
 void print_not_enrolled_lectures(student *current_student, lecture *lecture_head);
 lecture *find_lecture(lecture *lecture_head, const char *target_lecture_id);
 void delete_student(student **student_head, lecture *lecture_head);
+void display_student(student *student_head, lecture *lecture_head);
 
 #endif
