@@ -1294,8 +1294,8 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                         current_student = current_student->next;
                     }
-                    
-                    // Prevent Divide-by-Zero Exception: Check if any valid students were found before division.
+
+                    // Checks if any valid students were found before division.
                     if (!enrolled_student_found) {
                         printf("\nThere are no students enrolled in this course with ID: '%s' ", selected_course_id);
                         break;
@@ -1311,8 +1311,93 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                     break;
                 }
+
+                /*
+                 * Iterates through the entire course list and calculates the overall average for each course by
+                 * scanning all valid student records.
+                 */
+                case 2: {
+
+                    lecture *current_course = lecture_head;
+
+                    int header_printed = 0;
+                    int course_avg_printed = 0;
+
+                    while (current_course != NULL) {
+
+                        int enrolled_student_found = 0;
+                        float total_average = 0;
+                        int student_counter = 0;
+
+                        student *current_student = student_head;
+
+                        while (current_student != NULL) {
+
+                            enrollment *current_enrollment = current_student->records;
+
+                            /*
+                             * Match the student's enrollment with the current course in the outer loop. Exclude
+                             * students with pending grades (-1) to ensure accurate mathematical averages.
+                             */
+                            while (current_enrollment != NULL) {
+
+                                if (strcmp(current_enrollment->lecture->lecture_id, current_course->lecture_id) == 0 &&
+                                    current_enrollment->course_average != -1) {
+                                    student_counter++;
+                                    enrolled_student_found = 1;
+                                    break;
+                                }
+
+                                current_enrollment = current_enrollment->next;
+                            }
+
+                            if (current_enrollment == NULL) {
+                                current_student = current_student->next;
+                                continue;
+                            }
+
+                            total_average += current_enrollment->course_average;
+
+                            current_student = current_student->next;
+                        }
+
+                        /*
+                         * If a course has zero enrollments or no calculated grades yet, skip it completely to prevent
+                         * Divide-by-Zero exceptions and keep the output clean.
+                         */
+                        if (!enrolled_student_found) {
+                            current_course = current_course->next;
+                            continue;
+                        }
+
+                        if (!header_printed) {
+                            printf("%-20s%-40s%-20s \n", "COURSE ID", "COURSE NAME", "COURSE AVG");
+                            printf("-----------------------------------------------------------------------------------"
+                                   "-------------------------------------\n");
+
+                            header_printed = 1;
+                        }
+
+                        float course_average = total_average / student_counter;
+
+                        printf("%-20s%-40.40s%-20.2f\n", current_course->lecture_id, current_course->lecture_name,
+                               course_average);
+                        course_avg_printed = 1;
+
+                        current_course = current_course->next;
+                    }
+
+                    if (!course_avg_printed) {
+                        printf("\nThere are no students enrolled, or no course averages have been calculated for any "
+                               "courses\n\n");
+                    }
+
+                    break;
+                }
                 }
             }
+
+            break;
         }
         }
     }
