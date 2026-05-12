@@ -55,15 +55,15 @@ int update_lecture(student *student_head, lecture **lecture_head) {
 
     while (loop_flag) {
         int choice = get_safe_int_between(0, 7, 3,
-                                          "\n[0] Exit\n"
-                                          "[1] Update Lecture ID\n"
-                                          "[2] Update Lecture Name\n"
-                                          "[3] Update Lecture Credit\n"
-                                          "[4] Add a New Exam\n"
-                                          "[5] Remove an Exam\n"
-                                          "[6] Update an Exam Name\n"
-                                          "[7] Update Exam Percentages\n\n"
-                                          "Enter the operation you want to perform: ");
+                                          "\n[0] EXIT\n"
+                                          "\n[1] UPDATE LECTURE ID"
+                                          "\n[2] UPDATE LECTURE NAME"
+                                          "\n[3] UPDATE LECTURE CREDIT"
+                                          "\n[4] ADD A NEW EXAM"
+                                          "\n[5] REMOV AN EXAM"
+                                          "\n[6] UPDATE AN EXAM NAME"
+                                          "\n[7] UPDATE EXAM PERCENTAGES\n"
+                                          "\nEnter the operation you want to perform: ");
 
         switch (choice) {
 

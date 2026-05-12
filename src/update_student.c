@@ -42,16 +42,16 @@ int update_student(student **student_head, lecture *lecture_head) {
 
     while (loop_flag) {
         int choice = get_safe_int_between(0, 8, 3,
-                                          "\n[0] Exit\n"
-                                          "[1] Update Student ID\n"
-                                          "[2] Update Student Name\n"
-                                          "[3] Drop a Lecture\n"
-                                          "[4] Drop All Lectures\n"
-                                          "[5] Enroll In a Lecture\n"
-                                          "[6] Update an Exam Grade\n"
-                                          "[7] Update All Exam Grades\n"
-                                          "[8] Reset All Exam Grades\n\n"
-                                          "Enter the operation you want to perform: ");
+                                          "\n[0] EXIT\n"
+                                          "\n[1] UPDATE STUDENT ID"
+                                          "\n[2] UPDATE STUDENT NAME"
+                                          "\n[3] DROP A LECTURE"
+                                          "\n[4] DROP ALL LECTURES"
+                                          "\n[5] ENROLL IN A LECTURE"
+                                          "\n[6] UPDATE AN EXAM GRADE"
+                                          "\n[7] UPDATE ALL EXAM GRADES"
+                                          "\n[8] RESET ALL EXAM GRADES\n"
+                                          "\nEnter the operation you want to perform: ");
 
         switch (choice) {
 

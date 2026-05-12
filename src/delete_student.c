@@ -18,10 +18,10 @@ void delete_student(student **student_head, lecture *lecture_head) {
     while (loop_flag) {
 
         int choose = get_safe_int_between(0, 2, 3,
-                                          "\n[0] Exit\n"
-                                          "[1] Delete a student\n"
-                                          "[2] Clear the student list\n\n"
-                                          "Enter the operation you want to perform: ");
+                                          "\n[0] EXIT"
+                                          "\n[1] DELETE A STUDENT"
+                                          "\n[2] CLEAR THE STUDENT LIST\n"
+                                          "\nEnter the operation you want to perform: ");
 
         switch (choose) {
 
