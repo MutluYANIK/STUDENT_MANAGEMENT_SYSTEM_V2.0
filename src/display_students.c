@@ -340,10 +340,10 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                 int mode = get_safe_int_between(0, 4, 3,
                                                 "\n[0] EXIT"
-                                                "\n[1] SHOW SUMMARY TABLE"
-                                                "\n[2] SHOW FULL TRANSCRIPTS"
-                                                "\n[3] SHOW ONLY PASSED COURSES"
-                                                "\n[4] SHOW ONLY FAILED COURSES\n"
+                                                "\n[1] DISPLAY SUMMARY TABLE"
+                                                "\n[2] DISPLAY FULL TRANSCRIPTS"
+                                                "\n[3] DISPLAY ONLY PASSED COURSES"
+                                                "\n[4] DISPLAY ONLY FAILED COURSES\n"
                                                 "\nEnter the operation you want to perform: ");
 
                 switch (mode) {
@@ -922,6 +922,163 @@ void display_student(student *student_head, lecture *lecture_head) {
                 }
 
                 case 3: {
+
+                    student *current_student = student_head;
+                    int header_printed = 0;
+
+                    while (current_student != NULL) {
+
+                        enrollment *current_enrollment = current_student->records;
+
+                        while (current_enrollment != NULL) {
+
+                            if (strcmp(current_enrollment->lecture->lecture_id, selected_course_id) == 0) {
+                                break;
+                            }
+
+                            current_enrollment = current_enrollment->next;
+                        }
+
+                        /*
+                         * Safely skip if the student is not enrolled (NULL), has a pending grade ("--"), or passed the
+                         * course.
+                         */
+                        if (current_enrollment == NULL || strcmp(current_enrollment->letter_grade, "FF") != 0) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        if (!header_printed) {
+                            printf("%-15s%-30s%-45s%-8s%-8s%-8s%-8s\n", "STUDENT ID", "STUDENT NAME", "EXAM GRADES",
+                                   "AVG", "GRADE", "GPA", "STATUS");
+                            printf("-----------------------------------------------------------------------------------"
+                                   "-------------------------------------\n");
+                            header_printed = 1;
+                        }
+
+                        printf("%-15u", current_student->id);
+                        printf("%-30.30s", current_student->name);
+
+                        exam_template *current_exam = current_enrollment->lecture->exams;
+
+                        char exam_buffer[75] = "";
+                        char temp_buffer[75] = "";
+                        int exam_index = 0;
+
+                        while (current_exam != NULL) {
+
+                            int score = current_enrollment->scores[exam_index];
+                            snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
+
+                            if (strlen(exam_buffer) > 40) {
+                                break;
+                            }
+
+                            strcat(exam_buffer, temp_buffer);
+                            current_exam = current_exam->next;
+                            exam_index++;
+                        }
+
+                        printf("%-45.45s", exam_buffer);
+                        printf("%-8.2f", current_enrollment->course_average);
+                        printf("%-8.8s", current_enrollment->letter_grade);
+                        printf("%-8.2f", current_student->GPA);
+                        printf("%-8.8s\n", "FAILED");
+
+                        current_student = current_student->next;
+                    }
+
+                    // Handle the case where no students failed, or the course has zero enrollments.
+                    if (!header_printed) {
+                        printf("\n!ERROR! There are no students who failed the course '%s'\n\n", selected_course_id);
+                    }
+
+                    break;
+                }
+
+                case 4: {
+
+                    student *current_student = student_head;
+                    int header_printed = 0;
+
+                    while (current_student != NULL) {
+
+                        enrollment *current_enrollment = current_student->records;
+
+                        while (current_enrollment != NULL) {
+
+                            if (strcmp(current_enrollment->lecture->lecture_id, selected_course_id) == 0) {
+                                break;
+                            }
+
+                            current_enrollment = current_enrollment->next;
+                        }
+
+                        /*
+                         * Safely skip if the student is not enrolled (NULL), has a passed grade, or failed the
+                         * course ("FF")
+                         */
+                        if (current_enrollment == NULL || strcmp(current_enrollment->letter_grade, "--") != 0) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        if (!header_printed) {
+                            printf("%-15s%-30s%-45s%-8s%-8s%-8s%-8s\n", "STUDENT ID", "STUDENT NAME", "EXAM GRADES",
+                                   "AVG", "GRADE", "GPA", "STATUS");
+                            printf("-----------------------------------------------------------------------------------"
+                                   "-------------------------------------\n");
+                            header_printed = 1;
+                        }
+
+                        printf("%-15u", current_student->id);
+                        printf("%-30.30s", current_student->name);
+
+                        exam_template *current_exam = current_enrollment->lecture->exams;
+
+                        char exam_buffer[75] = "";
+                        char temp_buffer[75] = "";
+                        int exam_index = 0;
+
+                        while (current_exam != NULL) {
+
+                            int score = current_enrollment->scores[exam_index];
+                            
+                            if (score == -1) {
+                                snprintf(temp_buffer, sizeof(temp_buffer), "%s: N/A  ", current_exam->exam_name);
+                            } else {
+                                snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
+                            }
+
+                            if (strlen(exam_buffer) > 40) {
+                                break;
+                            }
+
+                            strcat(exam_buffer, temp_buffer);
+                            current_exam = current_exam->next;
+                            exam_index++;
+                        }
+
+                        printf("%-45.45s", exam_buffer);
+                        printf("%-8.8s", "N/A");
+                        printf("%-8.8s", "N/A");
+                        printf("%-8.2f", current_student->GPA);
+                        printf("%-8.8s\n", "PENDING");
+
+                        current_student = current_student->next;
+                    }
+
+                    // Handle the case where no students are pending, or the course has zero enrollments.
+                    if (!header_printed) {
+                        printf("\n!ERROR! There are no students with pending grades for the course '%s'\n\n", selected_course_id);
+                    }
+
+                    break;
+                }
+
+                case 5:{
+
+
                 }
                 }
             }
