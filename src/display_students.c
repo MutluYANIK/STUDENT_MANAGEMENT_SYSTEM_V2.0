@@ -25,7 +25,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                                           "\n[1] DISPLAY A STUDENT (BY ID)"
                                           "\n[2] DISPLAY ALL STUDENTS"
                                           "\n[3] DISPLAY STUDENTS FOR A COURSE"
-                                          "\n[4] DISPLAY CLASS AVERAGE FOR A COURSE"
+                                          "\n[4] DISPLAY CLASS AVERAGE"
                                           "\n[5] DISPLAY AVERAGE GPA"
                                           "\n[6] ADVANCED STUDENT SEARCH\n"
                                           "\nEnter the operation you want to perform: ");
@@ -683,7 +683,6 @@ void display_student(student *student_head, lecture *lecture_head) {
                     break;
                 }
                 }
-
             }
 
             break;
@@ -1204,5 +1203,117 @@ void display_student(student *student_head, lecture *lecture_head) {
 
             break;
         }
+
+        // Provides sub-options to calculate and display the average grades for specific courses or all courses.
+        case 4: {
+
+            int loop_flag_2 = 1;
+
+            while (loop_flag_2) {
+
+                int mode = get_safe_int_between(0, 2, 3,
+                                                "\n[0] EXIT"
+                                                "\n[1] DISPLAY CLASS AVERAGE FOR A COURSE"
+                                                "\n[2] DISPLAY CLASS AVERAGE FOR ALL COURSES"
+                                                "\nEnter the operation you want to perform: ");
+
+                switch (mode) {
+
+                case 0:
+                    printf("\nOperation cancelled. Returning to the main menu...\n\n");
+                    loop_flag_2 = 0;
+                    break;
+
+                // Calculates the overall average of a course by summing up valid (non-pending) student averages.
+                case 1: {
+
+                    char selected_course_id[10];
+
+                    get_safe_string(
+                        3, selected_course_id, sizeof(selected_course_id),
+                        "\nEnter the course ID you want to display class average (or type 'exit' to cancel): ");
+
+                    if (strcmp(selected_course_id, "exit") == 0) {
+                        printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                        break;
+                    }
+
+                    for (int i = 0; selected_course_id[i] != '\0'; i++) {
+                        selected_course_id[i] = toupper((unsigned char)selected_course_id[i]);
+                    }
+
+                    lecture *selected_course = lecture_head;
+
+                    while (selected_course != NULL) {
+
+                        if (strcmp(selected_course->lecture_id, selected_course_id) == 0) {
+                            break;
+                        }
+
+                        selected_course = selected_course->next;
+                    }
+
+                    if (selected_course == NULL) {
+                        printf("\nThere is no course with ID '%s' in the course list\n\n", selected_course_id);
+                        break;
+                    }
+
+                    float total_average = 0;
+                    int student_counter = 0;
+                    int enrolled_student_found = 0;
+
+                    student *current_student = student_head;
+
+                    /*
+                     * Iterate through all students to find valid enrollments for the selected course. Students with
+                     * pending grades (average == -1) are explicitly excluded to prevent mathematical errors and data
+                     * skewing.
+                     */
+                    while (current_student != NULL) {
+
+                        enrollment *current_enrollment = current_student->records;
+
+                        while (current_enrollment != NULL) {
+
+                            if (strcmp(current_enrollment->lecture->lecture_id, selected_course_id) == 0 &&
+                                current_enrollment->course_average != -1) {
+                                student_counter++;
+                                enrolled_student_found = 1;
+                                break;
+                            }
+
+                            current_enrollment = current_enrollment->next;
+                        }
+
+                        if (current_enrollment == NULL) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        total_average += current_enrollment->course_average;
+
+                        current_student = current_student->next;
+                    }
+                    
+                    // Prevent Divide-by-Zero Exception: Check if any valid students were found before division.
+                    if (!enrolled_student_found) {
+                        printf("\nThere are no students enrolled in this course with ID: '%s' ", selected_course_id);
+                        break;
+                    }
+
+                    float course_average = total_average / student_counter;
+
+                    printf("======================================================================================="
+                           "=================================\n");
+                    printf("Course average for '%s': %.2f\n", selected_course_id, course_average);
+                    printf("======================================================================================="
+                           "=================================\n");
+
+                    break;
+                }
+                }
+            }
+        }
         }
     }
+}
