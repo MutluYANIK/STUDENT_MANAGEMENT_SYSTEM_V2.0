@@ -684,14 +684,15 @@ void display_student(student *student_head, lecture *lecture_head) {
                 }
                 }
 
-                if (!loop_flag_2) {
-                    break;
-                }
             }
 
             break;
         }
 
+        /*
+         * Course-specific student viewer. Allows the user to select a course and apply various filters (passed, failed,
+         * pending, or full transcript).
+         */
         case 3: {
 
             print_all_lectures(lecture_head);
@@ -838,7 +839,7 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                     // If the header flag is still 0, it means no one is enrolled in this course.
                     if (!header_printed) {
-                        printf("\n!ERROR! There are no students enrolled in the course '%s' ", selected_course_id);
+                        printf("\n!ERROR! There are no students enrolled in the course '%s'\n\n", selected_course_id);
                     }
 
                     break;
@@ -921,6 +922,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                     break;
                 }
 
+                // Filters and prints only the students who have failed ("FF") the selected course.
                 case 3: {
 
                     student *current_student = student_head;
@@ -996,6 +998,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                     break;
                 }
 
+                // Filters and prints only the students with pending grades ("--") for the selected course.
                 case 4: {
 
                     student *current_student = student_head;
@@ -1043,7 +1046,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                         while (current_exam != NULL) {
 
                             int score = current_enrollment->scores[exam_index];
-                            
+
                             if (score == -1) {
                                 snprintf(temp_buffer, sizeof(temp_buffer), "%s: N/A  ", current_exam->exam_name);
                             } else {
@@ -1070,19 +1073,136 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                     // Handle the case where no students are pending, or the course has zero enrollments.
                     if (!header_printed) {
-                        printf("\n!ERROR! There are no students with pending grades for the course '%s'\n\n", selected_course_id);
+                        printf("\n!ERROR! There are no students with pending grades for the course '%s'\n\n",
+                               selected_course_id);
                     }
 
                     break;
                 }
 
-                case 5:{
+                /*
+                 * Finds all students taking the selected course and prints their entire  academic transcript (all
+                 * enrolled courses). Uses a dedicated flag to  handle cases where the course has zero enrollments.
+                 */
+                case 5: {
 
+                    student *current_student = student_head;
+                    int student_found = 0;
 
+                    while (current_student != NULL) {
+
+                        enrollment *current_enrollment = current_student->records;
+
+                        /*
+                         * Check if the student is actually enrolled in the selected course. If found, trigger the flag
+                         * and break early to save CPU cycles.
+                         */
+                        while (current_enrollment != NULL) {
+
+                            if (strcmp(current_enrollment->lecture->lecture_id, selected_course_id) == 0) {
+                                student_found = 1;
+                                break;
+                            }
+
+                            current_enrollment = current_enrollment->next;
+                        }
+
+                        // Skip the student if they are not enrolled in the selected course.
+                        if (current_enrollment == NULL) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        printf("======================================================================================="
+                               "=================================\n");
+                        printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: %.2f\n",
+                               current_student->id, current_student->name, current_student->GPA);
+                        printf("======================================================================================="
+                               "=================================\n");
+                        printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                               "          EXAM GRADES", "AVG", "GRADE", "STATUS");
+                        printf("---------------------------------------------------------------------------------------"
+                               "---------------------------------\n");
+
+                        /*
+                         * Reset the enrollment pointer back to the head to print the student's COMPLETE transcript,
+                         * not just the selected course.
+                         */
+                        current_enrollment = current_student->records;
+
+                        while (current_enrollment != NULL) {
+
+                            char exam_buffer[75] = "";
+                            char temp_buffer[75] = "";
+
+                            printf("%-14.14s", current_enrollment->lecture->lecture_id);
+                            printf("%-25.25s", current_enrollment->lecture->lecture_name);
+                            printf("%-10d", current_enrollment->lecture->lecture_credit);
+
+                            exam_template *current_exam = current_enrollment->lecture->exams;
+                            int exam_index = 0;
+
+                            while (current_exam != NULL) {
+
+                                int score = current_enrollment->scores[exam_index];
+
+                                if (score == -1) {
+                                    snprintf(temp_buffer, sizeof(temp_buffer), "%s: N/A  ", current_exam->exam_name);
+
+                                } else {
+                                    snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name,
+                                             score);
+                                }
+
+                                if (strlen(exam_buffer) > 40) {
+                                    break;
+                                }
+
+                                strcat(exam_buffer, temp_buffer);
+
+                                current_exam = current_exam->next;
+                                exam_index++;
+                            }
+
+                            printf("%-40.40s", exam_buffer);
+
+                            if (current_enrollment->course_average == -1) {
+                                printf("%-8.8s", "N/A");
+                            } else {
+                                printf("%-8.2f", current_enrollment->course_average);
+                            }
+
+                            printf("%-8.8s", current_enrollment->letter_grade);
+
+                            if (strcmp(current_enrollment->letter_grade, "FF") == 0) {
+                                printf("%-8.8s\n", "FAILED");
+                            } else if (strcmp(current_enrollment->letter_grade, "--") == 0) {
+                                printf("%-8.8s\n", "PENDING");
+                            } else {
+                                printf("%-8.8s\n", "PASSED");
+                            }
+
+                            current_enrollment = current_enrollment->next;
+                        }
+
+                        printf("\n\n");
+                        current_student = current_student->next;
+                    }
+
+                    /*
+                     * Handle the edge case where the system scanned all students but found no one  taking the requested
+                     * course.
+                     */
+                    if (!student_found) {
+                        printf("\n!ERROR! There are no students enrolled in the course '%s'\n\n", selected_course_id);
+                    }
+
+                    break;
                 }
                 }
             }
+
+            break;
         }
         }
     }
-}
