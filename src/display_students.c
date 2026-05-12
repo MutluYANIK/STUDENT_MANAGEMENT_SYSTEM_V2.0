@@ -1399,6 +1399,53 @@ void display_student(student *student_head, lecture *lecture_head) {
 
             break;
         }
+
+        // Calculates the global GPA average of the entire institution.
+        case 5: {
+
+            float total_GPA = 0;
+            int student_counter = 0;
+            student *current_student = student_head;
+
+            // Iterate through the entire student database to accumulate valid GPAs.
+            while (current_student != NULL) {
+
+                /*
+                 * Exclude students whose GPAs are not yet calculated (-1.0) to prevent skewing the overall average
+                 * downwards.
+                 */
+                if (current_student->GPA == -1) {
+                    current_student = current_student->next;
+                    continue;
+                }
+
+                total_GPA += current_student->GPA;
+                student_counter++;
+
+                current_student = current_student->next;
+            }
+
+            // Ensures at least one valid GPA exists before performing division.
+            if (!student_counter) {
+                printf("\n!ERROR! There are no students with calculated GPA in the list\n\n");
+                break;
+            }
+
+            float average_GPA = total_GPA / student_counter;
+
+            printf("======================================================================================="
+                   "=================================\n");
+            printf("Average GPA for student list: %.2f\n", average_GPA);
+            printf("======================================================================================="
+                   "=================================\n\n\n");
+
+            break;
+        }
+
+        case 6 {
+
+
+        }
         }
     }
 }
