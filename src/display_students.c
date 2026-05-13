@@ -2130,20 +2130,63 @@ void display_student(student *student_head, lecture *lecture_head) {
                      * Prompt for the upper and lower bounds of the search range. A value of -1.0 acts as a safety
                      * trigger to cancel and return to the menu.
                      */
-                    float max_course_avg =
-                        get_safe_float(-1.0, 100.0, 3,
-                                       "\nEnter the maximum value in the range you want to search (or "
-                                       "enter -1 to return to previous menu): ");
+
+                    float max_course_avg;
+                    int attempts = 0;
+
+                    while (1) {
+
+                        attempts++;
+
+                        if (attempts > 3) {
+                            printf("\n!ERROR! Maximum attempts reached! Cancelling operation...\n\n");
+                            max_course_avg = -1.0;
+                            break;
+                        }
+
+                        max_course_avg = get_safe_float(-1.0, 100.0, 3,
+                                                        "\nEnter the maximum value in the range you want to search (or "
+                                                        "enter -1 to return to previous menu): ");
+
+                        if (max_course_avg >= 0.0 || max_course_avg == -1.0) {
+                            break;
+                        }
+
+                        printf("\n!ERROR! Course average cannot be negative! Enter a value between 0.0 and 100.0, or "
+                               "-1 to cancel\n\n");
+                    }
 
                     if (max_course_avg == -1.0) {
                         printf("\nOperation cancelled. Returning to the previous menu...\n\n");
                         break;
                     }
 
-                    float min_course_avg =
-                        get_safe_float(-1.0, max_course_avg, 3,
-                                       "\nEnter the minimum value in the range you want to search (minimum value must "
-                                       "be less than maximum!) (or enter -1 to return to previous menu):  ");
+                    float min_course_avg;
+                    attempts = 0;
+
+                    while (1) {
+
+                        attempts++;
+
+                        if (attempts > 3) {
+                            printf("\n!ERROR! Maximum attempts reached! Cancelling operation...\n\n");
+                            max_course_avg = -1.0;
+                            break;
+                        }
+
+                        min_course_avg = get_safe_float(
+                            -1.0, max_course_avg, 3,
+                            "\nEnter the minimum value in the range you want to search (minimum value must "
+                            "be less than maximum!) (or enter -1 to return to previous menu):  ");
+
+                        if (max_course_avg >= 0.0 || max_course_avg == -1.0) {
+                            break;
+                        }
+
+                        printf("\n!ERROR! Course average cannot be negative! Enter a value between 0.0 and %.2f, or "
+                               "-1 to cancel\n\n",
+                               max_course_avg);
+                    }
 
                     if (min_course_avg == -1.0) {
                         printf("\nOperation cancelled. Returning to the previous menu...\n\n");
@@ -2261,9 +2304,116 @@ void display_student(student *student_head, lecture *lecture_head) {
                     printf("\n\n");
                     break;
                 }
+
+                /*
+                 * Find Students by Global GPA Range Prompts the user for a maximum and minimum GPA bound. Includes
+                 * local attempt counters to safely handle invalid (negative) inputs  without triggering a hard
+                 * application exit. Prints a summary of matching students.
+                 */
+                case 5: {
+
+                    // Uses a local while-loop to prevent infinite error loops if the user enters a negative decimal.
+                    float max_GPA;
+                    int attempts = 0;
+
+                    while (1) {
+
+                        attempts++;
+
+                        if (attempts > 3) {
+                            printf("\n!ERROR! Maximum attempts reached! Cancelling operation...\n");
+                            max_GPA = -1.0;
+                            break;
+                        }
+
+                        max_GPA = get_safe_float(-1.0, 4.0, 3,
+                                                 "\nEnter the maximum GPA in the range you want to search (or "
+                                                 "enter -1 to return to previous menu): ");
+
+                        if (max_GPA >= 0.0 || max_GPA == -1.0) {
+                            break;
+                        }
+
+                        printf("\n!ERROR! GPA cannot be negative! Enter a value between 0.0 and 4.0, or "
+                               "-1 to cancel\n\n");
+                    }
+
+                    if (max_GPA == -1.0) {
+                        printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                        break;
+                    }
+
+                    // The upper bound is dynamically restricted by the previously entered max_GPA.
+                    float min_GPA;
+                    attempts = 0;
+
+                    while (1) {
+
+                        attempts++;
+
+                        if (attempts > 3) {
+                            printf("\n!ERROR! Maximum attempts reached! Cancelling operation...\n");
+                            max_GPA = -1.0;
+                            break;
+                        }
+
+                        min_GPA = get_safe_float(-1.0, max_GPA, 3,
+                                                 "\nEnter the minimum GPA in the range you want to search (or "
+                                                 "enter -1 to return to previous menu): ");
+
+                        if (min_GPA >= 0.0 || min_GPA == -1.0) {
+                            break;
+                        }
+
+                        printf("\n!ERROR! GPA cannot be negative! Enter a value between 0.0 and %.2f, or "
+                               "-1 to cancel\n\n",
+                               max_GPA);
+                    }
+
+                    if (min_GPA == -1.0) {
+                        printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                        break;
+                    }
+
+                    student *current_student = student_head;
+                    int header_printed = 0;
+
+                    while (current_student != NULL) {
+
+                        /*
+                         * If the student's global GPA falls strictly within the requested [min, max] boundaries,
+                         * trigger the lazy-header (if not already printed) and display their summary record.
+                         */
+                        if (current_student->GPA >= min_GPA && current_student->GPA <= max_GPA) {
+
+                            if (!header_printed) {
+                                printf("==============================================================================="
+                                       "=========================================\n");
+                                printf("STUDENTS IN GPA RANGE\n");
+                                printf("==============================================================================="
+                                       "=========================================\n");
+                                printf("%-25s%-50s%-8s\n", "STUDENT ID", "STUDENT NAME", "GPA");
+                                printf("-------------------------------------------------------------------------------"
+                                       "-----------------------------------------\n");
+                                header_printed = 1;
+                            }
+
+                            printf("%-25u%-50.50s", current_student->id, current_student->name);
+                            print_gpa(current_student->GPA);
+                            printf("\n");
+                        }
+
+                        current_student = current_student->next;
+                    }
+
+                    if (!header_printed) {
+                        printf("\nThere are no students in the GPA range\n\n");
+                    }
+
+                    break;
+                }
                 }
             }
         }
         }
     }
-}
