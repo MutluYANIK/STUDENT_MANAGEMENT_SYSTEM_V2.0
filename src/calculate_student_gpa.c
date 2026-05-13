@@ -27,7 +27,7 @@ void calculate_student_gpa(student *target_student) {
     }
 
     if(total_credits == 0) {
-        target_student->GPA = 0.0;
+        target_student->GPA = -1.0;
     } else {
         target_student->GPA = total_weighted_score / total_credits;
     }
