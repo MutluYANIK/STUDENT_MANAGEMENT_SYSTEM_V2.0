@@ -2412,8 +2412,72 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                     break;
                 }
+
+                /*
+                 * Search Students by Name (Partial Match) Prompts the user for a keyword, standardizes it to uppercase,
+                 * and uses strstr() to find any student whose name contains the keyword (case-insensitive substring
+                 * search).
+                 */
+                case 6: {
+
+                    char temp_name[50];
+
+                    get_safe_name(3, temp_name, sizeof(temp_name),
+                                  "\nEnter the word you want to search (or type 'exit' to "
+                                  "return to previous menu): ");
+
+                    if (strcmp(temp_name, "exit") == 0) {
+                        printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                        break;
+                    }
+
+                    for (int i = 0; temp_name[i] != '\0'; i++) {
+                        temp_name[i] = toupper((unsigned char)temp_name[i]);
+                    }
+
+                    /*
+                     * Iterate through the student list and check for substring matches. Uses a lazy-header approach to
+                     * only print the table header if at least one match is found.
+                     */
+                    student *current_student = student_head;
+                    int header_printed = 0;
+
+                    while (current_student != NULL) {
+
+                        // strstr() returns a non-NULL pointer if 'temp_name' is a substring of 'current_student->name'.
+                        if (strstr(current_student->name, temp_name) != NULL) {
+
+                            if (!header_printed) {
+                                printf("==============================================================================="
+                                       "=========================================\n");
+                                printf("FIND STUDENTS BY NAME\n");
+                                printf("==============================================================================="
+                                       "=========================================\n");
+                                printf("%-25s%-50s%-8s\n", "STUDENT ID", "STUDENT NAME", "GPA");
+                                printf("-------------------------------------------------------------------------------"
+                                       "-----------------------------------------\n");
+                                header_printed = 1;
+                            }
+
+                            printf("%-25u%-50.50s", current_student->id, current_student->name);
+                            print_gpa(current_student->GPA);
+                            printf("\n");
+                        }
+
+                        current_student = current_student->next;
+                    }
+
+                    if (!header_printed) {
+                        printf("\n!ERROR! No students found matching '%s'\n\n", temp_name);
+                    }
+
+                    printf("\n\n");
+                    break;
+                }
                 }
             }
+
+            break;
         }
         }
     }
