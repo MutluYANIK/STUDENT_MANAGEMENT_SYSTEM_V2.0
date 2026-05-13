@@ -1723,9 +1723,196 @@ void display_student(student *student_head, lecture *lecture_head) {
                     loop_flag_2 = 0;
                     break;
 
+                /*
+                 * Find Top Students by GPA Uses a two-pass algorithm. First pass finds the highest GPA in the system.
+                 * Second pass prints all students who share that top score (handles ties perfectly).
+                 */
                 case 1: {
-                
-                    
+
+                    // Iterates through the entire student database to find the maximum calculated GPA.
+                    float TOP_GPA = -1.0;
+
+                    student *current_student = student_head;
+
+                    while (current_student != NULL) {
+
+                        if (current_student->GPA > TOP_GPA) {
+                            TOP_GPA = current_student->GPA;
+                        }
+
+                        current_student = current_student->next;
+                    }
+
+                    /*
+                     * Edge Case Protection: If the max GPA is still -1.0, it means nobody has a calculated GPA yet.
+                     * Break early to prevent drawing empty tables.
+                     */
+                    if (TOP_GPA == -1.0) {
+                        printf("\nThere are no students with calculated GPA in the list\n\n");
+                        break;
+                    }
+
+                    printf("==========================================================================================="
+                           "=============================\n");
+                    printf("TOP STUDENTS BY GPA\n");
+                    printf("==========================================================================================="
+                           "=============================\n");
+                    printf("%-25s%-50s%-8s\n", "STUDENT ID", "STUDENT NAME", "GPA");
+                    printf("-------------------------------------------------------------------------------------------"
+                           "-----------------------------\n");
+
+                    /*
+                     * Reset the pointer to the head of the list and print a summary table strictly for students
+                     * matching the TOP_GPA.
+                     */
+                    current_student = student_head;
+
+                    while (current_student != NULL) {
+
+                        if (current_student->GPA == TOP_GPA) {
+                            printf("%-25u%-50.50s", current_student->id, current_student->name);
+                            print_gpa(current_student->GPA);
+                            printf("\n");
+                        }
+
+                        current_student = current_student->next;
+                    }
+
+                    printf("\n\n");
+                    break;
+                }
+                /*
+                 * Find Top Students by GPA in a Specific Course Uses a two-pass algorithm filtered by course
+                 * enrollment. Identifies the highest overall GPA among students taking the specified course,
+                 * thenprints a summary of all enrolled students sharing that top GPA.
+                 */
+                case 2: {
+
+                    print_all_lectures(lecture_head);
+
+                    char selected_course_id[10];
+
+                    get_safe_string(
+                        3, selected_course_id, sizeof(selected_course_id),
+                        "\nEnter the course ID you want to find top students by GPA (or type 'exit' to cancel): ");
+
+                    if (strcmp(selected_course_id, "exit") == 0) {
+                        printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                        break;
+                    }
+
+                    for (int i = 0; selected_course_id[i] != '\0'; i++) {
+                        selected_course_id[i] = toupper((unsigned char)selected_course_id[i]);
+                    }
+
+                    lecture *current_course = lecture_head;
+
+                    while (current_course != NULL) {
+
+                        if (strcmp(current_course->lecture_id, selected_course_id) == 0) {
+                            break;
+                        }
+
+                        current_course = current_course->next;
+                    }
+
+                    if (current_course == NULL) {
+                        printf("\n!ERROR! There is no course with ID '%s' in the list\n\n", selected_course_id);
+                        break;
+                    }
+
+                    /*
+                     * Iterates through students, checking if they are enrolled in the target course. Track the maximum
+                     * overall GPA among these specific students.
+                     */
+                    float TOP_GPA = -1.0;
+
+                    student *current_student = student_head;
+
+                    while (current_student != NULL) {
+
+                        if (current_student->records == NULL) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        enrollment *current_enrollment = current_student->records;
+
+                        while (current_enrollment != NULL) {
+
+                            if (strcmp(current_enrollment->lecture->lecture_id, current_course->lecture_id) == 0) {
+                                break;
+                            }
+
+                            current_enrollment = current_enrollment->next;
+                        }
+
+                        if (current_enrollment == NULL) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        if (current_student->GPA > TOP_GPA) {
+                            TOP_GPA = current_student->GPA;
+                        }
+
+                        current_student = current_student->next;
+                    }
+
+                    if (TOP_GPA == -1.0) {
+                        printf("\nThere are no students with calculated GPA in the couse with ID '%s'\n\n",
+                               current_course->lecture_id);
+                        break;
+                    }
+
+                    printf("==========================================================================================="
+                           "=============================\n");
+                    printf("TOP STUDENTS BY GPA IN '%s'\n", current_course->lecture_id);
+                    printf("==========================================================================================="
+                           "=============================\n");
+                    printf("%-25s%-50s%-8s\n", "STUDENT ID", "STUDENT NAME", "GPA");
+                    printf("-------------------------------------------------------------------------------------------"
+                           "-----------------------------\n");
+                    /*
+                     * Iterates again to print the summary table for enrolled students  whose GPA matches the calculated
+                     * TOP_GPA.
+                     */
+                    current_student = student_head;
+
+                    while (current_student != NULL) {
+
+                        if (current_student->records == NULL) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        enrollment *current_enrollment = current_student->records;
+
+                        while (current_enrollment != NULL) {
+
+                            if (strcmp(current_enrollment->lecture->lecture_id, current_course->lecture_id) == 0) {
+                                break;
+                            }
+
+                            current_enrollment = current_enrollment->next;
+                        }
+
+                        if (current_enrollment == NULL) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        if (current_student->GPA == TOP_GPA) {
+                            printf("%-25u%-50.50s", current_student->id, current_student->name);
+                            print_gpa(current_student->GPA);
+                            printf("\n");
+                        }
+
+                        current_student = current_student->next;
+                    }
+
+                    printf("\n\n");
+                    break;
                 }
                 }
             }
