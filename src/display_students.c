@@ -24,7 +24,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                                           "\n[0] EXIT"
                                           "\n[1] DISPLAY A STUDENT (BY ID)"
                                           "\n[2] DISPLAY ALL STUDENTS"
-                                          "\n[3] DISPLAY STUDENTS FOR A COURSE"
+                                          "\n[3] DISPLAY STUDENTS IN A COURSE"
                                           "\n[4] DISPLAY CLASS AVERAGE"
                                           "\n[5] DISPLAY AVERAGE GPA"
                                           "\n[6] ADVANCED STUDENT SEARCH\n"
@@ -1909,6 +1909,177 @@ void display_student(student *student_head, lecture *lecture_head) {
                         }
 
                         current_student = current_student->next;
+                    }
+
+                    printf("\n\n");
+                    break;
+                }
+
+                /*
+                 * Find Students by Letter Grade in a Course Prompts the user for a course ID and a target letter grade.
+                 * Performs a case-insensitive search and prints a transcript table of all  matching students. Uses a
+                 * lazy-header approach to keep the UI clean.
+                 */
+                case 3: {
+
+                    print_all_lectures(lecture_head);
+
+                    char selected_course_id[10];
+
+                    get_safe_string(
+                        3, selected_course_id, sizeof(selected_course_id),
+                        "\nEnter the course ID you want to find students by letter grade (or type 'exit' to cancel): ");
+
+                    if (strcmp(selected_course_id, "exit") == 0) {
+                        printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                        break;
+                    }
+
+                    for (int i = 0; selected_course_id[i] != '\0'; i++) {
+                        selected_course_id[i] = toupper((unsigned char)selected_course_id[i]);
+                    }
+
+                    lecture *current_course = lecture_head;
+
+                    while (current_course != NULL) {
+
+                        if (strcmp(current_course->lecture_id, selected_course_id) == 0) {
+                            break;
+                        }
+
+                        current_course = current_course->next;
+                    }
+
+                    if (current_course == NULL) {
+                        printf("\n!ERROR! There is no course with ID '%s' in the list", selected_course_id);
+                        break;
+                    }
+
+                    /*
+                     * Prompt for the target letter grade and standardize it to uppercase  to ensure case-insensitive
+                     * comparison (e.g., 'aa' becomes 'AA').
+                     */
+                    char letter_grade[5];
+
+                    get_safe_string(3, letter_grade, sizeof(letter_grade),
+                                    "\nEnter the letter grade you want to find (or type 'exit' to cancel): ");
+
+                    if (strcmp(letter_grade, "exit") == 0) {
+                        printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                        break;
+                    }
+
+                    for (int i = 0; letter_grade[i] != '\0'; i++) {
+                        letter_grade[i] = toupper((unsigned char)letter_grade[i]);
+                    }
+
+                    /*
+                     * Iterate through the entire student database. Skip students with no enrollments  or those who are
+                     * not taking the target course.
+                     */
+                    int header_printed = 0;
+
+                    student *current_student = student_head;
+
+                    while (current_student != NULL) {
+
+                        if (current_student->records == NULL) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        enrollment *current_enrollment = current_student->records;
+
+                        while (current_enrollment != NULL) {
+
+                            if (strcmp(current_enrollment->lecture->lecture_id, current_course->lecture_id) == 0) {
+                                break;
+                            }
+
+                            current_enrollment = current_enrollment->next;
+                        }
+
+                        if (current_enrollment == NULL) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        /*
+                         * If the student is taking the course AND their grade matches the target, print the table
+                         * header (only once) followed by their transcript record.
+                         */
+                        if (strcmp(current_enrollment->letter_grade, letter_grade) == 0) {
+
+                            if (!header_printed) {
+                                printf("%-15s%-30s%-45s%-8s%-8s%-8s%-8s\n", "STUDENT ID", "STUDENT NAME", "EXAM GRADES",
+                                       "AVG", "GRADE", "GPA", "STATUS");
+                                printf("-------------------------------------------------------------------------------"
+                                       "-----------------------------------------\n");
+                                header_printed = 1;
+                            }
+
+                            printf("%-15u", current_student->id);
+                            printf("%-30.30s", current_student->name);
+
+                            exam_template *current_exam = current_enrollment->lecture->exams;
+
+                            char exam_buffer[75] = "";
+                            char temp_buffer[75] = "";
+                            int exam_index = 0;
+
+                            while (current_exam != NULL) {
+
+                                int score = current_enrollment->scores[exam_index];
+
+                                if (score == -1) {
+                                    snprintf(temp_buffer, sizeof(temp_buffer), "%s: N/A  ", current_exam->exam_name);
+                                } else {
+                                    snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name,
+                                             score);
+                                }
+
+                                if (strlen(exam_buffer) > 40) {
+                                    break;
+                                }
+
+                                strcat(exam_buffer, temp_buffer);
+                                current_exam = current_exam->next;
+                                exam_index++;
+                            }
+
+                            printf("%-45.45s", exam_buffer);
+
+                            if (current_enrollment->course_average == -1) {
+                                printf("%-8.8s", "N/A");
+                            } else {
+                                printf("%-8.2f", current_enrollment->course_average);
+                            }
+
+                            if (strcmp(current_enrollment->letter_grade, "--") == 0) {
+                                printf("%-8.8s", "N/A");
+                            } else {
+                                printf("%-8.8s", current_enrollment->letter_grade);
+                            }
+
+                            print_gpa(current_student->GPA);
+
+                            if (strcmp(current_enrollment->letter_grade, "--") == 0) {
+                                printf("%-8.8s\n", "PENDING");
+                            } else if (strcmp(current_enrollment->letter_grade, "FF") == 0) {
+                                printf("%-8.8s\n", "FAILED");
+                            } else {
+                                printf("%-8.8s\n", "PASSED");
+                            }
+                        }
+
+                        current_student = current_student->next;
+                    }
+
+                    if (!header_printed) {
+                        printf("\nThere are no students enrolled in the course with ID '%s', or no one has a letter "
+                               "grade of "
+                               "'%s'\n\n",
+                               selected_course_id, letter_grade);
                     }
 
                     printf("\n\n");
