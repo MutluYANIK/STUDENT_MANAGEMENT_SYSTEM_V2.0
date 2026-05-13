@@ -2085,6 +2085,182 @@ void display_student(student *student_head, lecture *lecture_head) {
                     printf("\n\n");
                     break;
                 }
+
+                /*
+                 * Find Students by Course Average Range in a Course Prompts the user for a course ID, followed by a
+                 * maximum and minimum average value. Filters and prints a transcript table of students whose course
+                 * average  strictly falls within the specified [min, max] boundaries.
+                 */
+                case 4: {
+
+                    print_all_lectures(lecture_head);
+
+                    char selected_course_id[10];
+
+                    get_safe_string(3, selected_course_id, sizeof(selected_course_id),
+                                    "\nEnter the course ID you want to find students by course average range (or type "
+                                    "'exit' to cancel): ");
+
+                    if (strcmp(selected_course_id, "exit") == 0) {
+                        printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                        break;
+                    }
+
+                    for (int i = 0; selected_course_id[i] != '\0'; i++) {
+                        selected_course_id[i] = toupper((unsigned char)selected_course_id[i]);
+                    }
+
+                    lecture *current_course = lecture_head;
+
+                    while (current_course != NULL) {
+
+                        if (strcmp(current_course->lecture_id, selected_course_id) == 0) {
+                            break;
+                        }
+
+                        current_course = current_course->next;
+                    }
+
+                    if (current_course == NULL) {
+                        printf("\n!ERROR! There is no course with ID '%s' in the list", selected_course_id);
+                        break;
+                    }
+
+                    /*
+                     * Prompt for the upper and lower bounds of the search range. A value of -1.0 acts as a safety
+                     * trigger to cancel and return to the menu.
+                     */
+                    float max_course_avg =
+                        get_safe_float(-1.0, 100.0, 3,
+                                       "\nEnter the maximum value in the range you want to search (or "
+                                       "enter -1 to return to previous menu): ");
+
+                    if (max_course_avg == -1.0) {
+                        printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                        break;
+                    }
+
+                    float min_course_avg =
+                        get_safe_float(-1.0, max_course_avg, 3,
+                                       "\nEnter the minimum value in the range you want to search (minimum value must "
+                                       "be less than maximum!) (or enter -1 to return to previous menu):  ");
+
+                    if (min_course_avg == -1.0) {
+                        printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                        break;
+                    }
+
+                    student *current_student = student_head;
+                    int header_printed = 0;
+
+                    /*
+                     * Iterates through the student list. Skip students who have no enrollments  or who are not
+                     * registered for the target course.
+                     */
+                    while (current_student != NULL) {
+
+                        if (current_student->records == NULL) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        enrollment *current_enrollment = current_student->records;
+
+                        while (current_enrollment != NULL) {
+
+                            if (strcmp(current_enrollment->lecture->lecture_id, current_course->lecture_id) == 0) {
+                                break;
+                            }
+
+                            current_enrollment = current_enrollment->next;
+                        }
+
+                        if (current_enrollment == NULL) {
+                            current_student = current_student->next;
+                            continue;
+                        }
+
+                        /*
+                         * If the student's calculated course average falls within the requested bounds, trigger the
+                         * lazy-header (if not already printed) and display their exam records.
+                         */
+                        if (current_enrollment->course_average >= min_course_avg &&
+                            current_enrollment->course_average <= max_course_avg) {
+
+                            if (!header_printed) {
+                                printf("%-15s%-30s%-45s%-8s%-8s%-8s%-8s\n", "STUDENT ID", "STUDENT NAME", "EXAM GRADES",
+                                       "AVG", "GRADE", "GPA", "STATUS");
+                                printf("-------------------------------------------------------------------------------"
+                                       "-----------------------------------------\n");
+                                header_printed = 1;
+                            }
+
+                            printf("%-15u", current_student->id);
+                            printf("%-30.30s", current_student->name);
+
+                            exam_template *current_exam = current_enrollment->lecture->exams;
+
+                            char exam_buffer[75] = "";
+                            char temp_buffer[75] = "";
+                            int exam_index = 0;
+
+                            while (current_exam != NULL) {
+
+                                int score = current_enrollment->scores[exam_index];
+
+                                if (score == -1) {
+                                    snprintf(temp_buffer, sizeof(temp_buffer), "%s: N/A  ", current_exam->exam_name);
+                                } else {
+                                    snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name,
+                                             score);
+                                }
+
+                                if (strlen(exam_buffer) > 40) {
+                                    break;
+                                }
+
+                                strcat(exam_buffer, temp_buffer);
+                                current_exam = current_exam->next;
+                                exam_index++;
+                            }
+
+                            printf("%-45.45s", exam_buffer);
+
+                            if (current_enrollment->course_average == -1) {
+                                printf("%-8.8s", "N/A");
+                            } else {
+                                printf("%-8.2f", current_enrollment->course_average);
+                            }
+
+                            if (strcmp(current_enrollment->letter_grade, "--") == 0) {
+                                printf("%-8.8s", "N/A");
+                            } else {
+                                printf("%-8.8s", current_enrollment->letter_grade);
+                            }
+
+                            print_gpa(current_student->GPA);
+
+                            if (strcmp(current_enrollment->letter_grade, "--") == 0) {
+                                printf("%-8.8s\n", "PENDING");
+                            } else if (strcmp(current_enrollment->letter_grade, "FF") == 0) {
+                                printf("%-8.8s\n", "FAILED");
+                            } else {
+                                printf("%-8.8s\n", "PASSED");
+                            }
+                        }
+
+                        current_student = current_student->next;
+                    }
+
+                    if (!header_printed) {
+                        printf("\nThere are no students enrolled in the course with ID '%s', or there is no one in the "
+                               "range\n\n",
+                               selected_course_id);
+                    }
+
+                    printf("\n\n");
+                    break;
+                }
                 }
             }
         }
