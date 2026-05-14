@@ -49,7 +49,7 @@ void grade_calculator(enrollment *enrollment_record);
 void calculate_student_gpa(student *target_student);
 float get_letter_grade_value(const char *letter_grade);
 int update_lecture(student *student_head, lecture **lecture_head);
-void delete_lecture(student *student_head, lecture **lecture_head);
+void delete_course(student *student_head, lecture **lecture_head);
 int update_student(student **student_head, lecture *lecture_head);
 void sort_student_list(student **student_head);
 void swap_student(student *student_1, student *student_2);
@@ -57,11 +57,13 @@ void sort_student_list_by_id(student **student_head);
 void sort_student_list_by_name(student **student_head);
 void sort_student_list_by_gpa(student **student_head);
 void print_all_lectures(lecture *lecture_head);
-void print_enrolled_lectures(student *current_student);
+void print_enrolled_courses(student *current_student);
 void print_not_enrolled_lectures(student *current_student, lecture *lecture_head);
 lecture *find_lecture(lecture *lecture_head, const char *target_lecture_id);
-void delete_student(student **student_head, lecture *lecture_head);
+void delete_student(student **student_head);
 void display_student(student *student_head, lecture *lecture_head);
 void print_gpa(float GPA);
+void clear_the_course_list(student *student_head, lecture **lecture_head);
+void clear_the_student_list(student **student_head);
 
 #endif

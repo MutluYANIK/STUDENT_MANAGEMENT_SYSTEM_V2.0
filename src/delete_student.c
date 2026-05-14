@@ -5,11 +5,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-void delete_student(student **student_head, lecture *lecture_head) {
+void delete_student(student **student_head) {
 
     // Check if the student list is empty returning an error message and return to the main menu.
     if (*student_head == NULL) {
-        printf("!ERROR! Student list is already empty. Terminating...\n\n");
+        printf("!ERROR! Student list is already empty. Returning to the main menu...\n\n");
         return;
     }
 
@@ -26,7 +26,7 @@ void delete_student(student **student_head, lecture *lecture_head) {
         switch (choose) {
 
         case 0:
-            printf("\nOperation cancelled. Returning to main menu...\n\n");
+            printf("\nOperation cancelled. Returning to the main menu...\n\n");
             loop_flag = 0;
             break;
         /*
@@ -40,7 +40,7 @@ void delete_student(student **student_head, lecture *lecture_head) {
         case 1: {
 
             if (*student_head == NULL) {
-                printf("\n!ERROR! Student list is already empty. Terminating...\n\n");
+                printf("\n!ERROR! Student list is already empty. Returning to the main menu...\n\n");
                 return;
             }
 
@@ -48,7 +48,7 @@ void delete_student(student **student_head, lecture *lecture_head) {
                 get_safe_unsigned_int(3, "\nEnter the student ID you want to delete (or 0 to cancel): ");
 
             if (temp_student_id == 0) {
-                printf("\nOperation cancelled. Returning to previous menu");
+                printf("\nOperation cancelled. Returning to the previous menu...\n\n");
                 break;
             }
 
@@ -79,7 +79,7 @@ void delete_student(student **student_head, lecture *lecture_head) {
             int confirm = get_safe_int_between(0, 1, 3, prompt_message);
 
             if (confirm == 0) {
-                printf("\nOperation cancelled. Returning to previous menu...\n\n");
+                printf("\nOperation cancelled. Returning to the previous menu...\n\n");
                 break;
             }
 
@@ -111,17 +111,12 @@ void delete_student(student **student_head, lecture *lecture_head) {
 
             break;
         }
-        /*
-         * Checks the student list. If it is empty, it prints an error message and returns to the previous menu. Asks
-         * for confirmation before clearing the entire student list. Iterates through all students, freeing the
-         * allocated memory for their scores and enrollments, and finally frees each student structure, setting the
-         * student list head to NULL.
-         */
+
         case 2: {
 
             if (*student_head == NULL) {
-                printf("\n!ERROR! Student list is already empty. Terminating...\n\n");
-                return;
+                printf("\n!ERROR! Student list is already empty. Returning to the previous menu...\n\n");
+                break;
             }
 
             int confirm = get_safe_int_between(0, 1, 3,
@@ -133,39 +128,13 @@ void delete_student(student **student_head, lecture *lecture_head) {
                 break;
             }
 
-            student *current_student = *student_head;
-            student *previous_student = NULL;
-
-            while (current_student != NULL) {
-
-                enrollment *current_enrollment = current_student->records;
-                enrollment *previous_enrollment = NULL;
-
-                while (current_enrollment != NULL) {
-
-                    previous_enrollment = current_enrollment;
-                    current_enrollment = current_enrollment->next;
-
-                    free(previous_enrollment->scores);
-                    free(previous_enrollment);
-                }
-
-                previous_student = current_student;
-                current_student = current_student->next;
-
-                free(previous_student);
-            }
-
-            *student_head = NULL;
-            printf("\nStudent list successfully cleared\n\n");
+            clear_the_student_list(student_head, lecture_head);
             loop_flag = 0;
 
             break;
+
         }
         }
 
-        if (loop_flag != 0) {
-            loop_flag = get_safe_int_between(0, 1, 3, "\nEnter 1 to delete another student (or 0 to exit): ");
-        }
     }
 }
