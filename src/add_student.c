@@ -5,16 +5,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-int add_student(student **student_head, lecture *lecture_head) {
+int add_student(student **student_head, lecture *course_head) {
 
     /*
      * Gives you the chance to exit the function while taking student ID input, checks for duplicate
      * student IDs to maintain data integrity and prevent confusion in the system.
      */
-    unsigned int temp_student_id = get_safe_unsigned_int(3, "Enter student ID (or 0 to return to main menu): ");
+    unsigned int temp_student_id = get_safe_unsigned_int(3, "Enter student ID (or 0 to return to the previous menu): ");
 
     if (temp_student_id == 0) {
-        printf("\nOperation cancelled. Returning to menu...\n\n");
+        printf("\nOperation cancelled. Returning to the previous menu...\n\n");
         return 0;
     }
 
@@ -44,55 +44,53 @@ int add_student(student **student_head, lecture *lecture_head) {
     new_student->records = NULL;
     new_student->next = NULL;
 
-    lecture *current_lecture = lecture_head;
-
-    // Displays available lectures to the user for enrollment.
-    printf("\nAvailable lectures:\n");
-    printf("--------------------------\n");
-    while (current_lecture != NULL) {
-        printf("Lecture ID: %s, Lecture Name: %s\n", current_lecture->lecture_id, current_lecture->lecture_name);
-        current_lecture = current_lecture->next;
-    }
+    lecture *current_course = course_head;
 
     /*
-     * Gives you the chance to exit the enrollment process while taking lecture ID input, checks for valid lecture IDs
-     * to ensure students are enrolled in existing lectures, and checks for duplicate enrollments to prevent students
-     * from being enrolled in the same lecture multiple times, which could lead to data inconsistencies and confusion in
+     * Gives you the chance to exit the enrollment process while taking course ID input, checks for valid course IDs
+     * to ensure students are enrolled in existing courses, and checks for duplicate enrollments to prevent students
+     * from being enrolled in the same course multiple times, which could lead to data inconsistencies and confusion in
      * the system.
      */
     while (1) {
 
-        char temp_lecture_id[10];
-        get_safe_string(3, temp_lecture_id, sizeof(temp_lecture_id),
-                        "\nEnter lecture ID to enroll in (or type 'exit' to finish enrollment): ");
+        // Displays available courses to the user for enrollment.
+        printf("\nAVAILABLE COURSES:\n");
+        printf("-------------------------------------------------------------------------------------------------------"
+               "-----------------\n");
+        print_not_enrolled_courses(new_student, course_head);
 
-        if (strcmp(temp_lecture_id, "exit") == 0) {
+        char temp_course_id[10];
+        get_safe_string(3, temp_course_id, sizeof(temp_course_id),
+                        "\nEnter course ID to enroll in (or type 'exit' to finish enrollment): ");
+
+        if (strcmp(temp_course_id, "exit") == 0) {
             printf("\nEnrollment process completed for student '%s' (ID: %u).\n\n", new_student->name, new_student->id);
             break;
         }
 
-        for (int i = 0; temp_lecture_id[i] != '\0'; i++) {
-            temp_lecture_id[i] = toupper((unsigned char)temp_lecture_id[i]);
+        for (int i = 0; temp_course_id[i] != '\0'; i++) {
+            temp_course_id[i] = toupper((unsigned char)temp_course_id[i]);
         }
 
-        lecture *selected_lecture = lecture_head;
+        lecture *selected_course = course_head;
 
-        while (selected_lecture != NULL) {
-            if (strcmp(selected_lecture->lecture_id, temp_lecture_id) == 0) {
+        while (selected_course != NULL) {
+            if (strcmp(selected_course->lecture_id, temp_course_id) == 0) {
                 break;
             }
-            selected_lecture = selected_lecture->next;
+            selected_course = selected_course->next;
         }
 
-        if (selected_lecture == NULL) {
-            printf("\n!ERROR! Lecture ID '%s' not found. Please try again.\n\n", temp_lecture_id);
+        if (selected_course == NULL) {
+            printf("\n!ERROR! Course ID '%s' not found. Please try again.\n\n", temp_course_id);
             continue;
         }
 
-        if (enrollment_check(new_student, selected_lecture) == 1) {
-            printf("\n!ERROR! Student '%s' (ID: %u) is already enrolled in lecture '%s'. Please choose a different "
-                   "lecture.\n\n",
-                   new_student->name, new_student->id, selected_lecture->lecture_name);
+        if (enrollment_check(new_student, selected_course) == 1) {
+            printf("\n!ERROR! Student '%s' (ID: %u) is already enrolled in course '%s'. Please choose a different "
+                   "course.\n\n",
+                   new_student->name, new_student->id, selected_course->lecture_name);
             continue;
         }
 
@@ -116,10 +114,10 @@ int add_student(student **student_head, lecture *lecture_head) {
             return 0;
         }
 
-        new_enrollment->lecture = selected_lecture;
+        new_enrollment->lecture = selected_course;
 
         int exam_count = 0;
-        exam_template *temp_exam = selected_lecture->exams;
+        exam_template *temp_exam = selected_course->exams;
 
         while (temp_exam != NULL) {
             exam_count++;
@@ -133,7 +131,7 @@ int add_student(student **student_head, lecture *lecture_head) {
                 new_enrollment->scores[i] = -1; // Initialize scores to -1 to indicate they haven't been entered yet
             }
         } else {
-            new_enrollment->scores = NULL; // No exams for this lecture
+            new_enrollment->scores = NULL; // No exams for this course
         }
 
         new_enrollment->course_average = 0.0;
@@ -142,19 +140,19 @@ int add_student(student **student_head, lecture *lecture_head) {
         new_enrollment->next = new_student->records;
         new_student->records = new_enrollment;
 
-        printf("\nStudent '%s' (ID: %u) enrolled in lecture '%s' successfully!\n\n", new_student->name, new_student->id,
-               selected_lecture->lecture_name);
+        printf("\nStudent '%s' (ID: %u) enrolled in course '%s' successfully!\n\n", new_student->name, new_student->id,
+               selected_course->lecture_name);
     }
 
     /*
-     * It takes the exam scores for each enrolled lecture, calculates the course average and letter grade
+     * It takes the exam scores for each enrolled course, calculates the course average and letter grade
      * for each enrollment
      */
     enrollment *current_enrollment = new_student->records;
 
     while (current_enrollment != NULL) {
 
-        printf("\nEntering grades for lecture '%s'\n", current_enrollment->lecture->lecture_name);
+        printf("\nEntering grades for course '%s'\n", current_enrollment->lecture->lecture_name);
 
         exam_template *current_exam = current_enrollment->lecture->exams;
         int i = 0;
@@ -166,7 +164,7 @@ int add_student(student **student_head, lecture *lecture_head) {
             snprintf(prompt_message, sizeof(prompt_message),
                      "Enter grade for exam '%s' (or -1 for pending grade): ", current_exam->exam_name);
 
-            int score = get_safe_int_between(3, -1, 100, prompt_message);
+            int score = get_safe_int_between(-1, 100, 3 , prompt_message);
 
             current_enrollment->scores[i] = score;
             i++;
@@ -195,6 +193,8 @@ int add_student(student **student_head, lecture *lecture_head) {
         new_student->next = current->next;
         current->next = new_student;
     }
+
+    student_save_flag = 1;
 
     return 1;
 }

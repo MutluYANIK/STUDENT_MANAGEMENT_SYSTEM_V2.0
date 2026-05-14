@@ -2,23 +2,23 @@
 #include <stdio.h>
 #include <string.h>
 
-lecture *find_lecture(lecture *lecture_head, const char *target_lecture_id){
+lecture *find_course(lecture *course_head, const char *target_course_id){
 
-    lecture *current_lecture = lecture_head;
+    lecture *current_course = course_head;
 
-    while(current_lecture != NULL){
+    while(current_course != NULL){
         
-        if(strcmp(current_lecture->lecture_id, target_lecture_id) == 0){
+        if(strcmp(current_course->lecture_id, target_course_id) == 0){
             break;
         }
 
-        current_lecture = current_lecture->next;
+        current_course = current_course->next;
     }
 
-    if(current_lecture == NULL){
-        printf("\n!ERROR! This lecture id '%s' not exist in the lecture list\n\n", target_lecture_id);
+    if(current_course == NULL){
+        printf("\n!ERROR! This course id '%s' not exist in the course list\n\n", target_course_id);
         return NULL;
     }
 
-    return current_lecture;
+    return current_course;
 }

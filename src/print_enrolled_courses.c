@@ -1,7 +1,7 @@
 #include "../headers/student_management_system.h"
 #include <stdio.h>
 
-void print_enrolled_lectures(student *current_student){
+void print_enrolled_courses(student *current_student){
 
     enrollment *current_enrollment = current_student->records;
 

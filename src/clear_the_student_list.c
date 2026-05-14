@@ -36,4 +36,6 @@ void clear_the_student_list(student **student_head) {
 
     *student_head = NULL;
     printf("\nStudent list successfully cleared\n\n");
+
+    student_save_flag = 1;
 }

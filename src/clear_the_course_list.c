@@ -9,7 +9,7 @@
  * updates their GPA and clears the course list.
  */
 
-void clear_the_course_list(student *student_head, lecture **lecture_head) {
+void clear_the_course_list(student *student_head, lecture **course_head) {
 
     student *current_student = student_head;
 
@@ -32,7 +32,7 @@ void clear_the_course_list(student *student_head, lecture **lecture_head) {
         current_student = current_student->next;
     }
 
-    lecture *current_lecture = *lecture_head;
+    lecture *current_lecture = *course_head;
     lecture *previous_lecture = NULL;
 
     while (current_lecture != NULL) {
@@ -53,7 +53,10 @@ void clear_the_course_list(student *student_head, lecture **lecture_head) {
         free(previous_lecture);
     }
 
-    *lecture_head = NULL;
+    *course_head = NULL;
 
     printf("\nCourse list successfully cleared\n\n");
+
+    student_save_flag = 1;
+    course_save_flag = 1;
 }

@@ -2,15 +2,15 @@
 #include <string.h>
 #include <stdio.h>
 
-int is_lecture_id_exist(lecture *lecture_head, const char *lecture_id) {
+int is_course_id_exist(lecture *course_head, const char *course_id) {
 
-    lecture *current = lecture_head;
+    lecture *current_course = course_head;
     
-    while (current != NULL) {
-        if (strcmp(current->lecture_id, lecture_id) == 0) {
+    while (current_course != NULL) {
+        if (strcmp(current_course->lecture_id, course_id) == 0) {
             return 1;
         }
-        current = current->next;
+        current_course = current_course->next;
     }
 
     return 0;

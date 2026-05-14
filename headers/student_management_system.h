@@ -39,31 +39,35 @@ typedef enum { DIR_NORMAL, DIR_REVERSED } sort_direction;
 
 extern sort_direction current_direction;
 
-int add_student(student **student_head);
-int add_lecture(lecture **lecture_head);
+extern int student_save_flag;
+extern int course_save_flag;
+
+int add_student(student **student_head, lecture *course_head);
+int add_course(lecture **course_head);
 int id_check(student *student_head, unsigned int id);
-int is_lecture_id_exist(lecture *lecture_head, const char *lecture_id);
+int is_course_id_exist(lecture *course_head, const char *course_id);
 int enrollment_check(student *current_student, lecture *target_lecture);
 int compare_students(student *s1, student *s2);
 void grade_calculator(enrollment *enrollment_record);
 void calculate_student_gpa(student *target_student);
 float get_letter_grade_value(const char *letter_grade);
-int update_lecture(student *student_head, lecture **lecture_head);
-void delete_course(student *student_head, lecture **lecture_head);
-int update_student(student **student_head, lecture *lecture_head);
+int update_course(student **student_head, lecture **course_head);
+int delete_course(student *student_head, lecture **course_head);
+int update_student(student **student_head, lecture *course_head);
 void sort_student_list(student **student_head);
 void swap_student(student *student_1, student *student_2);
 void sort_student_list_by_id(student **student_head);
 void sort_student_list_by_name(student **student_head);
 void sort_student_list_by_gpa(student **student_head);
-void print_all_lectures(lecture *lecture_head);
+void reverse_list(student **student_head);
+void print_all_courses(lecture *course_head);
 void print_enrolled_courses(student *current_student);
-void print_not_enrolled_lectures(student *current_student, lecture *lecture_head);
-lecture *find_lecture(lecture *lecture_head, const char *target_lecture_id);
-void delete_student(student **student_head);
+void print_not_enrolled_courses(student *current_student, lecture *course_head);
+lecture *find_course(lecture *course_head, const char *target_course_id);
+int delete_student(student **student_head);
 void display_student(student *student_head, lecture *lecture_head);
 void print_gpa(float GPA);
-void clear_the_course_list(student *student_head, lecture **lecture_head);
+void clear_the_course_list(student *student_head, lecture **course_head);
 void clear_the_student_list(student **student_head);
 
 #endif

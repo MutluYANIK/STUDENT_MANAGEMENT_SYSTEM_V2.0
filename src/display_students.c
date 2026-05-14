@@ -20,6 +20,11 @@ void display_student(student *student_head, lecture *lecture_head) {
 
     while (loop_flag) {
 
+        printf("\n========================================================================================="
+               "===============================\n");
+        printf("                                                    DISPLAY STUDENTS");
+        printf("\n========================================================================================="
+               "===============================\n\n\n");
         int choice = get_safe_int_between(0, 6, 3,
                                           "\n[0] EXIT"
                                           "\n[1] DISPLAY A STUDENT (BY ID)"
@@ -69,6 +74,11 @@ void display_student(student *student_head, lecture *lecture_head) {
 
             while (loop_flag_2) {
 
+                printf("\n========================================================================================="
+                       "===============================\n");
+                printf("                                                   DISPLAY A STUDENTS");
+                printf("\n========================================================================================="
+                       "===============================\n\n\n");
                 int mode = get_safe_int_between(0, 4, 3,
                                                 "\n[0] EXIT"
                                                 "\n[1] DISPLAY ALL COURSES"
@@ -99,7 +109,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                     printf(
                         "\n==========================================================================================="
                         "=============================\n");
-                    printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                    printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                            "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                     printf("-------------------------------------------------------------------------------------------"
                            "-----------------------------\n");
@@ -147,7 +157,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                             printf("%-8.2f", current_enrollment->course_average);
                         }
 
-                        if (strcmp(current_enrollment->letter_grade, "--")) {
+                        if (strcmp(current_enrollment->letter_grade, "--") == 0) {
                             printf("%-8.8s", "N/A");
                         } else {
                             printf("%-8.8s", current_enrollment->letter_grade);
@@ -201,7 +211,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                     printf(
                         "\n==========================================================================================="
                         "=============================\n");
-                    printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                    printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                            "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                     printf("-------------------------------------------------------------------------------------------"
                            "-----------------------------\n");
@@ -287,7 +297,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                     printf(
                         "\n==========================================================================================="
                         "=============================\n");
-                    printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                    printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                            "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                     printf("-------------------------------------------------------------------------------------------"
                            "-----------------------------\n");
@@ -370,7 +380,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                     printf(
                         "\n==========================================================================================="
                         "=============================\n");
-                    printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                    printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                            "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                     printf("-------------------------------------------------------------------------------------------"
                            "-----------------------------\n");
@@ -440,6 +450,12 @@ void display_student(student *student_head, lecture *lecture_head) {
             int loop_flag_2 = 1;
 
             while (loop_flag_2) {
+
+                printf("\n========================================================================================="
+                       "===============================\n");
+                printf("                                                  DISPLAY ALL STUDENTS");
+                printf("\n========================================================================================="
+                       "===============================\n\n\n");
 
                 int mode = get_safe_int_between(0, 5, 3,
                                                 "\n[0] EXIT"
@@ -515,7 +531,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                         printf(
                             "\n======================================================================================="
                             "=================================\n");
-                        printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                        printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                                "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                         printf("---------------------------------------------------------------------------------------"
                                "---------------------------------\n");
@@ -564,7 +580,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                                 printf("%-8.2f", current_enrollment->course_average);
                             }
 
-                            printf("%-8.8s", current_enrollment->letter_grade);
+                            if (strcmp(current_enrollment->letter_grade, "--") == 0) {
+                                printf("%-8.8s", "N/A");
+                            } else {
+                                printf("%-8.8s", current_enrollment->letter_grade);
+                            }
 
                             if (strcmp(current_enrollment->letter_grade, "FF") == 0) {
                                 printf("%-8.8s\n", "FAILED");
@@ -636,7 +656,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                         printf(
                             "\n======================================================================================="
                             "=================================\n");
-                        printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                        printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                                "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                         printf("---------------------------------------------------------------------------------------"
                                "---------------------------------\n");
@@ -747,7 +767,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                         printf(
                             "\n======================================================================================="
                             "=================================\n");
-                        printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                        printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                                "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                         printf("---------------------------------------------------------------------------------------"
                                "---------------------------------\n");
@@ -757,9 +777,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                         while (current_enrollment != NULL) {
 
                             // Skips courses that are PASSED or PENDING, stopping only at "FF" grades.
-                            while (current_enrollment != NULL &&
-                                   (strcmp(current_enrollment->letter_grade, "--") == 0 ||
-                                    strcmp(current_enrollment->letter_grade, "FF") != 0)) {
+                            while (current_enrollment != NULL && strcmp(current_enrollment->letter_grade, "FF") != 0) {
 
                                 current_enrollment = current_enrollment->next;
                             }
@@ -858,7 +876,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                         printf(
                             "\n======================================================================================="
                             "=================================\n");
-                        printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                        printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                                "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                         printf("---------------------------------------------------------------------------------------"
                                "---------------------------------\n");
@@ -975,6 +993,12 @@ void display_student(student *student_head, lecture *lecture_head) {
             int loop_flag_2 = 1;
 
             while (loop_flag_2) {
+
+                printf("\n========================================================================================="
+                       "===============================\n");
+                printf("                                             DISPLAY STUDENTS IN A COURSE");
+                printf("\n========================================================================================="
+                       "===============================\n\n\n");
 
                 int mode = get_safe_int_between(0, 5, 3,
                                                 "\n[0] EXIT"
@@ -1371,7 +1395,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                         printf(
                             "\n======================================================================================="
                             "=================================\n");
-                        printf("%-14s %-25s %-10s %-40s  %-8s  %-8s  %-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                        printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                                "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                         printf("---------------------------------------------------------------------------------------"
                                "---------------------------------\n");
@@ -1424,7 +1448,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                                 printf("%-8.2f", current_enrollment->course_average);
                             }
 
-                            printf("%-8.8s", current_enrollment->letter_grade);
+                            if (strcmp(current_enrollment->letter_grade, "--") == 0) {
+                                printf("%-8.8s", "N/A");
+                            } else {
+                                printf("%-8.8s", current_enrollment->letter_grade);
+                            }
 
                             if (strcmp(current_enrollment->letter_grade, "FF") == 0) {
                                 printf("%-8.8s\n", "FAILED");
@@ -1463,6 +1491,12 @@ void display_student(student *student_head, lecture *lecture_head) {
             int loop_flag_2 = 1;
 
             while (loop_flag_2) {
+
+                printf("\n========================================================================================="
+                       "===============================\n");
+                printf("                                                 DISPLAY CLASS AVERAGE");
+                printf("\n========================================================================================="
+                       "===============================\n\n\n");
 
                 int mode = get_safe_int_between(0, 2, 3,
                                                 "\n[0] EXIT"
@@ -1705,6 +1739,12 @@ void display_student(student *student_head, lecture *lecture_head) {
             int loop_flag_2 = 1;
 
             while (loop_flag_2) {
+
+                printf("\n========================================================================================="
+                       "===============================\n");
+                printf("                                               ADVANCED STUDENT SEARCH");
+                printf("\n========================================================================================="
+                       "===============================\n\n\n");
 
                 int mode = get_safe_int_between(0, 6, 3,
                                                 "\n[0] EXIT"
