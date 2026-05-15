@@ -251,13 +251,8 @@ void save_file_for_a_student(student *student_head, course *course_head) {
 
                         int score = current_enrollment->scores[exam_index];
 
-                        if (score == -1) {
-                            snprintf(temp_buffer, sizeof(temp_buffer), "%s: N/A  ", current_exam->exam_name);
-
-                        } else {
-                            snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
-                        }
-
+                        snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
+                        
                         if (strlen(exam_buffer) > 50) {
                             break;
                         }
@@ -269,26 +264,9 @@ void save_file_for_a_student(student *student_head, course *course_head) {
                     }
 
                     fprintf(new_file, "%-49.49s", exam_buffer);
-
-                    if (current_enrollment->course_average == -1) {
-                        fprintf(new_file, "%-8.8s", "N/A");
-                    } else {
-                        fprintf(new_file, "%-8.2f", current_enrollment->course_average);
-                    }
-
-                    if (strcmp(current_enrollment->letter_grade, "--") == 0) {
-                        fprintf(new_file, "%-8.8s", "N/A");
-                    } else {
-                        fprintf(new_file, "%-8.8s", current_enrollment->letter_grade);
-                    }
-
-                    if (strcmp(current_enrollment->letter_grade, "FF") == 0) {
-                        fprintf(new_file, "%-8.8s\n", "FAILED");
-                    } else if (strcmp(current_enrollment->letter_grade, "--") == 0) {
-                        fprintf(new_file, "%-8.8s\n", "PENDING");
-                    } else {
-                        fprintf(new_file, "%-8.8s\n", "PASSED");
-                    }
+                    fprintf(new_file, "%-8.2f", current_enrollment->course_average);
+                    fprintf(new_file, "%-8.8s", current_enrollment->letter_grade);
+                    fprintf(new_file, "%-8.8s\n", "PASSED");
 
                     passed_courses_exist = 1;
                 }
@@ -380,12 +358,8 @@ void save_file_for_a_student(student *student_head, course *course_head) {
 
                         int score = current_enrollment->scores[exam_index];
 
-                        if (score == -1) {
-                            snprintf(temp_buffer, sizeof(temp_buffer), "%s: N/A  ", current_exam->exam_name);
-
-                        } else {
-                            snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
-                        }
+                        snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
+                        
 
                         if (strlen(exam_buffer) > 50) {
                             break;
@@ -398,26 +372,9 @@ void save_file_for_a_student(student *student_head, course *course_head) {
                     }
 
                     fprintf(new_file, "%-49.49s", exam_buffer);
-
-                    if (current_enrollment->course_average == -1) {
-                        fprintf(new_file, "%-8.8s", "N/A");
-                    } else {
-                        fprintf(new_file, "%-8.2f", current_enrollment->course_average);
-                    }
-
-                    if (strcmp(current_enrollment->letter_grade, "--") == 0) {
-                        fprintf(new_file, "%-8.8s", "N/A");
-                    } else {
-                        fprintf(new_file, "%-8.8s", current_enrollment->letter_grade);
-                    }
-
-                    if (strcmp(current_enrollment->letter_grade, "FF") == 0) {
-                        fprintf(new_file, "%-8.8s\n", "FAILED");
-                    } else if (strcmp(current_enrollment->letter_grade, "--") == 0) {
-                        fprintf(new_file, "%-8.8s\n", "PENDING");
-                    } else {
-                        fprintf(new_file, "%-8.8s\n", "PASSED");
-                    }
+                    fprintf(new_file, "%-8.2f", current_enrollment->course_average);
+                    fprintf(new_file, "%-8.8s", current_enrollment->letter_grade);
+                    fprintf(new_file, "%-8.8s\n", "FAILED");
 
                     failed_courses_exist = 1;
                 }
@@ -527,26 +484,10 @@ void save_file_for_a_student(student *student_head, course *course_head) {
                     }
 
                     fprintf(new_file, "%-49.49s", exam_buffer);
+                    fprintf(new_file, "%-8.8s", "N/A");
+                    fprintf(new_file, "%-8.8s", "N/A");
+                    fprintf(new_file, "%-8.8s\n", "PENDING");
 
-                    if (current_enrollment->course_average == -1) {
-                        fprintf(new_file, "%-8.8s", "N/A");
-                    } else {
-                        fprintf(new_file, "%-8.2f", current_enrollment->course_average);
-                    }
-
-                    if (strcmp(current_enrollment->letter_grade, "--") == 0) {
-                        fprintf(new_file, "%-8.8s", "N/A");
-                    } else {
-                        fprintf(new_file, "%-8.8s", current_enrollment->letter_grade);
-                    }
-
-                    if (strcmp(current_enrollment->letter_grade, "FF") == 0) {
-                        fprintf(new_file, "%-8.8s\n", "FAILED");
-                    } else if (strcmp(current_enrollment->letter_grade, "--") == 0) {
-                        fprintf(new_file, "%-8.8s\n", "PENDING");
-                    } else {
-                        fprintf(new_file, "%-8.8s\n", "PASSED");
-                    }
 
                     pending_courses_exist = 1;
                 }
