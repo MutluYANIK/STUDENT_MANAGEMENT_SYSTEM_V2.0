@@ -55,7 +55,7 @@ int add_student(student **student_head, lecture *course_head) {
     while (1) {
 
         // Displays available courses to the user for enrollment.
-        printf("\nAVAILABLE COURSES:\n");
+        printf("\n\nAVAILABLE COURSES:\n");
         printf("-------------------------------------------------------------------------------------------------------"
                "-----------------\n");
         print_not_enrolled_courses(new_student, course_head);
@@ -63,14 +63,14 @@ int add_student(student **student_head, lecture *course_head) {
         char temp_course_id[10];
         get_safe_string(3, temp_course_id, sizeof(temp_course_id),
                         "\nEnter course ID to enroll in (or type 'exit' to finish enrollment): ");
-
-        if (strcmp(temp_course_id, "exit") == 0) {
-            printf("\nEnrollment process completed for student '%s' (ID: %u).\n\n", new_student->name, new_student->id);
-            break;
-        }
-
+        
         for (int i = 0; temp_course_id[i] != '\0'; i++) {
             temp_course_id[i] = toupper((unsigned char)temp_course_id[i]);
+        }
+
+        if (strcmp(temp_course_id, "EXIT") == 0) {
+            printf("\nEnrollment process completed for student '%s' (ID: %u).\n\n", new_student->name, new_student->id);
+            break;
         }
 
         lecture *selected_course = course_head;

@@ -13,13 +13,13 @@ int add_course(lecture **course_head) {
     char temp_id[10];
     get_safe_string(3, temp_id, sizeof(temp_id), "\nEnter course ID (or type 'exit' to cancel): ");
 
-    if (strcmp(temp_id, "exit") == 0) {
-        printf("\nOperation cancelled. Returning to the previous menu...\n\n");
-        return 0;
-    }
-
     for (int i = 0; temp_id[i] != '\0'; i++) {
         temp_id[i] = toupper((unsigned char)temp_id[i]);
+    }
+
+    if (strcmp(temp_id, "EXIT") == 0) {
+        printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+        return 0;
     }
 
     if (is_course_id_exist(*course_head, temp_id) == 1) {

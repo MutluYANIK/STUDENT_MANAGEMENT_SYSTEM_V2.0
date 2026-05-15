@@ -12,7 +12,7 @@ int delete_course(student *student_head, lecture **course_head) {
         printf("!ERROR! Course list is already empty. Returning to the main menu...\n\n");
         return 0;
     }
-    
+
     /*
      * Gives the user a chance to cancel the operation while taking the target course ID. Converts the input
      * target course ID to uppercase for consistency in comparison. Searches for the target course in the list. If
@@ -27,13 +27,13 @@ int delete_course(student *student_head, lecture **course_head) {
     get_safe_string(3, temp_course_id, sizeof(temp_course_id),
                     "\nEnter the course ID you want to delete (or type 'exit' to cancel)");
 
-    if (strcmp(temp_course_id, "exit") == 0) {
-        printf("\nOperation cancelled. Returning to previous menu...\n\n");
-        return 0;
-    }
-
     for (int i = 0; temp_course_id[i] != '\0'; i++) {
         temp_course_id[i] = toupper((unsigned char)temp_course_id[i]);
+    }
+
+    if (strcmp(temp_course_id, "EXIT") == 0) {
+        printf("\nOperation cancelled. Returning to previous menu...\n\n");
+        return 0;
     }
 
     lecture *selected_course = *course_head;

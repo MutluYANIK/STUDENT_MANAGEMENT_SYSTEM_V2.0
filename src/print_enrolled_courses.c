@@ -5,6 +5,8 @@ void print_enrolled_courses(student *current_student){
 
     enrollment *current_enrollment = current_student->records;
 
+    printf("\n\n");
+    
     while(current_enrollment != NULL){
         
         printf("%s\n",current_enrollment->lecture->lecture_id);

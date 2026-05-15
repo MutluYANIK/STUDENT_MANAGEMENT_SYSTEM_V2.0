@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void get_safe_string(int max_attempts, int max_length, char *target, const char *message) {
+void get_safe_string(int max_attempts, char *target , int max_length, const char *message) {
 
     int attempts = 0;
 

@@ -42,14 +42,14 @@ int update_student(student **student_head, lecture *course_head) {
 
     while (loop_flag) {
 
-        printf("\n========================================================================================="
+        printf("\n\n========================================================================================="
                "===============================\n");
         printf("                                                    UPDATE A STUDENT");
         printf("\n========================================================================================="
-               "===============================\n\n\n");
+               "===============================\n\n");
 
         int choice = get_safe_int_between(0, 8, 3,
-                                          "\n[0] EXIT\n"
+                                          "\n[0] EXIT"
                                           "\n[1] UPDATE STUDENT ID"
                                           "\n[2] UPDATE STUDENT NAME"
                                           "\n[3] DROP A COURSE"
@@ -104,14 +104,14 @@ int update_student(student **student_head, lecture *course_head) {
             char new_name[50];
 
             get_safe_name(3, new_name, sizeof(new_name), "\nEnter the new name (or type 'exit' to cancel): ");
-
-            if (strcmp(new_name, "exit") == 0) {
-                printf("\nOperation cancelled. Returning to the previous menu...\n\n");
-                break;
-            }
-
+            
             for (int i = 0; new_name[i] != '\0'; i++) {
                 new_name[i] = toupper((unsigned char)new_name[i]);
+            }
+
+            if (strcmp(new_name, "EXIT") == 0) {
+                printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                break;
             }
 
             strcpy(current_student->name, new_name);
@@ -138,21 +138,21 @@ int update_student(student **student_head, lecture *course_head) {
                 break;
             }
 
-            print_enrolled_lectures(current_student);
+            print_enrolled_courses(current_student);
 
             char target_course_id[10];
 
             get_safe_string(3, target_course_id, sizeof(target_course_id),
                             "\nEnter the course ID you want to drop"
                             "(or type 'exit' to cancel): ");
-
-            if (strcmp(target_course_id, "exit") == 0) {
-                printf("\nOperation cancelled. Returning to the previous menu...\n\n");
-                break;
-            }
-
+            
             for (int i = 0; target_course_id[i] != '\0'; i++) {
                 target_course_id[i] = toupper((unsigned char)target_course_id[i]);
+            }
+
+            if (strcmp(target_course_id, "EXIT") == 0) {
+                printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                break;
             }
 
             enrollment *current_enrollment = current_student->records;
@@ -281,14 +281,14 @@ int update_student(student **student_head, lecture *course_head) {
 
             get_safe_string(3, temp_course_id, sizeof(temp_course_id),
                             "\nEnter the course ID you want to enroll in (or type 'exit' to cancel): ");
-
-            if (strcmp(temp_course_id, "exit") == 0) {
-                printf("\nOperation cancelled. Returning to the previous menu...\n\n");
-                break;
-            }
-
+            
             for (int i = 0; temp_course_id[i] != '\0'; i++) {
                 temp_course_id[i] = toupper((unsigned char)temp_course_id[i]);
+            }
+
+            if (strcmp(temp_course_id, "EXIT") == 0) {
+                printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                break;
             }
 
             lecture *current_course = find_course(course_head, temp_course_id);
@@ -385,14 +385,14 @@ int update_student(student **student_head, lecture *course_head) {
 
             get_safe_string(3, target_course_id, sizeof(target_course_id),
                             "\nEnter the course id you want to update an exam grade (or type 'exit' to cancel)");
-
-            if (strcmp(target_course_id, "exit") == 0) {
-                printf("\nOperation cancelled. Returning to the previous menu...\n\n");
-                break;
-            }
-
+            
             for (int i = 0; target_course_id[i] != '\0'; i++) {
                 target_course_id[i] = toupper((unsigned char)target_course_id[i]);
+            }
+
+            if (strcmp(target_course_id, "EXIT") == 0) {
+                printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                break;
             }
 
             enrollment *current_enrollment = current_student->records;
@@ -424,14 +424,14 @@ int update_student(student **student_head, lecture *course_head) {
 
             get_safe_string(3, target_exam_name, sizeof(target_exam_name),
                             "\nEnter the exam name you want to update exam grade (or type 'exit' to cancel)");
-
-            if (strcmp(target_exam_name, "exit") == 0) {
-                printf("\nOperation cancelled. Returning to the previous menu...\n\n");
-                break;
-            }
-
+            
             for (int i = 0; target_exam_name[i] != '\0'; i++) {
                 target_exam_name[i] = toupper((unsigned char)target_exam_name[i]);
+            }
+
+            if (strcmp(target_exam_name, "EXIT") == 0) {
+                printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                break;
             }
 
             current_exam = current_enrollment->lecture->exams;

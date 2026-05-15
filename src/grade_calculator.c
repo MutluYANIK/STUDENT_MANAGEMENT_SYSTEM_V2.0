@@ -2,6 +2,7 @@
 #include "../headers/student_management_system.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void grade_calculator(enrollment *enrollment_record) {
 

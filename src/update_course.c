@@ -14,21 +14,21 @@ int update_course(student **student_head, lecture **course_head) {
         return 0;
     }
 
-    print_all_courses(course_head);
+    print_all_courses(*course_head);
 
     char temp_course_id[10];
     get_safe_string(3, temp_course_id, sizeof(temp_course_id),
                     "\nEnter the course ID you want to update"
                     "(or type 'exit' to return to main menu): ");
 
-    if (strcmp(temp_course_id, "exit") == 0) {
-        printf("\nOperation cancelled. Returning to main menu...\n\n");
-        return 0;
-    }
-
     // Convert the input course ID to uppercase for consistency in comparison
     for (int i = 0; temp_course_id[i] != '\0'; i++) {
         temp_course_id[i] = toupper((unsigned char)temp_course_id[i]);
+    }
+
+    if (strcmp(temp_course_id, "EXIT") == 0) {
+        printf("\nOperation cancelled. Returning to main menu...\n\n");
+        return 0;
     }
 
     lecture *target_course = *course_head;
@@ -55,14 +55,14 @@ int update_course(student **student_head, lecture **course_head) {
 
     while (loop_flag) {
 
-        printf("\n========================================================================================="
+        printf("\n\n========================================================================================="
                "===============================\n");
         printf("                                                    UPDATE A COURSE");
         printf("\n========================================================================================="
-               "===============================\n\n\n");
+               "===============================\n\n");
 
         int choice = get_safe_int_between(0, 7, 3,
-                                          "\n[0] EXIT\n"
+                                          "\n[0] EXIT"
                                           "\n[1] UPDATE COURSE ID"
                                           "\n[2] UPDATE COURSE NAME"
                                           "\n[3] UPDATE COURSE CREDIT"
@@ -88,13 +88,13 @@ int update_course(student **student_head, lecture **course_head) {
             get_safe_string(3, new_course_id, sizeof(new_course_id),
                             "\nEnter the new course ID (or type 'exit' to cancel): ");
 
-            if (strcmp(new_course_id, "exit") == 0) {
-                printf("\nOperation cancelled. Returning to previous menu...\n\n");
-                break;
-            }
-
             for (int i = 0; new_course_id[i] != '\0'; i++) {
                 new_course_id[i] = toupper((unsigned char)new_course_id[i]);
+            }
+
+            if (strcmp(new_course_id, "EXIT") == 0) {
+                printf("\nOperation cancelled. Returning to previous menu...\n\n");
+                break;
             }
 
             if (is_course_id_exist(*course_head, new_course_id)) {
@@ -142,7 +142,7 @@ int update_course(student **student_head, lecture **course_head) {
             }
 
             printf("\nCourse ID has been successfully updated.\n\n");
-            
+
             course_save_flag = 1;
 
             break;
@@ -155,14 +155,18 @@ int update_course(student **student_head, lecture **course_head) {
             get_safe_string(3, temp_course_name, sizeof(temp_course_name),
                             "\nEnter the new course name (or type 'exit' to cancel): ");
 
-            if (strcmp(temp_course_name, "exit") == 0) {
+            for (int i = 0; temp_course_name[i] != '\0'; i++) {
+                temp_course_name[i] = toupper((unsigned char)temp_course_name[i]);
+            }
+
+            if (strcmp(temp_course_name, "EXIT") == 0) {
                 printf("\nOperation cancelled. Returning to previous menu...\n\n");
                 break;
             }
 
             strcpy(target_course->lecture_name, temp_course_name);
             printf("\nCourse name has been successfully updated\n\n");
-            
+
             course_save_flag = 1;
 
             break;
@@ -200,7 +204,7 @@ int update_course(student **student_head, lecture **course_head) {
 
             printf("\nCourse credit has been successfully updated and student GPAs recalculated\n\n");
 
-            student *current_student = *student_head;
+            current_student = *student_head;
 
             while (current_student != NULL) {
 
@@ -234,13 +238,13 @@ int update_course(student **student_head, lecture **course_head) {
             get_safe_string(3, new_exam_name, sizeof(new_exam_name),
                             "\nEnter the new exam name (or type 'exit' to cancel): ");
 
-            if (strcmp(new_exam_name, "exit") == 0) {
-                printf("\nOperation cancelled. Returning to previous menu...\n\n");
-                break;
-            }
-
             for (int i = 0; new_exam_name[i] != '\0'; i++) {
                 new_exam_name[i] = toupper((unsigned char)new_exam_name[i]);
+            }
+
+            if (strcmp(new_exam_name, "EXIT") == 0) {
+                printf("\nOperation cancelled. Returning to previous menu...\n\n");
+                break;
             }
 
             exam_template *temp_exam = target_course->exams;
@@ -350,7 +354,7 @@ int update_course(student **student_head, lecture **course_head) {
 
             student_save_flag = 1;
             course_save_flag = 1;
-            
+
             break;
         }
 
@@ -382,14 +386,14 @@ int update_course(student **student_head, lecture **course_head) {
 
             get_safe_string(3, temp_exam_name, sizeof(temp_exam_name),
                             "\nEnter the exam name you want to remove (or type 'exit' to cancel): ");
-
-            if (strcmp(temp_exam_name, "exit") == 0) {
-                printf("\nOperation cancelled. Returning to previous menu...\n\n");
-                break;
-            }
-
+            
             for (int i = 0; temp_exam_name[i] != '\0'; i++) {
                 temp_exam_name[i] = toupper((unsigned char)temp_exam_name[i]);
+            }
+
+            if (strcmp(temp_exam_name, "EXIT") == 0) {
+                printf("\nOperation cancelled. Returning to previous menu...\n\n");
+                break;
             }
 
             int exam_counter = 0;
@@ -553,14 +557,14 @@ int update_course(student **student_head, lecture **course_head) {
 
             get_safe_string(3, temp_exam_name, sizeof(temp_exam_name),
                             "\nEnter the name of the exam you want to rename (or type 'exit' to cancel): ");
-
-            if (strcmp(temp_exam_name, "exit") == 0) {
-                printf("\nOperation cancelled. Returning to previous menu...\n\n");
-                break;
-            }
-
+            
             for (int i = 0; temp_exam_name[i] != '\0'; i++) {
                 temp_exam_name[i] = toupper((unsigned char)temp_exam_name[i]);
+            }
+
+            if (strcmp(temp_exam_name, "EXIT") == 0) {
+                printf("\nOperation cancelled. Returning to previous menu...\n\n");
+                break;
             }
 
             current_exam = target_course->exams;
@@ -600,7 +604,7 @@ int update_course(student **student_head, lecture **course_head) {
             strcpy(current_exam->exam_name, temp_exam_name);
 
             printf("\nExam name changed successfully\n\n");
-            
+
             course_save_flag = 1;
 
             break;

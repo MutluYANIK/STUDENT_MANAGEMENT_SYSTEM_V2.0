@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 void print_gpa(float GPA) {
 
     if (GPA == -1.0) {

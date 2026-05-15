@@ -5,7 +5,7 @@ void reverse_list(student **student_head) {
 
     if (*student_head == NULL || (*student_head)->next == NULL) {
         printf("\nThere are not enough students in the list to reverse it.\n\n");
-        return 0;
+        return;
     }
 
     student *previous = NULL;
