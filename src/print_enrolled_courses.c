@@ -9,7 +9,7 @@ void print_enrolled_courses(student *current_student){
     
     while(current_enrollment != NULL){
         
-        printf("%s\n",current_enrollment->lecture->lecture_id);
+        printf("%s\n",current_enrollment->course->course_credit);
         current_enrollment = current_enrollment->next;
     }
 }

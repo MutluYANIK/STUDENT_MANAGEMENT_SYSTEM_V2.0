@@ -6,12 +6,12 @@
 
 void grade_calculator(enrollment *enrollment_record) {
 
-    if (enrollment_record == NULL || enrollment_record->lecture == NULL) {
+    if (enrollment_record == NULL || enrollment_record->course == NULL) {
         printf("\n!ERROR! Invalid enrollment record provided to grade_calculator.\n\n");
         return;
     }
 
-    exam_template *current_exam = enrollment_record->lecture->exams;
+    exam_template *current_exam = enrollment_record->course->exams;
 
     if (current_exam == NULL) {
         enrollment_record->course_average = -1; // No exams, set average to -1 to indicate N/A

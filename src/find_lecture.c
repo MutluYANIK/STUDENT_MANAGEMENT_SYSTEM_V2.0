@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <string.h>
 
-lecture *find_course(lecture *course_head, const char *target_course_id){
+course *find_course(course *course_head, const char *target_course_id){
 
-    lecture *current_course = course_head;
+    course *current_course = course_head;
 
     while(current_course != NULL){
         
-        if(strcmp(current_course->lecture_id, target_course_id) == 0){
+        if(strcmp(current_course->course_id, target_course_id) == 0){
             break;
         }
 

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int add_course(lecture **course_head) {
+int add_course(course **course_head) {
     /*
      * Gives you the chance to exit the function while taking course id input, checks for duplicate
      * course ids to maintain data integrity and prevent confusion in the system.
@@ -29,16 +29,16 @@ int add_course(lecture **course_head) {
 
     // Allocates memory for a new course and checks for successful allocation to prevent crashes.
 
-    lecture *new_course = (lecture *)malloc(sizeof(lecture));
+    course *new_course = (course *)malloc(sizeof(course));
 
-    lecture *current = *course_head;
+    course *current = *course_head;
 
     if (new_course == NULL) {
         printf("\n!ERROR! Memory allocation failed!\n\n");
         return 0;
     }
 
-    strcpy(new_course->lecture_id, temp_id);
+    strcpy(new_course->course_id, temp_id);
     /*
      * Takes input for the course name and converts it to uppercase for consistency.
      */
@@ -49,9 +49,9 @@ int add_course(lecture **course_head) {
         temp_course_name[i] = toupper((unsigned char)temp_course_name[i]);
     }
 
-    strcpy(new_course->lecture_name, temp_course_name);
+    strcpy(new_course->course_name, temp_course_name);
 
-    new_course->lecture_credit = get_positive_int(3, "\nEnter course credit: ");
+    new_course->course_credit = get_positive_int(3, "\nEnter course credit: ");
 
     int total_percentage = 0;
     new_course->exams = NULL;
@@ -59,7 +59,7 @@ int add_course(lecture **course_head) {
     exam_template *exam_tail = NULL;
 
     printf("\nEnter the exams for %s (The total percentage of all exams must equal 100%%): ",
-           new_course->lecture_name);
+           new_course->course_name);
 
     /*
      * Allows the user to enter multiple exams for the course, ensuring that the total percanthage of all exams equals
@@ -123,25 +123,25 @@ int add_course(lecture **course_head) {
         total_percentage += temp_exam_percentage;
     }
 
-    printf("\nExam entry complete for %s. Total percentage reached: %d%%\n\n", new_course->lecture_name,
+    printf("\nExam entry complete for %s. Total percentage reached: %d%%\n\n", new_course->course_name,
            total_percentage);
 
     /*
      * Inserts the new course into the linked list of course in sorted order based on course ID to maintain
      * an organized structure.
      */
-    if (current == NULL || strcmp(new_course->lecture_id, current->lecture_id) < 0) {
+    if (current == NULL || strcmp(new_course->course_id, current->course_id) < 0) {
         new_course->next = current;
         *course_head = new_course;
     } else {
-        while (current->next != NULL && strcmp(new_course->lecture_id, current->next->lecture_id) > 0) {
+        while (current->next != NULL && strcmp(new_course->course_id, current->next->course_id) > 0) {
             current = current->next;
         }
         new_course->next = current->next;
         current->next = new_course;
     }
 
-    printf("\nCourse '%s' with ID '%s' added successfully!\n\n", new_course->lecture_name, new_course->lecture_id);
+    printf("\nCourse '%s' with ID '%s' added successfully!\n\n", new_course->course_name, new_course->course_id);
     
     course_save_flag = 1;
 

@@ -6,7 +6,7 @@
 #include <string.h>
 
 // Check if the student list is empty returning an error message and return to the previous menu.
-int update_student(student **student_head, lecture *course_head) {
+int update_student(student **student_head, course *course_head) {
 
     if (*student_head == NULL) {
         printf("\n!ERROR! No student available to update\n\n");
@@ -160,7 +160,7 @@ int update_student(student **student_head, lecture *course_head) {
 
             while (current_enrollment != NULL) {
 
-                if (strcmp(current_enrollment->lecture->lecture_id, target_course_id) == 0) {
+                if (strcmp(current_enrollment->course->course_id, target_course_id) == 0) {
                     break;
                 }
 
@@ -291,7 +291,7 @@ int update_student(student **student_head, lecture *course_head) {
                 break;
             }
 
-            lecture *current_course = find_course(course_head, temp_course_id);
+            course *current_course = find_course(course_head, temp_course_id);
 
             if (current_course == NULL) {
                 break;
@@ -303,8 +303,8 @@ int update_student(student **student_head, lecture *course_head) {
 
             while (current_enrollment != NULL) {
 
-                if (strcmp(current_course->lecture_id, current_enrollment->lecture->lecture_id) == 0) {
-                    printf("\nThis student already enrolled in this course with ID '%s'", current_course->lecture_id);
+                if (strcmp(current_course->course_id, current_enrollment->course->course_id) == 0) {
+                    printf("\nThis student already enrolled in this course with ID '%s'", current_course->course_id);
                     already_enrolled = 1;
                     break;
                 }
@@ -323,9 +323,9 @@ int update_student(student **student_head, lecture *course_head) {
                 return 0;
             }
 
-            new_enrollment->lecture = current_course;
+            new_enrollment->course = current_course;
 
-            exam_template *current_exam = new_enrollment->lecture->exams;
+            exam_template *current_exam = new_enrollment->course->exams;
             int exam_counter = 0;
 
             while (current_exam != NULL) {
@@ -399,7 +399,7 @@ int update_student(student **student_head, lecture *course_head) {
 
             while (current_enrollment != NULL) {
 
-                if (strcmp(current_enrollment->lecture->lecture_id, target_course_id) == 0) {
+                if (strcmp(current_enrollment->course->course_id, target_course_id) == 0) {
                     break;
                 }
 
@@ -411,7 +411,7 @@ int update_student(student **student_head, lecture *course_head) {
                 break;
             }
 
-            exam_template *current_exam = current_enrollment->lecture->exams;
+            exam_template *current_exam = current_enrollment->course->exams;
             printf("\nAvailable exams:\n");
 
             while (current_exam != NULL) {
@@ -434,7 +434,7 @@ int update_student(student **student_head, lecture *course_head) {
                 break;
             }
 
-            current_exam = current_enrollment->lecture->exams;
+            current_exam = current_enrollment->course->exams;
             int exam_counter = 0;
 
             while (current_exam != NULL) {
@@ -491,7 +491,7 @@ int update_student(student **student_head, lecture *course_head) {
 
             while (current_enrollment != NULL) {
 
-                exam_template *current_exam = current_enrollment->lecture->exams;
+                exam_template *current_exam = current_enrollment->course->exams;
                 int exam_counter = 0;
 
                 while (current_exam != NULL) {
@@ -499,7 +499,7 @@ int update_student(student **student_head, lecture *course_head) {
                     char prompt_message[150];
                     snprintf(prompt_message, sizeof(prompt_message),
                              "\nEnter the new '%s' grade for course '%s': ", current_exam->exam_name,
-                             current_enrollment->lecture->lecture_name);
+                             current_enrollment->course->course_name);
 
                     current_enrollment->scores[exam_counter] = get_safe_int_between(-1, 100, 3, prompt_message);
 
@@ -548,7 +548,7 @@ int update_student(student **student_head, lecture *course_head) {
 
             while (current_enrollment != NULL) {
 
-                exam_template *current_exam = current_enrollment->lecture->exams;
+                exam_template *current_exam = current_enrollment->course->exams;
                 int exam_counter = 0;
 
                 while (current_exam != NULL) {

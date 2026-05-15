@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int add_student(student **student_head, lecture *course_head) {
+int add_student(student **student_head, course *course_head) {
 
     /*
      * Gives you the chance to exit the function while taking student ID input, checks for duplicate
@@ -44,7 +44,7 @@ int add_student(student **student_head, lecture *course_head) {
     new_student->records = NULL;
     new_student->next = NULL;
 
-    lecture *current_course = course_head;
+    course *current_course = course_head;
 
     /*
      * Gives you the chance to exit the enrollment process while taking course ID input, checks for valid course IDs
@@ -73,10 +73,10 @@ int add_student(student **student_head, lecture *course_head) {
             break;
         }
 
-        lecture *selected_course = course_head;
+        course *selected_course = course_head;
 
         while (selected_course != NULL) {
-            if (strcmp(selected_course->lecture_id, temp_course_id) == 0) {
+            if (strcmp(selected_course->course_id, temp_course_id) == 0) {
                 break;
             }
             selected_course = selected_course->next;
@@ -90,7 +90,7 @@ int add_student(student **student_head, lecture *course_head) {
         if (enrollment_check(new_student, selected_course) == 1) {
             printf("\n!ERROR! Student '%s' (ID: %u) is already enrolled in course '%s'. Please choose a different "
                    "course.\n\n",
-                   new_student->name, new_student->id, selected_course->lecture_name);
+                   new_student->name, new_student->id, selected_course->course_name);
             continue;
         }
 
@@ -114,7 +114,7 @@ int add_student(student **student_head, lecture *course_head) {
             return 0;
         }
 
-        new_enrollment->lecture = selected_course;
+        new_enrollment->course = selected_course;
 
         int exam_count = 0;
         exam_template *temp_exam = selected_course->exams;
@@ -141,7 +141,7 @@ int add_student(student **student_head, lecture *course_head) {
         new_student->records = new_enrollment;
 
         printf("\nStudent '%s' (ID: %u) enrolled in course '%s' successfully!\n\n", new_student->name, new_student->id,
-               selected_course->lecture_name);
+               selected_course->course_name);
     }
 
     /*
@@ -152,9 +152,9 @@ int add_student(student **student_head, lecture *course_head) {
 
     while (current_enrollment != NULL) {
 
-        printf("\nEntering grades for course '%s'\n", current_enrollment->lecture->lecture_name);
+        printf("\nEntering grades for course '%s'\n", current_enrollment->course->course_name);
 
-        exam_template *current_exam = current_enrollment->lecture->exams;
+        exam_template *current_exam = current_enrollment->course->exams;
         int i = 0;
 
         while (current_exam != NULL) {

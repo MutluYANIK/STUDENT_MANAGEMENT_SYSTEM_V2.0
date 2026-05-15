@@ -4,14 +4,14 @@
 #include <stdio.h>
 #include <string.h>
 
-void display_student(student *student_head, lecture *lecture_head) {
+void display_student(student *student_head, course *course_head) {
 
     if (student_head == NULL) {
         printf("\n!ERROR! The student list is empty\n\n");
         return;
     }
 
-    if (lecture_head == NULL) {
+    if (course_head == NULL) {
         printf("\n!ERROR! The course list is empty\n\n");
         return;
     }
@@ -121,11 +121,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                         char exam_buffer[75] = "";
                         char temp_buffer[75] = "";
 
-                        printf("%-14.14s", current_enrollment->lecture->lecture_id);
-                        printf("%-25.25s", current_enrollment->lecture->lecture_name);
-                        printf("%-10d", current_enrollment->lecture->lecture_credit);
+                        printf("%-14.14s", current_enrollment->course->course_id);
+                        printf("%-25.25s", current_enrollment->course->course_name);
+                        printf("%-10d", current_enrollment->course->course_credit);
 
-                        exam_template *current_exam = current_enrollment->lecture->exams;
+                        exam_template *current_exam = current_enrollment->course->exams;
                         int exam_index = 0;
 
                         while (current_exam != NULL) {
@@ -232,11 +232,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                         char exam_buffer[75] = "";
                         char temp_buffer[75] = "";
 
-                        printf("%-14.14s", current_enrollment->lecture->lecture_id);
-                        printf("%-25.25s", current_enrollment->lecture->lecture_name);
-                        printf("%-10d", current_enrollment->lecture->lecture_credit);
+                        printf("%-14.14s", current_enrollment->course->course_id);
+                        printf("%-25.25s", current_enrollment->course->course_name);
+                        printf("%-10d", current_enrollment->course->course_credit);
 
-                        exam_template *current_exam = current_enrollment->lecture->exams;
+                        exam_template *current_exam = current_enrollment->course->exams;
                         int exam_index = 0;
 
                         while (current_exam != NULL) {
@@ -318,11 +318,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                         char exam_buffer[75] = "";
                         char temp_buffer[75] = "";
 
-                        printf("%-14.14s", current_enrollment->lecture->lecture_id);
-                        printf("%-25.25s", current_enrollment->lecture->lecture_name);
-                        printf("%-10d", current_enrollment->lecture->lecture_credit);
+                        printf("%-14.14s", current_enrollment->course->course_id);
+                        printf("%-25.25s", current_enrollment->course->course_name);
+                        printf("%-10d", current_enrollment->course->course_credit);
 
-                        exam_template *current_exam = current_enrollment->lecture->exams;
+                        exam_template *current_exam = current_enrollment->course->exams;
                         int exam_index = 0;
 
                         while (current_exam != NULL) {
@@ -400,11 +400,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                         char exam_buffer[75] = "";
                         char temp_buffer[75] = "";
 
-                        printf("%-14.14s", current_enrollment->lecture->lecture_id);
-                        printf("%-25.25s", current_enrollment->lecture->lecture_name);
-                        printf("%-10d", current_enrollment->lecture->lecture_credit);
+                        printf("%-14.14s", current_enrollment->course->course_id);
+                        printf("%-25.25s", current_enrollment->course->course_name);
+                        printf("%-10d", current_enrollment->course->course_credit);
 
-                        exam_template *current_exam = current_enrollment->lecture->exams;
+                        exam_template *current_exam = current_enrollment->course->exams;
                         int exam_index = 0;
 
                         while (current_exam != NULL) {
@@ -543,11 +543,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                             char exam_buffer[75] = "";
                             char temp_buffer[75] = "";
 
-                            printf("%-14.14s", current_enrollment->lecture->lecture_id);
-                            printf("%-25.25s", current_enrollment->lecture->lecture_name);
-                            printf("%-10d", current_enrollment->lecture->lecture_credit);
+                            printf("%-14.14s", current_enrollment->course->course_id);
+                            printf("%-25.25s", current_enrollment->course->course_name);
+                            printf("%-10d", current_enrollment->course->course_credit);
 
-                            exam_template *current_exam = current_enrollment->lecture->exams;
+                            exam_template *current_exam = current_enrollment->course->exams;
                             int exam_index = 0;
 
                             while (current_exam != NULL) {
@@ -681,11 +681,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                             char exam_buffer[75] = "";
                             char temp_buffer[75] = "";
 
-                            printf("%-14.14s", current_enrollment->lecture->lecture_id);
-                            printf("%-25.25s", current_enrollment->lecture->lecture_name);
-                            printf("%-10d", current_enrollment->lecture->lecture_credit);
+                            printf("%-14.14s", current_enrollment->course->course_id);
+                            printf("%-25.25s", current_enrollment->course->course_name);
+                            printf("%-10d", current_enrollment->course->course_credit);
 
-                            exam_template *current_exam = current_enrollment->lecture->exams;
+                            exam_template *current_exam = current_enrollment->course->exams;
                             int exam_index = 0;
 
                             while (current_exam != NULL) {
@@ -789,11 +789,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                             char exam_buffer[75] = "";
                             char temp_buffer[75] = "";
 
-                            printf("%-14.14s", current_enrollment->lecture->lecture_id);
-                            printf("%-25.25s", current_enrollment->lecture->lecture_name);
-                            printf("%-10d", current_enrollment->lecture->lecture_credit);
+                            printf("%-14.14s", current_enrollment->course->course_id);
+                            printf("%-25.25s", current_enrollment->course->course_name);
+                            printf("%-10d", current_enrollment->course->course_credit);
 
-                            exam_template *current_exam = current_enrollment->lecture->exams;
+                            exam_template *current_exam = current_enrollment->course->exams;
                             int exam_index = 0;
 
                             while (current_exam != NULL) {
@@ -899,11 +899,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                             char exam_buffer[75] = "";
                             char temp_buffer[75] = "";
 
-                            printf("%-14.14s", current_enrollment->lecture->lecture_id);
-                            printf("%-25.25s", current_enrollment->lecture->lecture_name);
-                            printf("%-10d", current_enrollment->lecture->lecture_credit);
+                            printf("%-14.14s", current_enrollment->course->course_id);
+                            printf("%-25.25s", current_enrollment->course->course_name);
+                            printf("%-10d", current_enrollment->course->course_credit);
 
-                            exam_template *current_exam = current_enrollment->lecture->exams;
+                            exam_template *current_exam = current_enrollment->course->exams;
                             int exam_index = 0;
 
                             while (current_exam != NULL) {
@@ -958,7 +958,7 @@ void display_student(student *student_head, lecture *lecture_head) {
          */
         case 3: {
 
-            print_all_courses(lecture_head);
+            print_all_courses(course_head);
 
             char selected_course_id[10];
 
@@ -974,11 +974,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                 break;
             }
 
-            lecture *selected_course = lecture_head;
+            course *selected_course = course_head;
 
             while (selected_course != NULL) {
 
-                if (strcmp(selected_course->lecture_id, selected_course_id) == 0) {
+                if (strcmp(selected_course->course_id, selected_course_id) == 0) {
                     break;
                 }
 
@@ -1029,7 +1029,7 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                         while (current_enrollment != NULL) {
 
-                            if (strcmp(current_enrollment->lecture->lecture_id, selected_course_id) == 0) {
+                            if (strcmp(current_enrollment->course->course_id, selected_course_id) == 0) {
                                 break;
                             }
 
@@ -1054,7 +1054,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                         printf("%-15u", current_student->id);
                         printf("%-30.30s", current_student->name);
 
-                        exam_template *current_exam = current_enrollment->lecture->exams;
+                        exam_template *current_exam = current_enrollment->course->exams;
 
                         char exam_buffer[75] = "";
                         char temp_buffer[75] = "";
@@ -1127,7 +1127,7 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                         while (current_enrollment != NULL) {
 
-                            if (strcmp(current_enrollment->lecture->lecture_id, selected_course_id) == 0) {
+                            if (strcmp(current_enrollment->course->course_id, selected_course_id) == 0) {
                                 break;
                             }
 
@@ -1155,7 +1155,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                         printf("%-15u", current_student->id);
                         printf("%-30.30s", current_student->name);
 
-                        exam_template *current_exam = current_enrollment->lecture->exams;
+                        exam_template *current_exam = current_enrollment->course->exams;
 
                         char exam_buffer[75] = "";
                         char temp_buffer[75] = "";
@@ -1205,7 +1205,7 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                         while (current_enrollment != NULL) {
 
-                            if (strcmp(current_enrollment->lecture->lecture_id, selected_course_id) == 0) {
+                            if (strcmp(current_enrollment->course->course_id, selected_course_id) == 0) {
                                 break;
                             }
 
@@ -1232,7 +1232,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                         printf("%-15u", current_student->id);
                         printf("%-30.30s", current_student->name);
 
-                        exam_template *current_exam = current_enrollment->lecture->exams;
+                        exam_template *current_exam = current_enrollment->course->exams;
 
                         char exam_buffer[75] = "";
                         char temp_buffer[75] = "";
@@ -1282,7 +1282,7 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                         while (current_enrollment != NULL) {
 
-                            if (strcmp(current_enrollment->lecture->lecture_id, selected_course_id) == 0) {
+                            if (strcmp(current_enrollment->course->course_id, selected_course_id) == 0) {
                                 break;
                             }
 
@@ -1309,7 +1309,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                         printf("%-15u", current_student->id);
                         printf("%-30.30s", current_student->name);
 
-                        exam_template *current_exam = current_enrollment->lecture->exams;
+                        exam_template *current_exam = current_enrollment->course->exams;
 
                         char exam_buffer[75] = "";
                         char temp_buffer[75] = "";
@@ -1372,7 +1372,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                          */
                         while (current_enrollment != NULL) {
 
-                            if (strcmp(current_enrollment->lecture->lecture_id, selected_course_id) == 0) {
+                            if (strcmp(current_enrollment->course->course_id, selected_course_id) == 0) {
                                 student_found = 1;
                                 break;
                             }
@@ -1411,11 +1411,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                             char exam_buffer[75] = "";
                             char temp_buffer[75] = "";
 
-                            printf("%-14.14s", current_enrollment->lecture->lecture_id);
-                            printf("%-25.25s", current_enrollment->lecture->lecture_name);
-                            printf("%-10d", current_enrollment->lecture->lecture_credit);
+                            printf("%-14.14s", current_enrollment->course->course_id);
+                            printf("%-25.25s", current_enrollment->course->course_name);
+                            printf("%-10d", current_enrollment->course->course_credit);
 
-                            exam_template *current_exam = current_enrollment->lecture->exams;
+                            exam_template *current_exam = current_enrollment->course->exams;
                             int exam_index = 0;
 
                             while (current_exam != NULL) {
@@ -1529,11 +1529,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                         break;
                     }
 
-                    lecture *selected_course = lecture_head;
+                    course *selected_course = course_head;
 
                     while (selected_course != NULL) {
 
-                        if (strcmp(selected_course->lecture_id, selected_course_id) == 0) {
+                        if (strcmp(selected_course->course_id, selected_course_id) == 0) {
                             break;
                         }
 
@@ -1562,7 +1562,7 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                         while (current_enrollment != NULL) {
 
-                            if (strcmp(current_enrollment->lecture->lecture_id, selected_course_id) == 0 &&
+                            if (strcmp(current_enrollment->course->course_id, selected_course_id) == 0 &&
                                 current_enrollment->course_average != -1) {
                                 student_counter++;
                                 enrolled_student_found = 1;
@@ -1608,7 +1608,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                  */
                 case 2: {
 
-                    lecture *current_course = lecture_head;
+                    course *current_course = course_head;
 
                     int header_printed = 0;
                     int course_avg_printed = 0;
@@ -1631,7 +1631,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                              */
                             while (current_enrollment != NULL) {
 
-                                if (strcmp(current_enrollment->lecture->lecture_id, current_course->lecture_id) == 0 &&
+                                if (strcmp(current_enrollment->course->course_id, current_course->course_id) == 0 &&
                                     current_enrollment->course_average != -1) {
                                     student_counter++;
                                     enrolled_student_found = 1;
@@ -1670,7 +1670,7 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                         float course_average = total_average / student_counter;
 
-                        printf("%-20s%-40.40s%-20.2f\n", current_course->lecture_id, current_course->lecture_name,
+                        printf("%-20s%-40.40s%-20.2f\n", current_course->course_id, current_course->course_name,
                                course_average);
                         course_avg_printed = 1;
 
@@ -1828,7 +1828,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                  */
                 case 2: {
 
-                    print_all_courses(lecture_head);
+                    print_all_courses(course_head);
 
                     char selected_course_id[10];
 
@@ -1845,11 +1845,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                         break;
                     }
 
-                    lecture *current_course = lecture_head;
+                    course *current_course = course_head;
 
                     while (current_course != NULL) {
 
-                        if (strcmp(current_course->lecture_id, selected_course_id) == 0) {
+                        if (strcmp(current_course->course_id, selected_course_id) == 0) {
                             break;
                         }
 
@@ -1880,7 +1880,7 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                         while (current_enrollment != NULL) {
 
-                            if (strcmp(current_enrollment->lecture->lecture_id, current_course->lecture_id) == 0) {
+                            if (strcmp(current_enrollment->course->course_id, current_course->course_id) == 0) {
                                 break;
                             }
 
@@ -1901,13 +1901,13 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                     if (TOP_GPA == -1.0) {
                         printf("\nThere are no students with calculated GPA in the couse with ID '%s'\n\n",
-                               current_course->lecture_id);
+                               current_course->course_id);
                         break;
                     }
 
                     printf("\n\n==========================================================================================="
                            "=============================\n");
-                    printf("TOP STUDENTS BY GPA IN '%s'\n", current_course->lecture_id);
+                    printf("TOP STUDENTS BY GPA IN '%s'\n", current_course->course_id);
                     printf("==========================================================================================="
                            "=============================\n\n\n");
                     printf("%-25s%-50s%-8s\n", "STUDENT ID", "STUDENT NAME", "GPA");
@@ -1930,7 +1930,7 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                         while (current_enrollment != NULL) {
 
-                            if (strcmp(current_enrollment->lecture->lecture_id, current_course->lecture_id) == 0) {
+                            if (strcmp(current_enrollment->course->course_id, current_course->course_id) == 0) {
                                 break;
                             }
 
@@ -1962,7 +1962,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                  */
                 case 3: {
 
-                    print_all_courses(lecture_head);
+                    print_all_courses(course_head);
 
                     char selected_course_id[10];
 
@@ -1979,11 +1979,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                         break;
                     }
 
-                    lecture *current_course = lecture_head;
+                    course *current_course = course_head;
 
                     while (current_course != NULL) {
 
-                        if (strcmp(current_course->lecture_id, selected_course_id) == 0) {
+                        if (strcmp(current_course->course_id, selected_course_id) == 0) {
                             break;
                         }
 
@@ -2032,7 +2032,7 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                         while (current_enrollment != NULL) {
 
-                            if (strcmp(current_enrollment->lecture->lecture_id, current_course->lecture_id) == 0) {
+                            if (strcmp(current_enrollment->course->course_id, current_course->course_id) == 0) {
                                 break;
                             }
 
@@ -2061,7 +2061,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                             printf("%-15u", current_student->id);
                             printf("%-30.30s", current_student->name);
 
-                            exam_template *current_exam = current_enrollment->lecture->exams;
+                            exam_template *current_exam = current_enrollment->course->exams;
 
                             char exam_buffer[75] = "";
                             char temp_buffer[75] = "";
@@ -2133,7 +2133,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                  */
                 case 4: {
 
-                    print_all_courses(lecture_head);
+                    print_all_courses(course_head);
 
                     char selected_course_id[10];
 
@@ -2150,11 +2150,11 @@ void display_student(student *student_head, lecture *lecture_head) {
                         break;
                     }
 
-                    lecture *current_course = lecture_head;
+                    course *current_course = course_head;
 
                     while (current_course != NULL) {
 
-                        if (strcmp(current_course->lecture_id, selected_course_id) == 0) {
+                        if (strcmp(current_course->course_id, selected_course_id) == 0) {
                             break;
                         }
 
@@ -2251,7 +2251,7 @@ void display_student(student *student_head, lecture *lecture_head) {
 
                         while (current_enrollment != NULL) {
 
-                            if (strcmp(current_enrollment->lecture->lecture_id, current_course->lecture_id) == 0) {
+                            if (strcmp(current_enrollment->course->course_id, current_course->course_id) == 0) {
                                 break;
                             }
 
@@ -2281,7 +2281,7 @@ void display_student(student *student_head, lecture *lecture_head) {
                             printf("%-15u", current_student->id);
                             printf("%-30.30s", current_student->name);
 
-                            exam_template *current_exam = current_enrollment->lecture->exams;
+                            exam_template *current_exam = current_enrollment->course->exams;
 
                             char exam_buffer[75] = "";
                             char temp_buffer[75] = "";

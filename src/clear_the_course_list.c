@@ -9,7 +9,7 @@
  * updates their GPA and clears the course list.
  */
 
-void clear_the_course_list(student *student_head, lecture **course_head) {
+void clear_the_course_list(student *student_head, course **course_head) {
 
     student *current_student = student_head;
 
@@ -32,12 +32,12 @@ void clear_the_course_list(student *student_head, lecture **course_head) {
         current_student = current_student->next;
     }
 
-    lecture *current_lecture = *course_head;
-    lecture *previous_lecture = NULL;
+    course *current_course = *course_head;
+    course *previous_course = NULL;
 
-    while (current_lecture != NULL) {
+    while (current_course != NULL) {
 
-        exam_template *current_exam = current_lecture->exams;
+        exam_template *current_exam = current_course->exams;
         exam_template *previous_exam = NULL;
 
         while (current_exam != NULL) {
@@ -47,10 +47,10 @@ void clear_the_course_list(student *student_head, lecture **course_head) {
             free(previous_exam);
         }
 
-        previous_lecture = current_lecture;
-        current_lecture = current_lecture->next;
+        previous_course = current_course;
+        current_course = current_course->next;
 
-        free(previous_lecture);
+        free(previous_course);
     }
 
     *course_head = NULL;

@@ -22,7 +22,7 @@ int course_save_flag = 0;
 int main() {
 
     student *my_student_list = NULL;
-    lecture *my_course_list = NULL;
+    course *my_course_list = NULL;
 
     int loop_flag = 1;
 

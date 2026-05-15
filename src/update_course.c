@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int update_course(student **student_head, lecture **course_head) {
+int update_course(student **student_head, course **course_head) {
 
     // Check if the course list is empty returning an error message and return to the main menu
     if (*course_head == NULL) {
@@ -31,13 +31,13 @@ int update_course(student **student_head, lecture **course_head) {
         return 0;
     }
 
-    lecture *target_course = *course_head;
+    course *target_course = *course_head;
 
     /*
      * Traverse the linked list of courses to find the course with the matching ID. If not found, print an error
      * message and return to the main menu.
      */
-    while (target_course != NULL && strcmp(target_course->lecture_id, temp_course_id) != 0) {
+    while (target_course != NULL && strcmp(target_course->course_id, temp_course_id) != 0) {
         target_course = target_course->next;
     }
 
@@ -105,7 +105,7 @@ int update_course(student **student_head, lecture **course_head) {
             if (*course_head == target_course) {
                 *course_head = target_course->next;
             } else {
-                lecture *previous = *course_head;
+                course *previous = *course_head;
 
                 while (previous->next != NULL && previous->next != target_course) {
                     previous = previous->next;
@@ -116,24 +116,24 @@ int update_course(student **student_head, lecture **course_head) {
                 }
             }
 
-            strcpy(target_course->lecture_id, new_course_id);
+            strcpy(target_course->course_id, new_course_id);
             target_course->next = NULL;
 
             if (*course_head == NULL) {
 
                 *course_head = target_course;
 
-            } else if (strcmp(target_course->lecture_id, (*course_head)->lecture_id) < 0) {
+            } else if (strcmp(target_course->course_id, (*course_head)->course_id) < 0) {
 
                 target_course->next = *course_head;
                 *course_head = target_course;
 
             } else {
 
-                lecture *current_course = *course_head;
+                course *current_course = *course_head;
 
                 while (current_course->next != NULL &&
-                       strcmp(target_course->lecture_id, current_course->next->lecture_id) > 0) {
+                       strcmp(target_course->course_id, current_course->next->course_id) > 0) {
                     current_course = current_course->next;
                 }
 
@@ -164,7 +164,7 @@ int update_course(student **student_head, lecture **course_head) {
                 break;
             }
 
-            strcpy(target_course->lecture_name, temp_course_name);
+            strcpy(target_course->course_name, temp_course_name);
             printf("\nCourse name has been successfully updated\n\n");
 
             course_save_flag = 1;
@@ -183,7 +183,7 @@ int update_course(student **student_head, lecture **course_head) {
                 break;
             }
 
-            target_course->lecture_credit = temp_credit;
+            target_course->course_credit = temp_credit;
 
             student *current_student = *student_head;
 
@@ -192,7 +192,7 @@ int update_course(student **student_head, lecture **course_head) {
 
                 while (current_enrollment != NULL) {
 
-                    if (current_enrollment->lecture == target_course) {
+                    if (current_enrollment->course == target_course) {
                         calculate_student_gpa(current_student);
                         break;
                     }
@@ -321,7 +321,7 @@ int update_course(student **student_head, lecture **course_head) {
 
                 while (current_enrollment != NULL) {
 
-                    if (current_enrollment->lecture == target_course) {
+                    if (current_enrollment->course == target_course) {
                         int *temp_scores = (int *)realloc(current_enrollment->scores, exam_count * sizeof(int));
 
                         if (temp_scores == NULL) {
@@ -446,7 +446,7 @@ int update_course(student **student_head, lecture **course_head) {
 
                     while (current_enrollment != NULL) {
 
-                        if (current_enrollment->lecture == target_course) {
+                        if (current_enrollment->course == target_course) {
 
                             free(current_enrollment->scores);
                             current_enrollment->scores = NULL;
@@ -503,7 +503,7 @@ int update_course(student **student_head, lecture **course_head) {
 
                 while (current_enrollment != NULL) {
 
-                    if (current_enrollment->lecture == target_course) {
+                    if (current_enrollment->course == target_course) {
 
                         for (int i = target_index; i < new_exam_count; i++) {
                             current_enrollment->scores[i] = current_enrollment->scores[i + 1];
@@ -575,7 +575,7 @@ int update_course(student **student_head, lecture **course_head) {
 
             if (current_exam == NULL) {
                 printf("\n!ERROR! No exam found with name '%s' in course '%s'\n\n", temp_exam_name,
-                       target_course->lecture_name);
+                       target_course->course_name);
                 break;
             }
 
@@ -678,7 +678,7 @@ int update_course(student **student_head, lecture **course_head) {
 
                 while (current_enrollment != NULL) {
 
-                    if (current_enrollment->lecture == target_course) {
+                    if (current_enrollment->course == target_course) {
                         grade_calculator(current_enrollment);
                         calculate_student_gpa(current_student);
                         break;

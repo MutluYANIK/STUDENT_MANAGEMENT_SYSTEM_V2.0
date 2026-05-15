@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int delete_course(student *student_head, lecture **course_head) {
+int delete_course(student *student_head, course **course_head) {
 
     // Check if the course list is empty returning an error message and return to the main menu.
     if (*course_head == NULL) {
@@ -36,12 +36,12 @@ int delete_course(student *student_head, lecture **course_head) {
         return 0;
     }
 
-    lecture *selected_course = *course_head;
-    lecture *previous_course = NULL;
+    course *selected_course = *course_head;
+    course *previous_course = NULL;
 
     while (selected_course != NULL) {
 
-        if (strcmp(selected_course->lecture_id, temp_course_id) == 0) {
+        if (strcmp(selected_course->course_id, temp_course_id) == 0) {
             break;
         }
 
@@ -88,7 +88,7 @@ int delete_course(student *student_head, lecture **course_head) {
 
         while (current_enrollment != NULL) {
 
-            if (strcmp(current_enrollment->lecture->lecture_id, temp_course_id) == 0) {
+            if (strcmp(current_enrollment->course->course_id, temp_course_id) == 0) {
 
                 free(current_enrollment->scores);
 

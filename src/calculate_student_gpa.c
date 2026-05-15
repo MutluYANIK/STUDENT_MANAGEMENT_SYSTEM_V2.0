@@ -18,7 +18,7 @@ void calculate_student_gpa(student *target_student) {
         }
 
         float letter_grade_value = get_letter_grade_value(current_enrollment->letter_grade);
-        int current_credit = current_enrollment->lecture->lecture_credit;
+        int current_credit = current_enrollment->course->course_credit;
 
         total_weighted_score += letter_grade_value * current_credit;
         total_credits += current_credit;

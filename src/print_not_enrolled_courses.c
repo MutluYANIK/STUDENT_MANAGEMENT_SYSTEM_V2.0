@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 
-void print_not_enrolled_courses(student *current_student, lecture *course_head) {
+void print_not_enrolled_courses(student *current_student, course *course_head) {
 
-    lecture *current_course = course_head;
+    course *current_course = course_head;
 
     if(current_course == NULL){
         printf("\nNo courses available in the system\n");
@@ -18,7 +18,7 @@ void print_not_enrolled_courses(student *current_student, lecture *course_head) 
 
         while (current_enrollment != NULL) {
 
-            if (strcmp(current_enrollment->lecture->lecture_id, current_course->lecture_id) == 0) {
+            if (strcmp(current_enrollment->course->course_credit, current_course->course_credit) == 0) {
                 enrolled_flag = 1;
                 break;
             }
@@ -27,7 +27,7 @@ void print_not_enrolled_courses(student *current_student, lecture *course_head) 
         }
 
         if (!enrolled_flag) {
-            printf("%s", current_course->lecture_id);
+            printf("%s", current_course->course_credit);
         }
         current_course = current_course->next;
     }
