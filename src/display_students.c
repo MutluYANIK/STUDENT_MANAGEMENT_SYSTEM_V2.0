@@ -199,7 +199,7 @@ void display_student(student *student_head, course *course_head) {
                     }
 
                     if (!passed_course_check) {
-                        printf("\nThere are no passed courses for the student with ID '%u'\n\n", selected_student->id);
+                        printf("\n!ERROR! There are no passed courses for the student with ID '%u'\n\n", selected_student->id);
                         break;
                     }
 
@@ -286,7 +286,7 @@ void display_student(student *student_head, course *course_head) {
                     }
 
                     if (!failed_course_check) {
-                        printf("\nThere are no failed courses for the student with ID '%u'\n\n", selected_student->id);
+                        printf("\n!ERROR! There are no failed courses for the student with ID '%u'\n\n", selected_student->id);
                         break;
                     }
 
@@ -370,7 +370,7 @@ void display_student(student *student_head, course *course_head) {
                     }
 
                     if (!pending_course_check) {
-                        printf("\nThere are no pending courses for the student with ID '%u'\n\n", selected_student->id);
+                        printf("\n!ERROR! There are no pending courses for the student with ID '%u'\n\n", selected_student->id);
                         break;
                     }
 
@@ -721,7 +721,7 @@ void display_student(student *student_head, course *course_head) {
                     }
 
                     if (!any_student_printed) {
-                        printf("\nThere are no students who have passed any courses\n\n");
+                        printf("\n!ERROR! There are no students who have passed any courses\n\n");
                     }
 
                     break;
@@ -831,7 +831,7 @@ void display_student(student *student_head, course *course_head) {
                     }
 
                     if (!any_student_printed) {
-                        printf("\nThere are no students who have failed any courses\n\n");
+                        printf("\n!ERROR! There are no students who have failed any courses\n\n");
                     }
 
                     break;
@@ -949,7 +949,7 @@ void display_student(student *student_head, course *course_head) {
                     }
 
                     if (!any_student_printed) {
-                        printf("\nThere are no students who have any pending courses\n\n");
+                        printf("\n!ERROR! There are no students who have any pending courses\n\n");
                     }
 
                     break;
@@ -1116,7 +1116,7 @@ void display_student(student *student_head, course *course_head) {
 
                     // If the header flag is still 0, it means no one is enrolled in this course.
                     if (!header_printed) {
-                        printf("\nThere are no students enrolled in the course '%s'\n\n", selected_course_id);
+                        printf("\n!ERROR! There are no students enrolled in the course '%s'\n\n", selected_course_id);
                     }
 
                     printf("\n\n");
@@ -1194,7 +1194,7 @@ void display_student(student *student_head, course *course_head) {
 
                     // Handle the case where no students passed, or the course has zero enrollments.
                     if (!header_printed) {
-                        printf("\nThere are no students who passed the course '%s'\n\n", selected_course_id);
+                        printf("\n!ERROR! There are no students who passed the course '%s'\n\n", selected_course_id);
                     }
 
                     printf("\n\n");
@@ -1271,7 +1271,7 @@ void display_student(student *student_head, course *course_head) {
 
                     // Handle the case where no students failed, or the course has zero enrollments.
                     if (!header_printed) {
-                        printf("\nThere are no students who failed the course '%s'\n\n", selected_course_id);
+                        printf("\n!ERROR! There are no students who failed the course '%s'\n\n", selected_course_id);
                     }
 
                     printf("\n\n");
@@ -1353,7 +1353,7 @@ void display_student(student *student_head, course *course_head) {
 
                     // Handle the case where no students are pending, or the course has zero enrollments.
                     if (!header_printed) {
-                        printf("\nThere are no students with pending grades for the course '%s'\n\n",
+                        printf("\n!ERROR! There are no students with pending grades for the course '%s'\n\n",
                                selected_course_id);
                     }
 
@@ -1483,7 +1483,7 @@ void display_student(student *student_head, course *course_head) {
                      * course.
                      */
                     if (!student_found) {
-                        printf("\nThere are no students enrolled in the course '%s'\n\n", selected_course_id);
+                        printf("\n!ERROR! There are no students enrolled in the course '%s'\n\n", selected_course_id);
                     }
 
                     break;
@@ -1593,7 +1593,7 @@ void display_student(student *student_head, course *course_head) {
 
                     // Checks if any valid students were found before division.
                     if (!enrolled_student_found) {
-                        printf("\nThere are no students enrolled, or no course averages have been calculated for the "
+                        printf("\n!ERROR! There are no students enrolled, or no course averages have been calculated for the "
                                "course '%s'\n\n",
                                selected_course_id);
                         break;
@@ -1687,7 +1687,7 @@ void display_student(student *student_head, course *course_head) {
                     }
 
                     if (!course_avg_printed) {
-                        printf("\nThere are no students enrolled, or no course averages have been calculated for any "
+                        printf("\n!ERROR! There are no students enrolled, or no course averages have been calculated for any "
                                "courses\n\n");
                     }
 
@@ -1727,7 +1727,7 @@ void display_student(student *student_head, course *course_head) {
 
             // Ensures at least one valid GPA exists before performing division.
             if (!student_counter) {
-                printf("\nThere are no students with calculated GPA in the list\n\n");
+                printf("\n!ERROR! There are no students with calculated GPA in the list\n\n");
                 break;
             }
 
@@ -1797,7 +1797,7 @@ void display_student(student *student_head, course *course_head) {
                      * Break early to prevent drawing empty tables.
                      */
                     if (TOP_GPA == -1.0) {
-                        printf("\nThere are no students with calculated GPA in the list\n\n");
+                        printf("\n!ERROR! There are no students with calculated GPA in the list\n\n");
                         break;
                     }
 
@@ -1913,7 +1913,7 @@ void display_student(student *student_head, course *course_head) {
                     }
 
                     if (TOP_GPA == -1.0) {
-                        printf("\nThere are no students with calculated GPA in the couse with ID '%s'\n\n",
+                        printf("\n!ERROR! There are no students with calculated GPA in the course with ID '%s'\n\n",
                                current_course->course_id);
                         break;
                     }
@@ -2130,7 +2130,7 @@ void display_student(student *student_head, course *course_head) {
                     }
 
                     if (!header_printed) {
-                        printf("\nThere are no students enrolled in the course with ID '%s', or no one has a letter "
+                        printf("\n!ERROR! There are no students enrolled in the course with ID '%s', or no one has a letter "
                                "grade of "
                                "'%s'\n\n",
                                selected_course_id, letter_grade);
@@ -2350,7 +2350,7 @@ void display_student(student *student_head, course *course_head) {
                     }
 
                     if (!header_printed) {
-                        printf("\nThere are no students enrolled in the course with ID '%s', or there is no one in the "
+                        printf("\n!ERROR! There are no students enrolled in the course with ID '%s', or there is no one in the "
                                "range\n\n",
                                selected_course_id);
                     }
@@ -2462,7 +2462,7 @@ void display_student(student *student_head, course *course_head) {
                     }
 
                     if (!header_printed) {
-                        printf("\nThere are no students in the GPA range\n\n");
+                        printf("\n!ERROR! There are no students in the GPA range\n\n");
                     }
 
                     break;
