@@ -40,12 +40,16 @@ int main() {
                                           "\n[2] COURSE MANAGEMENT"
                                           "\n[3] DISPLAY STUDENTS"
                                           "\n[4] SORT SETTINGS"
-                                          "\n[5] LOAD"
-                                          "\n[6] SAVE\n"
+                                          "\n[5] SAVE"
+                                          "\n[6] LOAD\n"
                                           "\nEnter the operation you want to perform: ");
 
         switch (choice) {
 
+        /*
+         * Intercepts the exit command to check for unsaved modifications. Ensures memory is deeply freed before
+         * terminating to prevent memory leaks.
+         */
         case 0: {
 
             int return_main_menu = 0;
@@ -69,7 +73,8 @@ int main() {
                 }
 
                 case 1: {
-                    // save fonksiyonu eklenince düzeltilecek.
+
+                    save_loadable_file(my_student_list, my_course_list);
                     break;
                 }
 
@@ -95,8 +100,9 @@ int main() {
 
             while (loop_flag_2) {
 
-                printf("\n\n============================================================================================="
-                       "===========================\n");
+                printf(
+                    "\n\n============================================================================================="
+                    "===========================\n");
                 printf("                                                  STUDENT MANAGEMENT");
                 printf("\n============================================================================================="
                        "===========================\n\n");
@@ -121,8 +127,9 @@ int main() {
                     int loop_flag_3 = 1;
                     while (loop_flag_3) {
 
-                        printf("\n\n====================================================================================="
-                               "===================================\n");
+                        printf(
+                            "\n\n====================================================================================="
+                            "===================================\n");
                         printf("                                                     ADD A STUDENT");
                         printf("\n====================================================================================="
                                "===================================\n\n");
@@ -164,8 +171,9 @@ int main() {
 
                 case 4: {
 
-                    printf("\n\n========================================================================================="
-                           "===============================\n");
+                    printf(
+                        "\n\n========================================================================================="
+                        "===============================\n");
                     printf("                                                 CLEAR THE STUDENT LIST");
                     printf("\n========================================================================================="
                            "===============================\n\n");
@@ -196,7 +204,8 @@ int main() {
                         }
 
                         case 1: {
-                            // save fonksiyonu eklenince düzeltilecek.
+
+                            save_loadable_file(my_student_list, my_course_list);
                             break;
                         }
 
@@ -210,6 +219,8 @@ int main() {
                         }
                     }
 
+                    if (student_save_flag) {
+                    }
                     clear_the_student_list(&my_student_list);
                     break;
                 }
@@ -225,8 +236,9 @@ int main() {
 
             while (loop_flag_2) {
 
-                printf("\n\n============================================================================================="
-                       "===========================\n");
+                printf(
+                    "\n\n============================================================================================="
+                    "===========================\n");
                 printf("                                                 COURSE MANAGEMENT");
                 printf("\n============================================================================================="
                        "===========================\n\n");
@@ -251,8 +263,9 @@ int main() {
                     int loop_flag_3 = 1;
                     while (loop_flag_3) {
 
-                        printf("\n\n====================================================================================="
-                               "===================================\n");
+                        printf(
+                            "\n\n====================================================================================="
+                            "===================================\n");
                         printf("                                                      ADD A COURSE");
                         printf("\n====================================================================================="
                                "===================================\n\n");
@@ -276,8 +289,9 @@ int main() {
 
                 case 3: {
 
-                    printf("\n\n========================================================================================="
-                           "===============================\n");
+                    printf(
+                        "\n\n========================================================================================="
+                        "===============================\n");
                     printf("                                                     DELETE A COURSE");
                     printf("\n========================================================================================="
                            "===============================\n\n");
@@ -293,8 +307,9 @@ int main() {
 
                 case 4: {
 
-                    printf("\n\n========================================================================================="
-                           "===============================\n");
+                    printf(
+                        "\n\n========================================================================================="
+                        "===============================\n");
                     printf("                                                  CLEAR THE COURSE LIST");
                     printf("\n========================================================================================="
                            "===============================\n\n");
@@ -325,7 +340,8 @@ int main() {
                         }
 
                         case 1: {
-                            // save fonksiyonu eklenince düzeltilecek.
+
+                            save_loadable_file(my_student_list, my_course_list);
                             break;
                         }
 
@@ -349,6 +365,7 @@ int main() {
 
         case 3: {
             display_student(my_student_list, my_course_list);
+            break;
         }
 
         case 4: {
@@ -416,12 +433,53 @@ int main() {
         }
 
         case 5:
-            // daha sonra eklenecek.
+
+            save_file(my_student_list, my_course_list);
             break;
 
         case 6:
-            // daha sonra eklenecek.
-            break;
+
+            if (course_save_flag || student_save_flag) {
+
+                int return_previous_menu = 0;
+
+                int confirm = get_safe_int_between(0, 2, 3,
+                                                   "\n!WARNING! You have unsaved changes! Loading an another "
+                                                   "list will delete them forever!\n"
+                                                   "\n[0] CANCEL"
+                                                   "\n[1] SAVE & LOAD"
+                                                   "\n[2] LOAD WITHOUT SAVE\n"
+                                                   "\nEnter the operation you want to perform: ");
+
+                switch (confirm) {
+
+                case 0: {
+
+                    printf("\nOperation cancelled. Returning to the previous menu...\n\n");
+                    return_previous_menu = 1;
+                    break;
+                }
+
+                case 1: {
+
+                    save_loadable_file(my_student_list, my_course_list);
+                    break;
+                }
+
+                case 2:{
+                    break;
+                }
+                }
+
+                if (return_previous_menu) {
+                    break;
+                }
+
+                clear_the_course_list(my_student_list, &my_course_list);
+                clear_the_student_list(&my_student_list);
+                load_file(&my_student_list, &my_course_list);
+                break;
+            }
         }
     }
 }
