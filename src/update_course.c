@@ -377,10 +377,9 @@ int update_course(student **student_head, course **course_head) {
                 break;
             }
 
-            printf("\n\nAVAILABLE COURSES:\n");
+            printf("\n\nAVAILABLE EXAMS:\n");
             printf("---------------------------------------------------------------------------------------------------"
                    "---------------------\n");
-            print_enrolled_courses(*course_head);
 
             exam_template *current_exam = target_course->exams;
 
@@ -553,17 +552,23 @@ int update_course(student **student_head, course **course_head) {
          */
         case 6: {
 
-            exam_template *current_exam = target_course->exams;
+            if (target_course->exams == NULL) {
+                printf("\n!ERROR! There are no exams to remove for this course!\n\n");
+                break;
+            }
 
             printf("\n\nAVAILABLE EXAMS:\n");
             printf("---------------------------------------------------------------------------------------------------"
                    "---------------------\n");
-            print_all_courses(*course_head);
+
+            exam_template *current_exam = target_course->exams;
+
             while (current_exam != NULL) {
 
                 printf("%s\n", current_exam->exam_name);
                 current_exam = current_exam->next;
             }
+
 
             char temp_exam_name[20];
 

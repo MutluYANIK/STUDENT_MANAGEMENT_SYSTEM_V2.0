@@ -284,6 +284,8 @@ void load_file(student **student_head, course **course_head) {
                 curr_exam = curr_exam->next;
             }
 
+            grade_calculator(new_enrollment);
+            
             // Append this enrollment to the student's records list
             if (found_student->records == NULL) {
                 found_student->records = new_enrollment;

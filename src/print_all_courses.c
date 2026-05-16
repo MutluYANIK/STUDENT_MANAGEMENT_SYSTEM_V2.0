@@ -4,8 +4,6 @@
 void print_all_courses(course *course_head){
 
     course *current_course = course_head;
-
-    printf("\n\n");
     
     while(current_course != NULL){
         

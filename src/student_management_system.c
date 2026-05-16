@@ -466,7 +466,7 @@ int main() {
                     break;
                 }
 
-                case 2:{
+                case 2: {
                     break;
                 }
                 }
@@ -474,12 +474,12 @@ int main() {
                 if (return_previous_menu) {
                     break;
                 }
-
-                clear_the_course_list(my_student_list, &my_course_list);
-                clear_the_student_list(&my_student_list);
-                load_file(&my_student_list, &my_course_list);
-                break;
             }
+
+            clear_the_course_list(my_student_list, &my_course_list);
+            clear_the_student_list(&my_student_list);
+            load_file(&my_student_list, &my_course_list);
+            break;
         }
     }
 }

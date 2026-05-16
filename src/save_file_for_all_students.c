@@ -17,11 +17,11 @@ void save_file_for_all_students(student *student_head, course *course_head) {
 
         int choice = get_safe_int_between(0, 4, 3,
                                           "\n[0] EXIT"
-                                          "\n[2] GENERAL SUMMARY TABLE"
-                                          "\n[3] FULL TRANSCRIPT"
-                                          "\n[4] ONLY PASSED COURSES"
-                                          "\n[5] ONLY FAILED COURSES"
-                                          "\n[6] ONLY PENDING COURSES\n"
+                                          "\n[1] GENERAL SUMMARY TABLE"
+                                          "\n[2] FULL TRANSCRIPT"
+                                          "\n[3] ONLY PASSED COURSES"
+                                          "\n[4] ONLY FAILED COURSES"
+                                          "\n[5] ONLY PENDING COURSES\n"
                                           "\nEnter the operation you want to perform: ");
 
         switch (choice) {

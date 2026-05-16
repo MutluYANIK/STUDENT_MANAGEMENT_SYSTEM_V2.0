@@ -100,7 +100,8 @@ void display_student(student *student_head, course *course_head) {
                  */
                 case 1: {
 
-                    printf("\n\n==========================================================================================="
+                    printf("\n\n======================================================================================="
+                           "===="
                            "=============================\n");
                     printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: ",
                            selected_student->id, selected_student->name);
@@ -202,7 +203,8 @@ void display_student(student *student_head, course *course_head) {
                         break;
                     }
 
-                    printf("\n\n==========================================================================================="
+                    printf("\n\n======================================================================================="
+                           "===="
                            "=============================\n");
                     printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: ",
                            selected_student->id, selected_student->name);
@@ -211,7 +213,7 @@ void display_student(student *student_head, course *course_head) {
                     printf(
                         "\n==========================================================================================="
                         "=============================\n\n\n");
-                    printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                    printf("%-14s%-25s%-10s%-49s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                            "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                     printf("-------------------------------------------------------------------------------------------"
                            "-----------------------------\n");
@@ -244,7 +246,7 @@ void display_student(student *student_head, course *course_head) {
                             int score = current_enrollment->scores[exam_index];
                             snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
 
-                            if (strlen(exam_buffer) > 40) {
+                            if (strlen(exam_buffer) > 50) {
                                 break;
                             }
 
@@ -254,7 +256,7 @@ void display_student(student *student_head, course *course_head) {
                             exam_index++;
                         }
 
-                        printf("%-40.40s", exam_buffer);
+                        printf("%-49.49s", exam_buffer);
                         printf("%-8.2f", current_enrollment->course_average);
                         printf("%-8.8s", current_enrollment->letter_grade);
                         printf("%-8.8s\n", "PASSED");
@@ -288,7 +290,8 @@ void display_student(student *student_head, course *course_head) {
                         break;
                     }
 
-                    printf("\n\n==========================================================================================="
+                    printf("\n\n======================================================================================="
+                           "===="
                            "=============================\n");
                     printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: ",
                            selected_student->id, selected_student->name);
@@ -297,7 +300,7 @@ void display_student(student *student_head, course *course_head) {
                     printf(
                         "\n==========================================================================================="
                         "=============================\n\n\n");
-                    printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                    printf("%-14s%-25s%-10s%-49s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                            "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                     printf("-------------------------------------------------------------------------------------------"
                            "-----------------------------\n");
@@ -330,7 +333,7 @@ void display_student(student *student_head, course *course_head) {
                             int score = current_enrollment->scores[exam_index];
                             snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
 
-                            if (strlen(exam_buffer) > 40) {
+                            if (strlen(exam_buffer) > 50) {
                                 break;
                             }
 
@@ -340,7 +343,7 @@ void display_student(student *student_head, course *course_head) {
                             exam_index++;
                         }
 
-                        printf("%-40.40s", exam_buffer);
+                        printf("%-49.49s", exam_buffer);
                         printf("%-8.2f", current_enrollment->course_average);
                         printf("%-8.8s", current_enrollment->letter_grade);
                         printf("%-8.8s\n", "FAILED");
@@ -371,7 +374,8 @@ void display_student(student *student_head, course *course_head) {
                         break;
                     }
 
-                    printf("\n\n==========================================================================================="
+                    printf("\n\n======================================================================================="
+                           "===="
                            "=============================\n");
                     printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: ",
                            selected_student->id, selected_student->name);
@@ -380,7 +384,7 @@ void display_student(student *student_head, course *course_head) {
                     printf(
                         "\n==========================================================================================="
                         "=============================\n\n\n");
-                    printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                    printf("%-14s%-25s%-10s%-49s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                            "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                     printf("-------------------------------------------------------------------------------------------"
                            "-----------------------------\n");
@@ -418,7 +422,7 @@ void display_student(student *student_head, course *course_head) {
                                 snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
                             }
 
-                            if (strlen(exam_buffer) > 40) {
+                            if (strlen(exam_buffer) > 50) {
                                 break;
                             }
 
@@ -428,7 +432,7 @@ void display_student(student *student_head, course *course_head) {
                             exam_index++;
                         }
 
-                        printf("%-40.40s", exam_buffer);
+                        printf("%-49.49s", exam_buffer);
                         printf("%-8.8s", "N/A");
                         printf("%-8.8s", "N/A");
                         printf("%-8.8s\n", "PENDING");
@@ -479,7 +483,8 @@ void display_student(student *student_head, course *course_head) {
                  */
                 case 1: {
 
-                    printf("\n\n==========================================================================================="
+                    printf("\n\n======================================================================================="
+                           "===="
                            "=============================\n");
                     printf("ALL STUDENT SUMMARY LIST\n");
                     printf("==========================================================================================="
@@ -522,8 +527,8 @@ void display_student(student *student_head, course *course_head) {
                             continue;
                         }
 
-                        printf("\n\n======================================================================================="
-                               "=================================\n");
+                        printf("\n\n==================================================================================="
+                               "=====================================\n");
                         printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: ",
                                current_student->id, current_student->name);
                         print_gpa(current_student->GPA);
@@ -531,7 +536,7 @@ void display_student(student *student_head, course *course_head) {
                         printf(
                             "\n======================================================================================="
                             "=================================\n\n\n");
-                        printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                        printf("%-14s%-25s%-10s%-49s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                                "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                         printf("---------------------------------------------------------------------------------------"
                                "---------------------------------\n");
@@ -562,7 +567,7 @@ void display_student(student *student_head, course *course_head) {
                                              score);
                                 }
 
-                                if (strlen(exam_buffer) > 40) {
+                                if (strlen(exam_buffer) > 50) {
                                     break;
                                 }
 
@@ -572,7 +577,7 @@ void display_student(student *student_head, course *course_head) {
                                 exam_index++;
                             }
 
-                            printf("%-40.40s", exam_buffer);
+                            printf("%-49.49s", exam_buffer);
 
                             if (current_enrollment->course_average == -1) {
                                 printf("%-8.8s", "N/A");
@@ -647,7 +652,8 @@ void display_student(student *student_head, course *course_head) {
 
                         any_student_printed = 1;
 
-                        printf("\n\n======================================================================================="
+                        printf("\n\n==================================================================================="
+                               "===="
                                "=================================\n");
                         printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: ",
                                current_student->id, current_student->name);
@@ -656,7 +662,7 @@ void display_student(student *student_head, course *course_head) {
                         printf(
                             "\n======================================================================================="
                             "=================================\n\n\n");
-                        printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                        printf("%-14s%-25s%-10s%-49s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                                "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                         printf("---------------------------------------------------------------------------------------"
                                "---------------------------------\n");
@@ -693,7 +699,7 @@ void display_student(student *student_head, course *course_head) {
                                 int score = current_enrollment->scores[exam_index];
                                 snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
 
-                                if (strlen(exam_buffer) > 40) {
+                                if (strlen(exam_buffer) > 50) {
                                     break;
                                 }
 
@@ -758,7 +764,8 @@ void display_student(student *student_head, course *course_head) {
 
                         any_student_printed = 1;
 
-                        printf("\n\n======================================================================================="
+                        printf("\n\n==================================================================================="
+                               "===="
                                "=================================\n");
                         printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: ",
                                current_student->id, current_student->name);
@@ -767,7 +774,7 @@ void display_student(student *student_head, course *course_head) {
                         printf(
                             "\n======================================================================================="
                             "=================================\n\n\n");
-                        printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                        printf("%-14s%-25s%-10s%-49s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                                "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                         printf("---------------------------------------------------------------------------------------"
                                "---------------------------------\n");
@@ -801,7 +808,7 @@ void display_student(student *student_head, course *course_head) {
                                 int score = current_enrollment->scores[exam_index];
                                 snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
 
-                                if (strlen(exam_buffer) > 40) {
+                                if (strlen(exam_buffer) > 50) {
                                     break;
                                 }
 
@@ -811,7 +818,7 @@ void display_student(student *student_head, course *course_head) {
                                 exam_index++;
                             }
 
-                            printf("%-40.40s", exam_buffer);
+                            printf("%-49.49s", exam_buffer);
                             printf("%-8.2f", current_enrollment->course_average);
                             printf("%-8.8s", current_enrollment->letter_grade);
                             printf("%-8.8s\n", "FAILED");
@@ -867,7 +874,8 @@ void display_student(student *student_head, course *course_head) {
 
                         any_student_printed = 1;
 
-                        printf("\n\n======================================================================================="
+                        printf("\n\n==================================================================================="
+                               "===="
                                "=================================\n");
                         printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: ",
                                current_student->id, current_student->name);
@@ -876,7 +884,7 @@ void display_student(student *student_head, course *course_head) {
                         printf(
                             "\n======================================================================================="
                             "=================================\n\n\n");
-                        printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                        printf("%-14s%-25s%-10s%-49s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                                "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                         printf("---------------------------------------------------------------------------------------"
                                "---------------------------------\n");
@@ -918,7 +926,7 @@ void display_student(student *student_head, course *course_head) {
                                              score);
                                 }
 
-                                if (strlen(exam_buffer) > 40) {
+                                if (strlen(exam_buffer) > 50) {
                                     break;
                                 }
 
@@ -928,7 +936,7 @@ void display_student(student *student_head, course *course_head) {
                                 exam_index++;
                             }
 
-                            printf("%-40.40s", exam_buffer);
+                            printf("%-49.49s", exam_buffer);
                             printf("%-8.8s", "N/A");
                             printf("%-8.8s", "N/A");
                             printf("%-8.8s\n", "PENDING");
@@ -1070,7 +1078,7 @@ void display_student(student *student_head, course *course_head) {
                                 snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
                             }
 
-                            if (strlen(exam_buffer) > 40) {
+                            if (strlen(exam_buffer) > 50) {
                                 break;
                             }
 
@@ -1079,7 +1087,7 @@ void display_student(student *student_head, course *course_head) {
                             exam_index++;
                         }
 
-                        printf("%-45.45s", exam_buffer);
+                        printf("%-49.49s", exam_buffer);
 
                         if (current_enrollment->course_average == -1) {
                             printf("%-8.8s", "N/A");
@@ -1166,7 +1174,7 @@ void display_student(student *student_head, course *course_head) {
                             int score = current_enrollment->scores[exam_index];
                             snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
 
-                            if (strlen(exam_buffer) > 40) {
+                            if (strlen(exam_buffer) > 50) {
                                 break;
                             }
 
@@ -1175,7 +1183,7 @@ void display_student(student *student_head, course *course_head) {
                             exam_index++;
                         }
 
-                        printf("%-45.45s", exam_buffer);
+                        printf("%-49.49s", exam_buffer);
                         printf("%-8.2f", current_enrollment->course_average);
                         printf("%-8.8s", current_enrollment->letter_grade);
                         print_gpa(current_student->GPA);
@@ -1243,7 +1251,7 @@ void display_student(student *student_head, course *course_head) {
                             int score = current_enrollment->scores[exam_index];
                             snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
 
-                            if (strlen(exam_buffer) > 40) {
+                            if (strlen(exam_buffer) > 50) {
                                 break;
                             }
 
@@ -1252,7 +1260,7 @@ void display_student(student *student_head, course *course_head) {
                             exam_index++;
                         }
 
-                        printf("%-45.45s", exam_buffer);
+                        printf("%-49.49s", exam_buffer);
                         printf("%-8.2f", current_enrollment->course_average);
                         printf("%-8.8s", current_enrollment->letter_grade);
                         print_gpa(current_student->GPA);
@@ -1325,7 +1333,7 @@ void display_student(student *student_head, course *course_head) {
                                 snprintf(temp_buffer, sizeof(temp_buffer), "%s: %d  ", current_exam->exam_name, score);
                             }
 
-                            if (strlen(exam_buffer) > 40) {
+                            if (strlen(exam_buffer) > 50) {
                                 break;
                             }
 
@@ -1334,7 +1342,7 @@ void display_student(student *student_head, course *course_head) {
                             exam_index++;
                         }
 
-                        printf("%-45.45s", exam_buffer);
+                        printf("%-49.49s", exam_buffer);
                         printf("%-8.8s", "N/A");
                         printf("%-8.8s", "N/A");
                         print_gpa(current_student->GPA);
@@ -1386,7 +1394,8 @@ void display_student(student *student_head, course *course_head) {
                             continue;
                         }
 
-                        printf("\n\n======================================================================================="
+                        printf("\n\n==================================================================================="
+                               "===="
                                "=================================\n");
                         printf("STUDENT TRANSCRIPT     |     ID: %u     |     NAME: %s     |     GPA: ",
                                current_student->id, current_student->name);
@@ -1395,7 +1404,7 @@ void display_student(student *student_head, course *course_head) {
                         printf(
                             "\n======================================================================================="
                             "=================================\n\n\n");
-                        printf("%-14s%-25s%-10s%-40s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
+                        printf("%-14s%-25s%-10s%-49s%-8s%-8s%-8s\n", "COURSE ID", "COURSE NAME", "CREDIT",
                                "          EXAM GRADES", "AVG", "GRADE", "STATUS");
                         printf("---------------------------------------------------------------------------------------"
                                "---------------------------------\n");
@@ -1430,7 +1439,7 @@ void display_student(student *student_head, course *course_head) {
                                              score);
                                 }
 
-                                if (strlen(exam_buffer) > 40) {
+                                if (strlen(exam_buffer) > 50) {
                                     break;
                                 }
 
@@ -1440,7 +1449,7 @@ void display_student(student *student_head, course *course_head) {
                                 exam_index++;
                             }
 
-                            printf("%-40.40s", exam_buffer);
+                            printf("%-49.49s", exam_buffer);
 
                             if (current_enrollment->course_average == -1) {
                                 printf("%-8.8s", "N/A");
@@ -1661,7 +1670,7 @@ void display_student(student *student_head, course *course_head) {
                         }
 
                         if (!header_printed) {
-                            printf("%-20s%-40s%-20s \n", "COURSE ID", "COURSE NAME", "COURSE AVG");
+                            printf("\n\n%-20s%-40s%-20s \n", "COURSE ID", "COURSE NAME", "COURSE AVG");
                             printf("-----------------------------------------------------------------------------------"
                                    "-------------------------------------\n");
 
@@ -1792,7 +1801,8 @@ void display_student(student *student_head, course *course_head) {
                         break;
                     }
 
-                    printf("\n\n==========================================================================================="
+                    printf("\n\n======================================================================================="
+                           "===="
                            "=============================\n");
                     printf("TOP STUDENTS BY GPA\n");
                     printf("==========================================================================================="
@@ -1828,6 +1838,9 @@ void display_student(student *student_head, course *course_head) {
                  */
                 case 2: {
 
+                    printf("\n\nAVAILABLE COURSES:\n");
+                    printf("-------------------------------------------------------------------------------------------"
+                           "-----------------------------\n");
                     print_all_courses(course_head);
 
                     char selected_course_id[10];
@@ -1905,7 +1918,8 @@ void display_student(student *student_head, course *course_head) {
                         break;
                     }
 
-                    printf("\n\n==========================================================================================="
+                    printf("\n\n======================================================================================="
+                           "===="
                            "=============================\n");
                     printf("TOP STUDENTS BY GPA IN '%s'\n", current_course->course_id);
                     printf("==========================================================================================="
@@ -2078,7 +2092,7 @@ void display_student(student *student_head, course *course_head) {
                                              score);
                                 }
 
-                                if (strlen(exam_buffer) > 40) {
+                                if (strlen(exam_buffer) > 50) {
                                     break;
                                 }
 
@@ -2087,7 +2101,7 @@ void display_student(student *student_head, course *course_head) {
                                 exam_index++;
                             }
 
-                            printf("%-45.45s", exam_buffer);
+                            printf("%-49.49s", exam_buffer);
 
                             if (current_enrollment->course_average == -1) {
                                 printf("%-8.8s", "N/A");
@@ -2298,7 +2312,7 @@ void display_student(student *student_head, course *course_head) {
                                              score);
                                 }
 
-                                if (strlen(exam_buffer) > 40) {
+                                if (strlen(exam_buffer) > 50) {
                                     break;
                                 }
 
@@ -2307,7 +2321,7 @@ void display_student(student *student_head, course *course_head) {
                                 exam_index++;
                             }
 
-                            printf("%-45.45s", exam_buffer);
+                            printf("%-49.49s", exam_buffer);
 
                             if (current_enrollment->course_average == -1) {
                                 printf("%-8.8s", "N/A");
@@ -2427,7 +2441,8 @@ void display_student(student *student_head, course *course_head) {
                         if (current_student->GPA >= min_GPA && current_student->GPA <= max_GPA) {
 
                             if (!header_printed) {
-                                printf("\n\n==============================================================================="
+                                printf("\n\n==========================================================================="
+                                       "===="
                                        "=========================================\n");
                                 printf("STUDENTS IN GPA RANGE\n");
                                 printf("==============================================================================="
@@ -2488,7 +2503,8 @@ void display_student(student *student_head, course *course_head) {
                         if (strstr(current_student->name, temp_name) != NULL) {
 
                             if (!header_printed) {
-                                printf("\n\n==============================================================================="
+                                printf("\n\n==========================================================================="
+                                       "===="
                                        "=========================================\n");
                                 printf("FIND STUDENTS BY NAME\n");
                                 printf("==============================================================================="

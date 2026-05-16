@@ -27,7 +27,7 @@ void print_not_enrolled_courses(student *current_student, course *course_head) {
         }
 
         if (!enrolled_flag) {
-            printf("%s", current_course->course_id);
+            printf("%s\n", current_course->course_id);
         }
         current_course = current_course->next;
     }

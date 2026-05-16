@@ -293,6 +293,28 @@ int update_student(student **student_head, course *course_head) {
                 break;
             }
 
+            int not_enrolled_course = 0;
+
+            int total_system_courses = 0;
+            course *temp_c = course_head;
+            while (temp_c != NULL) {
+                total_system_courses++;
+                temp_c = temp_c->next;
+            }
+
+            int student_enrolled_courses = 0;
+            enrollment *temp_e = current_student->records;
+            while (temp_e != NULL) {
+                student_enrolled_courses++;
+                temp_e = temp_e->next;
+            }
+
+            if (student_enrolled_courses >= total_system_courses) {
+                printf("\n!WARNING! Student '%s' is already enrolled in all available courses in the system\n", current_student->name);
+                printf("Returning to the previous menu...\n\n");
+                break;
+            }
+
             printf("\n\nAVAILABLE COURSES:\n");
             printf("---------------------------------------------------------------------------------------------------"
                    "---------------------\n");
