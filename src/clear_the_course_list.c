@@ -57,6 +57,4 @@ void clear_the_course_list(student *student_head, course **course_head) {
 
     printf("\nCourse list successfully cleared\n\n");
 
-    student_save_flag = 1;
-    course_save_flag = 1;
 }
