@@ -69,5 +69,11 @@ void display_student(student *student_head, course *course_head);
 void print_gpa(float GPA);
 void clear_the_course_list(student *student_head, course **course_head);
 void clear_the_student_list(student **student_head);
+void save_file(student *student_head, course *course_head);
+void save_file_for_a_student(student *student_head, course *course_head);
+void save_file_for_all_students(student *student_head, course *course_head);
+void save_file_for_a_specific_course(student *student_head, course *course_head);
+void save_loadable_file(student *student_head, course *course_head);
+void load_file(student **student_head, course **course_head);
 
 #endif
