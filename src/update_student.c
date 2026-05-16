@@ -94,7 +94,10 @@ int update_student(student **student_head, course *course_head) {
             printf("\nStudent ID successfully updated\n\n");
 
             student_save_flag = 1;
-
+            
+            if(current_mode == SORT_BY_ID){
+                sort_student_list_by_id(student_head);
+            }
             break;
         }
 
@@ -118,6 +121,10 @@ int update_student(student **student_head, course *course_head) {
             printf("\nStudent name successfully updated\n\n");
 
             student_save_flag = 1;
+            
+            if(current_mode == SORT_BY_NAME){
+                sort_student_list_by_name(student_head);
+            }
 
             break;
         }
@@ -138,6 +145,9 @@ int update_student(student **student_head, course *course_head) {
                 break;
             }
 
+            printf("\n\nAVAILABLE COURSES:\n");
+            printf("---------------------------------------------------------------------------------------------------"
+                   "---------------------\n");
             print_enrolled_courses(current_student);
 
             char target_course_id[10];
@@ -206,6 +216,10 @@ int update_student(student **student_head, course *course_head) {
             printf("\nCourse successfully dropped and the GPA updated\n\n");
 
             student_save_flag = 1;
+            
+            if(current_mode == SORT_BY_GPA){
+                sort_student_list_by_gpa(student_head);
+            }
 
             break;
         }
@@ -226,7 +240,7 @@ int update_student(student **student_head, course *course_head) {
             char prompt_message[150];
 
             snprintf(prompt_message, sizeof(prompt_message),
-                     "You are about to drop all courses for the student with ID '%u'"
+                     "\nYou are about to drop all courses for the student with ID '%u'"
                      "\nEnter 1 to continue (or 0 to cancel): ",
                      temp_student_id);
 
@@ -255,6 +269,10 @@ int update_student(student **student_head, course *course_head) {
 
             student_save_flag = 1;
 
+            if(current_mode == SORT_BY_GPA){
+                sort_student_list_by_gpa(student_head);
+            }
+
             break;
         }
         /*
@@ -265,16 +283,19 @@ int update_student(student **student_head, course *course_head) {
          * enrolled course list. If the student is already enrolled in this course, prints an error message and
          * returns the previous menu. Allocates memory for the new enrollment. If memory allocation fails, prints an
          * error message and returns to main menu. Counts the course's exams and automatically assigns "-1" for all
-         * exams. Automatically assigns "0.0" and "--" for course average and letter grade, links the new enrollment to
+         * exams. Automatically assigns "-1.0" and "--" for course average and letter grade, links the new enrollment to
          * the student's records updates the GPA
          */
         case 5: {
 
             if (course_head == NULL) {
-                printf("\n!ERROR! There is no course in the list to enroll in. Returning to the previous menu...\n\n");
+                printf("\n!ERROR! There are no available courses in the list to enroll in. Returning to the previous menu...\n\n");
                 break;
             }
 
+            printf("\n\nAVAILABLE COURSES:\n");
+            printf("---------------------------------------------------------------------------------------------------"
+                   "---------------------\n");
             print_not_enrolled_courses(current_student, course_head);
 
             char temp_course_id[10];
@@ -345,7 +366,7 @@ int update_student(student **student_head, course *course_head) {
                 new_enrollment->scores = NULL;
             }
 
-            new_enrollment->course_average = 0.0;
+            new_enrollment->course_average = -1.0;
             strcpy(new_enrollment->letter_grade, "--");
 
             new_enrollment->next = current_student->records;
@@ -356,6 +377,10 @@ int update_student(student **student_head, course *course_head) {
             printf("\nStudent successfully enrolled in '%s'\n\n", temp_course_id);
 
             student_save_flag = 1;
+
+            if(current_mode == SORT_BY_GPA){
+                sort_student_list_by_gpa(student_head);
+            }
 
             break;
         }
@@ -379,6 +404,9 @@ int update_student(student **student_head, course *course_head) {
                 break;
             }
 
+            printf("\n\nAVAILABLE COURSES:\n");
+            printf("---------------------------------------------------------------------------------------------------"
+                   "---------------------\n");
             print_enrolled_courses(current_student);
 
             char target_course_id[10];
@@ -414,6 +442,9 @@ int update_student(student **student_head, course *course_head) {
             exam_template *current_exam = current_enrollment->course->exams;
             printf("\nAvailable exams:\n");
 
+            printf("\n\nAVAILABLE EXAMS:\n");
+            printf("---------------------------------------------------------------------------------------------------"
+                   "---------------------\n");
             while (current_exam != NULL) {
 
                 printf("%s\n", current_exam->exam_name);
@@ -460,6 +491,10 @@ int update_student(student **student_head, course *course_head) {
             printf("\nThe exam grade, course average and the GPA successfully updated\n\n");
 
             student_save_flag = 1;
+
+            if(current_mode == SORT_BY_GPA){
+                sort_student_list_by_gpa(student_head);
+            }
 
             break;
         }
@@ -518,6 +553,10 @@ int update_student(student **student_head, course *course_head) {
 
             student_save_flag = 1;
 
+            if(current_mode == SORT_BY_GPA){
+                sort_student_list_by_gpa(student_head);
+            }
+
             break;
         }
 
@@ -525,7 +564,7 @@ int update_student(student **student_head, course *course_head) {
          * Checks the enrolled course list. If it is empty, it prints an error message and returns to the previous
          * menu. Asks for confirmation before resetting all exam grades. Iterates through all enrolled courses and
          * their exams, resetting the grades while keeping a counter to access their specific indices. Assings "-1" to
-         * all exam grades, "0.0" to course averages and "--" to letter grades, and updates the GPA.
+         * all exam grades, "-1.0" to course averages and "--" to letter grades, and updates the GPA.
          */
         case 8: {
 
@@ -569,12 +608,14 @@ int update_student(student **student_head, course *course_head) {
 
             student_save_flag = 1;
 
+            if(current_mode == SORT_BY_GPA){
+                sort_student_list_by_gpa(student_head);
+            }
+            
             break;
         }
         }
     }
-
-    sort_student_list(student_head);
 
     return 1;
 }

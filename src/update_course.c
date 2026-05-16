@@ -14,6 +14,9 @@ int update_course(student **student_head, course **course_head) {
         return 0;
     }
 
+    printf("\n\nAVAILABLE COURSES:\n");
+    printf("-------------------------------------------------------------------------------------------------------"
+           "-----------------\n");
     print_all_courses(*course_head);
 
     char temp_course_id[10];
@@ -374,6 +377,11 @@ int update_course(student **student_head, course **course_head) {
                 break;
             }
 
+            printf("\n\nAVAILABLE COURSES:\n");
+            printf("---------------------------------------------------------------------------------------------------"
+                   "---------------------\n");
+            print_enrolled_courses(*course_head);
+
             exam_template *current_exam = target_course->exams;
 
             while (current_exam != NULL) {
@@ -386,7 +394,7 @@ int update_course(student **student_head, course **course_head) {
 
             get_safe_string(3, temp_exam_name, sizeof(temp_exam_name),
                             "\nEnter the exam name you want to remove (or type 'exit' to cancel): ");
-            
+
             for (int i = 0; temp_exam_name[i] != '\0'; i++) {
                 temp_exam_name[i] = toupper((unsigned char)temp_exam_name[i]);
             }
@@ -547,6 +555,10 @@ int update_course(student **student_head, course **course_head) {
 
             exam_template *current_exam = target_course->exams;
 
+            printf("\n\nAVAILABLE EXAMS:\n");
+            printf("---------------------------------------------------------------------------------------------------"
+                   "---------------------\n");
+            print_all_courses(*course_head);
             while (current_exam != NULL) {
 
                 printf("%s\n", current_exam->exam_name);
@@ -557,7 +569,7 @@ int update_course(student **student_head, course **course_head) {
 
             get_safe_string(3, temp_exam_name, sizeof(temp_exam_name),
                             "\nEnter the name of the exam you want to rename (or type 'exit' to cancel): ");
-            
+
             for (int i = 0; temp_exam_name[i] != '\0'; i++) {
                 temp_exam_name[i] = toupper((unsigned char)temp_exam_name[i]);
             }
@@ -624,7 +636,7 @@ int update_course(student **student_head, course **course_head) {
             }
 
             int confirm = get_safe_int_between(
-                0, 1, 3, "\nYou are about to update all exam percentages \nEnter 1 to continue (or 0 to cancel)");
+                0, 1, 3, "\nYou are about to update all exam percentages \nEnter 1 to continue (or 0 to cancel): ");
 
             if (confirm == 0) {
                 printf("\nOperation cancelled. Returning to previous menu...\n\n");

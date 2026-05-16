@@ -21,6 +21,9 @@ int delete_course(student *student_head, course **course_head) {
      * and the course list. Updates the GPA for all enrolled students.
      */
 
+    printf("\n\nAVAILABLE COURSES:\n");
+    printf("-------------------------------------------------------------------------------------------------------"
+           "-----------------\n");
     print_all_courses(*course_head);
 
     char temp_course_id[10];

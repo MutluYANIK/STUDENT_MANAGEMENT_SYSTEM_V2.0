@@ -44,104 +44,128 @@ int add_student(student **student_head, course *course_head) {
     new_student->records = NULL;
     new_student->next = NULL;
 
-    course *current_course = course_head;
+    int total_courses_in_system = 0;
+    course *temp_course_counter = course_head;
+    while (temp_course_counter != NULL) {
+        total_courses_in_system++;
+        temp_course_counter = temp_course_counter->next;
+    }
 
-    /*
-     * Gives you the chance to exit the enrollment process while taking course ID input, checks for valid course IDs
-     * to ensure students are enrolled in existing courses, and checks for duplicate enrollments to prevent students
-     * from being enrolled in the same course multiple times, which could lead to data inconsistencies and confusion in
-     * the system.
-     */
-    while (1) {
-
-        // Displays available courses to the user for enrollment.
-        printf("\n\nAVAILABLE COURSES:\n");
-        printf("-------------------------------------------------------------------------------------------------------"
-               "-----------------\n");
-        print_not_enrolled_courses(new_student, course_head);
-
-        char temp_course_id[10];
-        get_safe_string(3, temp_course_id, sizeof(temp_course_id),
-                        "\nEnter course ID to enroll in (or type 'exit' to finish enrollment): ");
-        
-        for (int i = 0; temp_course_id[i] != '\0'; i++) {
-            temp_course_id[i] = toupper((unsigned char)temp_course_id[i]);
-        }
-
-        if (strcmp(temp_course_id, "EXIT") == 0) {
-            printf("\nEnrollment process completed for student '%s' (ID: %u).\n\n", new_student->name, new_student->id);
-            break;
-        }
-
-        course *selected_course = course_head;
-
-        while (selected_course != NULL) {
-            if (strcmp(selected_course->course_id, temp_course_id) == 0) {
-                break;
-            }
-            selected_course = selected_course->next;
-        }
-
-        if (selected_course == NULL) {
-            printf("\n!ERROR! Course ID '%s' not found. Please try again.\n\n", temp_course_id);
-            continue;
-        }
-
-        if (enrollment_check(new_student, selected_course) == 1) {
-            printf("\n!ERROR! Student '%s' (ID: %u) is already enrolled in course '%s'. Please choose a different "
-                   "course.\n\n",
-                   new_student->name, new_student->id, selected_course->course_name);
-            continue;
-        }
+    if (total_courses_in_system == 0) {
+        printf("\n!WARNING! There are no courses available in the system yet.\n");
+        printf("Student '%s' has been added, but no course enrollments can be made at this time.\n\n",
+               new_student->name);
+    } else {
+        int enrolled_course_count = 0;
+        course *current_course = course_head;
 
         /*
-         * Checks if the memory allocation for the new enrollment was successful. If it fails, it prints an error
-         * message, frees any previously allocated memory for the new student and their enrollments to prevent memory
-         * leaks, and returns 0 to indicate that the operation was unsuccessful.
+         * Gives you the chance to exit the enrollment process while taking course ID input, checks for valid course IDs
+         * to ensure students are enrolled in existing courses, and checks for duplicate enrollments to prevent students
+         * from being enrolled in the same course multiple times, which could lead to data inconsistencies and confusion
+         * in the system.
          */
-        enrollment *new_enrollment = (enrollment *)malloc(sizeof(enrollment));
+        while (1) {
 
-        if (new_enrollment == NULL) {
-            printf("\n!ERROR! Memory allocation failed!\n\n");
-
-            while (new_student->records != NULL) {
-                enrollment *temp_enrollment = new_student->records;
-                new_student->records = new_student->records->next;
-                free(temp_enrollment->scores);
-                free(temp_enrollment);
+            if (enrolled_course_count >= total_courses_in_system) {
+                printf("\nStudent '%s' is now enrolled in all available courses in the system.\n", new_student->name);
+                printf("Automatically proceeding to the next step...\n\n");
+                break;
             }
-            free(new_student);
-            return 0;
-        }
 
-        new_enrollment->course = selected_course;
+            // Displays available courses to the user for enrollment.
+            printf("\n\nAVAILABLE COURSES:\n");
+            printf("---------------------------------------------------------------------------------------------------"
+                   "----"
+                   "-----------------\n");
+            print_not_enrolled_courses(new_student, course_head);
 
-        int exam_count = 0;
-        exam_template *temp_exam = selected_course->exams;
+            char temp_course_id[10];
+            get_safe_string(3, temp_course_id, sizeof(temp_course_id),
+                            "\nEnter course ID to enroll in (or type 'exit' to finish enrollment): ");
 
-        while (temp_exam != NULL) {
-            exam_count++;
-            temp_exam = temp_exam->next;
-        }
-
-        if (exam_count > 0) {
-            new_enrollment->scores = (int *)malloc(exam_count * sizeof(int));
-
-            for (int i = 0; i < exam_count; i++) {
-                new_enrollment->scores[i] = -1; // Initialize scores to -1 to indicate they haven't been entered yet
+            for (int i = 0; temp_course_id[i] != '\0'; i++) {
+                temp_course_id[i] = toupper((unsigned char)temp_course_id[i]);
             }
-        } else {
-            new_enrollment->scores = NULL; // No exams for this course
+
+            if (strcmp(temp_course_id, "EXIT") == 0) {
+                printf("\nEnrollment process completed for student '%s' (ID: %u).\n\n", new_student->name,
+                       new_student->id);
+                break;
+            }
+
+            course *selected_course = course_head;
+
+            while (selected_course != NULL) {
+                if (strcmp(selected_course->course_id, temp_course_id) == 0) {
+                    break;
+                }
+                selected_course = selected_course->next;
+            }
+
+            if (selected_course == NULL) {
+                printf("\n!ERROR! Course ID '%s' not found. Please try again.\n\n", temp_course_id);
+                continue;
+            }
+
+            if (enrollment_check(new_student, selected_course) == 1) {
+                printf("\n!ERROR! Student '%s' (ID: %u) is already enrolled in course '%s'. Please choose a different "
+                       "course.\n\n",
+                       new_student->name, new_student->id, selected_course->course_name);
+                continue;
+            }
+
+            /*
+             * Checks if the memory allocation for the new enrollment was successful. If it fails, it prints an error
+             * message, frees any previously allocated memory for the new student and their enrollments to prevent
+             * memory leaks, and returns 0 to indicate that the operation was unsuccessful.
+             */
+            enrollment *new_enrollment = (enrollment *)malloc(sizeof(enrollment));
+
+            if (new_enrollment == NULL) {
+                printf("\n!ERROR! Memory allocation failed!\n\n");
+
+                while (new_student->records != NULL) {
+                    enrollment *temp_enrollment = new_student->records;
+                    new_student->records = new_student->records->next;
+                    free(temp_enrollment->scores);
+                    free(temp_enrollment);
+                }
+                free(new_student);
+                return 0;
+            }
+
+            new_enrollment->course = selected_course;
+
+            int exam_count = 0;
+            exam_template *temp_exam = selected_course->exams;
+
+            while (temp_exam != NULL) {
+                exam_count++;
+                temp_exam = temp_exam->next;
+            }
+
+            if (exam_count > 0) {
+                new_enrollment->scores = (int *)malloc(exam_count * sizeof(int));
+
+                for (int i = 0; i < exam_count; i++) {
+                    new_enrollment->scores[i] = -1; // Initialize scores to -1 to indicate they haven't been entered yet
+                }
+            } else {
+                new_enrollment->scores = NULL; // No exams for this course
+            }
+
+            new_enrollment->course_average = -1.0;
+            strcpy(new_enrollment->letter_grade, "--");
+
+            new_enrollment->next = new_student->records;
+            new_student->records = new_enrollment;
+
+            enrolled_course_count++;
+            
+            printf("\nStudent '%s' (ID: %u) enrolled in course '%s' successfully!\n\n", new_student->name,
+                   new_student->id, selected_course->course_name);
         }
-
-        new_enrollment->course_average = 0.0;
-        strcpy(new_enrollment->letter_grade, "--");
-
-        new_enrollment->next = new_student->records;
-        new_student->records = new_enrollment;
-
-        printf("\nStudent '%s' (ID: %u) enrolled in course '%s' successfully!\n\n", new_student->name, new_student->id,
-               selected_course->course_name);
     }
 
     /*
@@ -164,7 +188,7 @@ int add_student(student **student_head, course *course_head) {
             snprintf(prompt_message, sizeof(prompt_message),
                      "Enter grade for exam '%s' (or -1 for pending grade): ", current_exam->exam_name);
 
-            int score = get_safe_int_between(-1, 100, 3 , prompt_message);
+            int score = get_safe_int_between(-1, 100, 3, prompt_message);
 
             current_enrollment->scores[i] = score;
             i++;
