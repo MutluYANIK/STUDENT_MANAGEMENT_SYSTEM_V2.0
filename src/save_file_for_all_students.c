@@ -2,6 +2,7 @@
 #include "../headers/student_management_system.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void save_file_for_all_students(student *student_head, course *course_head) {
 
