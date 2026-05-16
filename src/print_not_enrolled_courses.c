@@ -18,7 +18,7 @@ void print_not_enrolled_courses(student *current_student, course *course_head) {
 
         while (current_enrollment != NULL) {
 
-            if (strcmp(current_enrollment->course->course_credit, current_course->course_credit) == 0) {
+            if (strcmp(current_enrollment->course->course_id, current_course->course_id) == 0) {
                 enrolled_flag = 1;
                 break;
             }
@@ -27,7 +27,7 @@ void print_not_enrolled_courses(student *current_student, course *course_head) {
         }
 
         if (!enrolled_flag) {
-            printf("%s", current_course->course_credit);
+            printf("%s", current_course->course_id);
         }
         current_course = current_course->next;
     }
